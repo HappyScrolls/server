@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,8 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PostMapping("")
-    public ResponseEntity createArticle(ArticleDTO.Request request) {
+    public ResponseEntity createArticle(@RequestBody ArticleDTO.Request request) {
+
 
         ArticleDTO.Response response = articleService.articleCreate(request);
 

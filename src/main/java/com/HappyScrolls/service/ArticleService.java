@@ -16,7 +16,6 @@ public class ArticleService {
         Article article = request.toEntity();
 
         articleRepository.save(article);
-
         return ArticleDTO.Response.builder()
                 .id(article.getId())
                 .title(article.getTitle())
