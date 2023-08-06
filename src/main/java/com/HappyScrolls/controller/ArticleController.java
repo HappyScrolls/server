@@ -31,6 +31,12 @@ public class ArticleController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("")
+    public ResponseEntity retrieveUserArticle(@RequestParam String email) {
+        ArticleDTO.Response response = articleService.userArticleRetrieve(email);
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
     @PostMapping("")
     public ResponseEntity createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
         System.out.println("!!!! "+member);

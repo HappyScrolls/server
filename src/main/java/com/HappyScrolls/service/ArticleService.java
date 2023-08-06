@@ -4,6 +4,7 @@ import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.repository.ArticleRepository;
+import com.HappyScrolls.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     public ArticleDTO.Response articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
@@ -72,5 +76,16 @@ public class ArticleService {
         Article article = articleRepository.findById(id).get();
 
         articleRepository.delete(article);
+    }
+
+    public ArticleDTO.Response userArticleRetrieve(String email) {
+        Member findMember = memberRepository.findByEmail(email).get();
+        Article article = articleRepository.findByMember(findMember).get();
+
+        return ArticleDTO.Response.builder()
+                .id(article.getId())
+                .title(article.getTitle())
+                .body(article.getBody())
+                .build();
     }
 }
