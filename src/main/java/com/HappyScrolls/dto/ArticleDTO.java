@@ -3,7 +3,6 @@ package com.HappyScrolls.dto;
 import com.HappyScrolls.entity.Article;
 import lombok.Builder;
 import lombok.Data;
-import org.apache.coyote.Request;
 
 public class ArticleDTO {
 
@@ -17,7 +16,7 @@ public class ArticleDTO {
         public Article toEntity() {
             return Article.builder()
                     .title(this.title)
-                    .Body(this.body)
+                    .body(this.body)
                     .build();
         }
     }
@@ -26,6 +25,14 @@ public class ArticleDTO {
     @Builder
     @Data
     public static class Response {
+        private Long id;
+        private String title;
+        private String body;
+    }
+
+    @Builder
+    @Data
+    public static class edit {
         private Long id;
         private String title;
         private String body;

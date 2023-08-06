@@ -1,5 +1,6 @@
 package com.HappyScrolls.entity;
 
+import com.HappyScrolls.dto.ArticleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +24,14 @@ public class Article {
 
     private String title;
 
-    private String Body;
+    private String body;
+
+    public void edit(ArticleDTO.edit request) {
+        if (request.getTitle() != null) {
+            this.title = request.getTitle();
+        }
+        if (request.getBody() != null) {
+            this.body= request.getBody();
+        }
+    }
 }
