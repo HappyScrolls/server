@@ -33,6 +33,7 @@ public class ArticleController {
 
     @PostMapping("")
     public ResponseEntity createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
+        System.out.println("!!!! "+member);
 
         ArticleDTO.Response response = articleService.articleCreate(member,request);
 

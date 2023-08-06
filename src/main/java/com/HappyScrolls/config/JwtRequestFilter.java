@@ -30,6 +30,11 @@ public class JwtRequestFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println(((HttpServletRequest)request).getRequestURI());
+        if (((HttpServletRequest) request).getRequestURI().contains("/h2-console")) {
+            chain.doFilter(request, response);
+            return;
+        }
         String token = ((HttpServletRequest)request).getHeader("Authorization").split(" ")[1];
         System.out.println(token);
         System.out.println("filter1");
