@@ -53,8 +53,8 @@ public class ArticleController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(@RequestParam Long id) {
-        articleService.articleDelete(id);
+    public ResponseEntity deleteArticle(@AuthenticationPrincipal Member member,@RequestParam Long id) {
+        articleService.articleDelete(member,id);
         return new ResponseEntity(HttpStatus.OK);
     }
 }
