@@ -34,9 +34,15 @@ public class CommentController {
     }
 
     @PutMapping("")
-    public ResponseEntity editComment(@AuthenticationPrincipal Member member,@RequestBody CommentDTO.Edit request) {
+    public ResponseEntity editComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.Edit request) {
         CommentDTO.Response response = commentService.commentEdit(member, request);
 
-        return  new ResponseEntity(response, HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity deleteComment(@AuthenticationPrincipal Member member, @RequestParam Long id) {
+        commentService.commentDelete(member, id);
+        return new ResponseEntity( HttpStatus.ACCEPTED);
     }
 }

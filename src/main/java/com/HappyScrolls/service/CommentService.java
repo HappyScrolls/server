@@ -69,5 +69,14 @@ public class CommentService {
                 .body(editComment.getBody())
                 .build();
     }
+
+    public void commentDelete(Member member, Long id) {
+        //유저 검증 로직
+
+        Comment deleteComment = commentRepository.findById(id).get();
+
+        commentRepository.delete(deleteComment);
+
+    }
 }
 
