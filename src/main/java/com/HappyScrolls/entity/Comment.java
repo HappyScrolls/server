@@ -1,5 +1,6 @@
 package com.HappyScrolls.entity;
 
+import com.HappyScrolls.dto.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,11 @@ public class Comment {
     private Article article;
 
     private String body;
+
+    public void edit(CommentDTO.Edit request) {
+        if (request.getBody() != null) {
+            this.body= request.getBody();
+        }
+    }
 
 }

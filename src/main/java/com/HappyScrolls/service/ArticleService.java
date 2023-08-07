@@ -58,7 +58,7 @@ public class ArticleService {
                 .build();
     }
 
-    public ArticleDTO.Response articleEdit(ArticleDTO.edit request) {
+    public ArticleDTO.Response articleEdit(ArticleDTO.Edit request) {
         Article article = articleRepository.findById(request.getId()).get();
 
         article.edit(request);

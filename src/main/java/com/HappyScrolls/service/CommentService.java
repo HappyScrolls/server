@@ -56,5 +56,18 @@ public class CommentService {
     }
 
 
+    public CommentDTO.Response commentEdit(Member member, CommentDTO.Edit request) {
+        //유저 검증 로직
+
+        Comment editComment = commentRepository.findById(request.getId()).get();
+
+        editComment.edit(request);
+
+        return CommentDTO.Response
+                .builder()
+                .id(editComment.getId())
+                .body(editComment.getBody())
+                .build();
+    }
 }
 

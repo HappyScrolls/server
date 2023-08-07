@@ -33,5 +33,10 @@ public class CommentController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("")
+    public ResponseEntity editComment(@AuthenticationPrincipal Member member,@RequestBody CommentDTO.Edit request) {
+        CommentDTO.Response response = commentService.commentEdit(member, request);
 
+        return  new ResponseEntity(response, HttpStatus.CREATED);
+    }
 }

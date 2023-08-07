@@ -47,13 +47,13 @@ public class ArticleController {
     }
 
     @PutMapping("")
-    public ResponseEntity editArticle(@RequestBody ArticleDTO.edit request) {
+    public ResponseEntity editArticle(@RequestBody ArticleDTO.Edit request) {
         ArticleDTO.Response response = articleService.articleEdit(request);
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("")
-    public ResponseEntity editArticle(@RequestParam Long id) {
+    public ResponseEntity deleteArticle(@RequestParam Long id) {
         articleService.articleDelete(id);
         return new ResponseEntity(HttpStatus.OK);
     }

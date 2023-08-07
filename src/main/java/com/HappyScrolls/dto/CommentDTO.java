@@ -31,7 +31,7 @@ public class CommentDTO {
 
     @Builder
     @Data
-    public static class edit {
+    public static class Edit {
         private Long id;
         private String body;
     }
