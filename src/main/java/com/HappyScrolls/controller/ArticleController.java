@@ -47,8 +47,8 @@ public class ArticleController {
     }
 
     @PutMapping("")
-    public ResponseEntity editArticle(@RequestBody ArticleDTO.Edit request) {
-        ArticleDTO.Response response = articleService.articleEdit(request);
+    public ResponseEntity editArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Edit request) {
+        ArticleDTO.Response response = articleService.articleEdit(member,request);
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
