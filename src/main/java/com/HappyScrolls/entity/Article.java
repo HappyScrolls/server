@@ -26,7 +26,7 @@ public class Article {
 
     private String body;
 
-    public void edit(ArticleDTO.edit request) {
+    public void edit(ArticleDTO.Edit request) {
         if (request.getTitle() != null) {
             this.title = request.getTitle();
         }

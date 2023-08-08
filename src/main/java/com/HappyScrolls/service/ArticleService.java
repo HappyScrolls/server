@@ -58,7 +58,10 @@ public class ArticleService {
                 .build();
     }
 
-    public ArticleDTO.Response articleEdit(ArticleDTO.edit request) {
+    public ArticleDTO.Response articleEdit(Member member,ArticleDTO.Edit request) {
+
+        //유저 검증 로직
+
         Article article = articleRepository.findById(request.getId()).get();
 
         article.edit(request);
@@ -72,7 +75,11 @@ public class ArticleService {
                 .build();
     }
 
-    public void articleDelete(Long id) {
+    public void articleDelete(Member member,Long id) {
+
+        //유저 검증 로직
+
+
         Article article = articleRepository.findById(id).get();
 
         articleRepository.delete(article);

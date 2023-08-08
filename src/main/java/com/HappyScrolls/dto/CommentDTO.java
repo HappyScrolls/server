@@ -1,21 +1,21 @@
 package com.HappyScrolls.dto;
 
-import com.HappyScrolls.entity.Article;
+import com.HappyScrolls.entity.Comment;
 import lombok.Builder;
 import lombok.Data;
 
-public class ArticleDTO {
+public class CommentDTO {
+
 
 
     @Builder
     @Data
     public static class Request{
-        private String title;
+        private Long postId;
         private String body;
 
-        public Article toEntity() {
-            return Article.builder()
-                    .title(this.title)
+        public Comment toEntity() {
+            return Comment.builder()
                     .body(this.body)
                     .build();
         }
@@ -26,7 +26,6 @@ public class ArticleDTO {
     @Data
     public static class Response {
         private Long id;
-        private String title;
         private String body;
     }
 
@@ -34,7 +33,6 @@ public class ArticleDTO {
     @Data
     public static class Edit {
         private Long id;
-        private String title;
         private String body;
     }
 }
