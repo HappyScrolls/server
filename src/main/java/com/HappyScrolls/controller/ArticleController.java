@@ -31,7 +31,7 @@ public class ArticleController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("")
+    @GetMapping("/user")
     public ResponseEntity retrieveUserArticle(@RequestParam String email) {
         ArticleDTO.Response response = articleService.userArticleRetrieve(email);
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
