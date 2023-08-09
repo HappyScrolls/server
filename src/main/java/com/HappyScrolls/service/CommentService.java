@@ -84,7 +84,7 @@ public class CommentService {
 
 
         if (!deleteComment.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
         }
 
         commentRepository.delete(deleteComment);
