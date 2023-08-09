@@ -83,6 +83,9 @@ public class CommentService {
         Comment deleteComment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
 
 
+        if (!deleteComment.getMember().equals(member)) {
+            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+        }
 
         commentRepository.delete(deleteComment);
 
