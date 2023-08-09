@@ -79,9 +79,10 @@ public class CommentService {
     }
 
     public void commentDelete(Member member, Long id) {
-        //유저 검증 로직
 
-        Comment deleteComment = commentRepository.findById(id).get();
+        Comment deleteComment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
+
+
 
         commentRepository.delete(deleteComment);
 
