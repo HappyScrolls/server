@@ -43,6 +43,9 @@ public class ArticleServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
 
 
     private static final Long ARTICLE_ID = 1L;
@@ -236,4 +239,37 @@ public class ArticleServiceTest {
         assertThrows(NoAuthorityExceoption.class, () -> articleService.articleDelete(requestMember,testId));
         verify(articleRepository).findById(testId);
     }
+    @Test
+    @DisplayName("게시글 유저별  조회 기능이 제대로 동작하는지 확인")
+    void 게시글_유저별조회_성공_테스트() {
+        String testEmail = "chs98412@naver,com";
+        Member member = Member.builder().id(USER_ID).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
+        Article article1= new Article(1l, member, "제목1", "내용1");
+        Article article2= new Article(1l, member, "제목2", "내용2");
+        List<Article> articles = new ArrayList<>();
+        articles.add(article1);
+        articles.add(article2);
+
+        when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
+        when(articleRepository.findAllByMember(any())).thenReturn(articles);
+
+
+        List<ArticleDTO.Response> response= articleService.userArticleRetrieve(testEmail);
+
+        verify(memberRepository).findByEmail(testEmail);
+        verify(articleRepository).findAllByMember(member);
+
+
+        assertThat(response).isEqualTo(articles.stream()
+                .map(article -> ArticleDTO.Response.builder()
+                        .id(article.getId())
+                        .title(article.getTitle())
+                        .body(article.getBody())
+                        .build())
+                .collect(Collectors.toList()));
+
+
+    }
+
+
 }
