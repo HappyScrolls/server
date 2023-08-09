@@ -14,10 +14,18 @@ import com.HappyScrolls.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
@@ -25,8 +33,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
-class ArticleServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class ArticleServiceTest {
 
     @InjectMocks
     private ArticleService articleService;
@@ -39,28 +47,29 @@ class ArticleServiceTest {
     private static final Long ARTICLE_ID = 1L;
     private static final Long USER_ID = 1L;
 
-    private Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-    private ArticleDTO.Request request = ArticleDTO.Request.builder().title("제목").body("내용").build();
-    private Article article = request.toEntity();
 
 
-    @BeforeEach
-    void init() {
-        article.setMember(member);
-    }
+
 
     @Test
-    @DisplayName("게시물 작성 테스트")
+    @DisplayName("게시물 작성 기능이 제대로 동작하는지 확인")
     void 게시물_작성_성공_테스트() {
 
-        given(articleRepository.save(any())).willReturn(article);
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        ArticleDTO.Request request = ArticleDTO.Request.builder().title("제목").body("내용").build();
+
+        Article article = request.toEntity();
+        article.setMember(member);
+        when(articleRepository.save(any())).thenReturn(article);
 
 
-
-        articleService.articleCreate(member, request);
+        ArticleDTO.Response response=   articleService.articleCreate(member, request);
 
         verify(articleRepository).save(article);
-
-
+        assertThat(response.getTitle()).isEqualTo(request.getTitle());
+        assertThat(response.getBody()).isEqualTo(request.getBody());
     }
+
+
+
 }
