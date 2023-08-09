@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,5 +175,19 @@ public class ArticleServiceTest {
         // then
         verify(articleRepository).findById(testId);
     }
+    @Test
+    @DisplayName("게시글 수정 기능에서 본인 소유의 게시글이 아닐 때 예외처리를 하는지 확인")
+    void 게시글_수정기능_권한제한예외_테스트() {
 
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
+        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
+        Article article= new Article(1L, member, "제목1", "내용1");
+        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+        Long testId = 1L;
+
+
+        assertThrows(NoAuthorityExceoption.class, () -> articleService.articleEdit(requestMember,request));
+        verify(articleRepository).findById(testId);
+    }
 }
