@@ -39,7 +39,7 @@ public class CommentService {
     }
 
     public List<CommentDTO.Response> commentRetrieve(Long id) {
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다",id))); //%s?
 
         List<Comment> comments = commentRepository.findByArticle(article);
 
