@@ -33,7 +33,7 @@ public class ArticleController {
 
     @GetMapping("/user")
     public ResponseEntity retrieveUserArticle(@RequestParam String email) {
-        ArticleDTO.Response response = articleService.userArticleRetrieve(email);
+        List<ArticleDTO.Response>  response = articleService.userArticleRetrieve(email);
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
