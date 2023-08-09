@@ -4,9 +4,12 @@ import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.CommentRepository;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,9 +61,13 @@ public class CommentService {
 
 
     public CommentDTO.Response commentEdit(Member member, CommentDTO.Edit request) {
-        //유저 검증 로직
+
 
         Comment editComment = commentRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",request.getId())));
+
+        if (!editComment.getMember().equals(member)) {
+            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+        }
 
         editComment.edit(request);
 
