@@ -159,4 +159,20 @@ public class ArticleServiceTest {
     }
 
 
+    @Test
+    @DisplayName("게시글 수정 기능에서 게시글  조회를 할 수 없을 때 예외처리를 하는지 확인")
+    void 게시글_수정기능_조회오류예외_테스트() {
+
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
+        Long testId = 1L;
+        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+
+        // when
+        assertThrows(NoSuchElementException.class, () -> articleService.articleEdit(member,request));
+
+        // then
+        verify(articleRepository).findById(testId);
+    }
+
 }
