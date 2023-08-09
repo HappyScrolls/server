@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CommentService {
@@ -22,7 +23,7 @@ public class CommentService {
 
     public CommentDTO.Response commentCreate(Member member, CommentDTO.Request request) {
 
-        Article article = articleRepository.findById(request.getPostId()).get();
+        Article article = articleRepository.findById(request.getPostId()).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getPostId()))); //%s?
 
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
