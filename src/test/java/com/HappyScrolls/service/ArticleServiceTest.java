@@ -221,4 +221,19 @@ public class ArticleServiceTest {
 
         verify(articleRepository).findById(testId);
     }
+
+    @Test
+    @DisplayName("게시글 삭제기능에서 본인 소유의 게시글이 아닐 때 예외처리를 하는지 확인")
+    void 게시글_삭제기능_권한제한예외_테스트() {
+        Long testId = 1L;
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
+        Article article= new Article(testId, member, "제목1", "내용1");
+        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+
+
+
+        assertThrows(NoAuthorityExceoption.class, () -> articleService.articleDelete(requestMember,testId));
+        verify(articleRepository).findById(testId);
+    }
 }
