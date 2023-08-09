@@ -83,10 +83,12 @@ public class ArticleService {
 
     public void articleDelete(Member member,Long id) {
 
-        //유저 검증 로직
-
 
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
+
+        if (!article.getMember().equals(member)) {
+            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
+        }
 
         articleRepository.delete(article);
     }
