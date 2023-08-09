@@ -135,7 +135,28 @@ public class ArticleServiceTest {
     }
 
 
+    @Test
+    @DisplayName("게시글 수정 기능이  제대로 동작하는지 확인")
+    void 게시글_수정_성공_테스트() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Article article= new Article(1L, member, "제목1", "내용1");
+        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
+
+        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
+        article.edit(request);
+        when(articleRepository.save(any())).thenReturn(article);
+
+
+        ArticleDTO.Response response = articleService.articleEdit(member, request);
+
+
+
+        verify(articleRepository).findById(1L);
+        verify(articleRepository).save(article);
+        assertThat(response).isEqualTo(ArticleDTO.Response.builder().id(article.getId()).title(article.getTitle()).body(article.getBody()).build() );
+
+    }
 
 
 }
