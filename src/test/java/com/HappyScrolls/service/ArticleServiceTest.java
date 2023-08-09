@@ -121,4 +121,21 @@ public class ArticleServiceTest {
     }
 
 
+    @Test
+    @DisplayName("게시글 단건 조회 기능이 조회를 할 수 없을 때 예외처리를 하는지 확인")
+    void 게시글_단건조회_예외_테스트() {
+        Long testId = 1L;
+        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+
+        // when
+        assertThrows(NoSuchElementException.class, () -> articleService.articleRetrieve(testId));
+
+        // then
+        verify(articleRepository).findById(testId);
+    }
+
+
+
+
+
 }
