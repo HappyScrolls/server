@@ -73,12 +73,12 @@ public class ArticleService {
 
         article.edit(request);
 
-        articleRepository.save(article);
+        Article editedArticle =articleRepository.save(article);
 
         return ArticleDTO.Response.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .body(article.getBody())
+                .id(editedArticle.getId())
+                .title(editedArticle.getTitle())
+                .body(editedArticle.getBody())
                 .build();
     }
 
