@@ -101,5 +101,24 @@ public class ArticleServiceTest {
                 .collect(Collectors.toList()));
     }
 
+    @Test
+    @DisplayName("게시글 단건 조회 기능이 제대로 동작하는지 확인")
+    void 게시글_단건조회_성공_테스트() {
+
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Article article= new Article(1l, member, "제목1", "내용1");
+
+        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+
+
+        ArticleDTO.Response response = articleService.articleRetrieve(1L);
+
+        verify(articleRepository).findById(1L);
+        assertThat(response.getId()).isEqualTo(response.getId());
+        assertThat(response.getTitle()).isEqualTo(response.getTitle());
+        assertThat(response.getBody()).isEqualTo(response.getBody());
+
+    }
+
 
 }
