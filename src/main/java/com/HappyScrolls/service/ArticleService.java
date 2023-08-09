@@ -86,7 +86,7 @@ public class ArticleService {
         //유저 검증 로직
 
 
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
 
         articleRepository.delete(article);
     }
