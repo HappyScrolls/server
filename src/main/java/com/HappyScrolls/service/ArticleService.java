@@ -4,6 +4,7 @@ import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
+import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class ArticleService {
     }
 
     public ArticleDTO.Response userArticleRetrieve(String email) {
-        Member findMember = memberRepository.findByEmail(email).get();
+        Member findMember = memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException(String.format("user[%s] 유저를  찾을 수 없습니다", email)));
         Article article = articleRepository.findByMember(findMember).get();
 
         return ArticleDTO.Response.builder()
