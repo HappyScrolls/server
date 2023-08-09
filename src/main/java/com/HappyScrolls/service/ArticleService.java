@@ -94,14 +94,20 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public ArticleDTO.Response userArticleRetrieve(String email) {
+    public List<ArticleDTO.Response>  userArticleRetrieve(String email) {
         Member findMember = memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException(String.format("user[%s] 유저를  찾을 수 없습니다", email)));
-        Article article = articleRepository.findByMember(findMember).get();
+        List<Article> articles = articleRepository.findAllByMember(findMember);
 
-        return ArticleDTO.Response.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .body(article.getBody())
-                .build();
+        List<ArticleDTO.Response> response = new ArrayList<>();
+
+        for (Article article : articles) {
+            response.add(ArticleDTO.Response.builder()
+                    .id(article.getId())
+                    .title(article.getTitle())
+                    .body(article.getBody())
+                    .build());
+        }
+
+        return response;
     }
 }
