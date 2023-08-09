@@ -209,4 +209,16 @@ public class ArticleServiceTest {
         verify(articleRepository).findById(testId);
         verify(articleRepository).delete(article);
     }
+
+    @Test
+    @DisplayName("게시글 삭제 기능에서 게시글  조회를 할 수 없을 때 예외처리를 하는지 확인")
+    void 게시글_삭제기능_조회오류예외_테스트() {
+        Long testId = 1L;
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> articleService.articleDelete(member,testId));
+
+        verify(articleRepository).findById(testId);
+    }
 }
