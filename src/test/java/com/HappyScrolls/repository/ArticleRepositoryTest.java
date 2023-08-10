@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @DataJpaTest
 public class ArticleRepositoryTest {
@@ -20,7 +24,7 @@ public class ArticleRepositoryTest {
     private MemberRepository memberRepository;
     private static final Long USER_ID = 1L;
     @Test
-    @DisplayName("게시글이 DB에 저장이 잘 되는지 확인")
+    @DisplayName("게시글 DB에 저장이 잘 되는지 확인")
     void 게시글_저장_성공_테스트() {
 
        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
@@ -34,6 +38,26 @@ public class ArticleRepositoryTest {
         Article savedArticle = articleRepository.save(article);
         assertThat(savedArticle).isEqualTo(article);
     }
+    @Test
+    @DisplayName("유저가 작성한 게시글 조회가 잘 되는지 확인")
+    void 게시글_유저별조회_성공_테스트() {
 
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        memberRepository.save(member);
+        Article article1 = new Article(1l, member, "제목1", "내용1");
+        Article article2 = new Article(2l, member, "제목2", "내용2");
+        Article article3 = new Article(3l, member, "제목3", "내용3");
+        articleRepository.save(article1);
+        articleRepository.save(article2);
+        articleRepository.save(article3);
+        List<Article> articles = new ArrayList<>();
+        articles.add(article1);
+        articles.add(article2);
+        articles.add(article3);
+
+        List<Article> response = articleRepository.findAllByMember(member);
+
+        assertThat(response).isEqualTo(articles);
+    }
 
 }
