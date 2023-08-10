@@ -1,18 +1,17 @@
 package com.HappyScrolls.entity;
 
 import com.HappyScrolls.dto.ArticleDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Builder
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 public class Article {
 
     @Id
@@ -34,4 +33,13 @@ public class Article {
             this.body= request.getBody();
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(id, article.id) && Objects.equals(member, article.member) && Objects.equals(title, article.title) && Objects.equals(body, article.body);
+    }
+
 }
