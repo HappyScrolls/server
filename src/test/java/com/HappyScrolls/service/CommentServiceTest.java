@@ -107,4 +107,15 @@ public class CommentServiceTest {
                 .collect(Collectors.toList()));
     }
 
+    @Test
+    @DisplayName("댓글 조회 기능이 게시글을 찾을 수 없는 경우 예외처리를 하는지 확인")
+    void 댓글_조회_실패_테스트() {
+
+        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> commentService.commentRetrieve(1L));
+
+        verify(articleRepository).findById(1L);
+    }
+
 }
