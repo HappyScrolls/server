@@ -71,10 +71,12 @@ public class CommentService {
 
         editComment.edit(request);
 
+        Comment comment = commentRepository.save(editComment);
+
         return CommentDTO.Response
                 .builder()
-                .id(editComment.getId())
-                .body(editComment.getBody())
+                .id(comment.getId())
+                .body(comment.getBody())
                 .build();
     }
 
