@@ -205,4 +205,21 @@ public class CommentServiceTest {
         verify(commentRepository).findById(1L);
     }
 
+    @Test
+    @DisplayName("댓글 삭제 기능이 권한 없는 경우 예외처리를 하는지 확인")
+    void 댓글_삭제_실패_테스트2() {
+        Long testId = 1L;
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
+        Article article= new Article(1L, member, "제목1", "내용1");
+        Comment cmt = new Comment(testId, member, article, "댓글1");
+
+
+        when(commentRepository.findById(any())).thenReturn(Optional.of(cmt));
+
+        assertThrows(NoAuthorityExceoption.class, () -> commentService.commentDelete(requestMember,testId));
+
+        verify(commentRepository).findById(1L);
+    }
+
 }
