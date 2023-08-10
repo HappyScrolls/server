@@ -191,4 +191,18 @@ public class CommentServiceTest {
         verify(commentRepository).delete(cmt);
     }
 
+    @Test
+    @DisplayName("댓글 삭제 기능이 댓글을 찾을 수 없는 경우 예외처리를 하는지 확인")
+    void 댓글_삭제_실패_테스트1() {
+        Long testId = 1L;
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        CommentDTO.Edit request = CommentDTO.Edit.builder().id(testId).body("수정 내용").build();
+
+        when(commentRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> commentService.commentDelete(member,testId));
+
+        verify(commentRepository).findById(1L);
+    }
+
 }
