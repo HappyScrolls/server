@@ -175,4 +175,20 @@ public class CommentServiceTest {
         verify(commentRepository).findById(1L);
     }
 
+    @Test
+    @DisplayName("댓글 삭제 기능이  제대로 동작하는지 확인")
+    void 댓글_삭제_성공_테스트() {
+        Long testId = 1L;
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Article article= new Article(testId, member, "제목1", "내용1");
+        Comment cmt = new Comment(testId, member, article, "댓글1");
+
+        when(commentRepository.findById(any())).thenReturn(Optional.of(cmt));
+
+        commentService.commentDelete(member, testId);
+
+        verify(commentRepository).findById(testId);
+        verify(commentRepository).delete(cmt);
+    }
+
 }
