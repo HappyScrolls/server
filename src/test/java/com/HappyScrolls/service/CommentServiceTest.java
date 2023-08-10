@@ -1,5 +1,6 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
@@ -13,8 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,6 +74,37 @@ public class CommentServiceTest {
 
         verify(articleRepository).findById(1L);
     }
+    @Test
+    @DisplayName("댓글 조회 기능이 제대로 동작하는지 확인")
+    void 댓글_조회_성공_테스트() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Article article = new Article(1l, member, "제목1", "내용1");
 
+        Comment cmt1 = new Comment(1l, member, article, "댓글1");
+        Comment cmt2 = new Comment(2l, member, article, "댓글2");
+        Comment cmt3= new Comment(3l, member, article, "댓글3");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(cmt1);
+        comments.add(cmt2);
+        comments.add(cmt3);
+
+
+
+        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+
+        when(commentRepository.findByArticle(any())).thenReturn(comments);
+
+        List<CommentDTO.Response> response = commentService.commentRetrieve(1L);
+
+        verify(articleRepository).findById(1l);
+        verify(commentRepository).findByArticle(article);
+
+        assertThat(response).isEqualTo(comments.stream()
+                .map(comment -> CommentDTO.Response.builder()
+                        .id(comment.getId())
+                        .body(comment.getBody())
+                        .build())
+                .collect(Collectors.toList()));
+    }
 
 }
