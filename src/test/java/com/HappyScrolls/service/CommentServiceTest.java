@@ -5,6 +5,7 @@ import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.CommentRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -145,7 +146,7 @@ public class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("댓글 수정 기능이 댓글을 찾을 수 없는 경우 예외처리를 하는지 확인")
+    @DisplayName("댓글 수정 기능이 댓을 찾을 수 없는 경우 예외처리를 하는지 확인")
     void 댓글_수정_실패_테스트1() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
@@ -153,6 +154,23 @@ public class CommentServiceTest {
         when(commentRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> commentService.commentEdit(member,request));
+
+        verify(commentRepository).findById(1L);
+    }
+
+    @Test
+    @DisplayName("댓글 수정 기능이 권한 없는 경우 예외처리를 하는지 확인")
+    void 댓글_수정_실패_테스트2() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
+        Article article= new Article(1L, member, "제목1", "내용1");
+        Comment cmt = new Comment(1l, member, article, "댓글1");
+        CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
+
+
+        when(commentRepository.findById(any())).thenReturn(Optional.of(cmt));
+
+        assertThrows(NoAuthorityExceoption.class, () -> commentService.commentEdit(requestMember,request));
 
         verify(commentRepository).findById(1L);
     }
