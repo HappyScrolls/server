@@ -13,3 +13,4 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
 
     List<Article> findAllByMember(Member findMember);
 }
+
