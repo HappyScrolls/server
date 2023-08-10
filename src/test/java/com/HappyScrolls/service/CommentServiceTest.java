@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,6 +57,18 @@ public class CommentServiceTest {
                 .body(makeComment.getBody())
                 .build());
 
+    }
+
+    @Test
+    @DisplayName("댓글 작성 기능이 게시글을 찾을 수 없는 경우 예외처리를 하는지 확인")
+    void 댓글_작성_실패_테스트() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        CommentDTO.Request request = CommentDTO.Request.builder().postId(1L).body("댓글 내용").build();
+        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> commentService.commentCreate(member,request));
+
+        verify(articleRepository).findById(1L);
     }
 
 
