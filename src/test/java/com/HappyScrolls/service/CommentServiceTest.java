@@ -144,4 +144,17 @@ public class CommentServiceTest {
 
     }
 
+    @Test
+    @DisplayName("댓글 수정 기능이 댓글을 찾을 수 없는 경우 예외처리를 하는지 확인")
+    void 댓글_수정_실패_테스트1() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
+
+        when(commentRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> commentService.commentEdit(member,request));
+
+        verify(commentRepository).findById(1L);
+    }
+
 }
