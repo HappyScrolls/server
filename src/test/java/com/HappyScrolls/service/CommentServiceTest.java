@@ -118,4 +118,30 @@ public class CommentServiceTest {
         verify(articleRepository).findById(1L);
     }
 
+    @Test
+    @DisplayName("댓글 수정 기능이  제대로 동작하는지 확인")
+    void 댓글_수정_성공_테스트() {
+        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        Article article= new Article(1L, member, "제목1", "내용1");
+        Comment cmt = new Comment(1l, member, article, "댓글1");
+        CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
+
+
+        when(commentRepository.findById(any())).thenReturn(Optional.of(cmt));
+
+
+        cmt.edit(request);
+        when(commentRepository.save(any())).thenReturn(cmt);
+
+
+        CommentDTO.Response response = commentService.commentEdit(member, request);
+
+
+
+        verify(commentRepository).findById(1l);
+       verify(commentRepository).save(cmt);
+       assertThat(response).isEqualTo(CommentDTO.Response.builder().id(cmt.getId()).body(cmt.getBody()).build() );
+
+    }
+
 }
