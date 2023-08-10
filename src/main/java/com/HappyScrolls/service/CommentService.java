@@ -32,12 +32,12 @@ public class CommentService {
         makeComment.setArticle(article);
         makeComment.setMember(member);
 
-        commentRepository.save(makeComment);
+        Comment comment=commentRepository.save(makeComment);
 
         return CommentDTO.Response
                 .builder()
-                .id(makeComment.getId())
-                .body(makeComment.getBody())
+                .id(comment.getId())
+                .body(comment.getBody())
                 .build();
     }
 
@@ -71,12 +71,15 @@ public class CommentService {
 
         editComment.edit(request);
 
+        Comment comment = commentRepository.save(editComment);
+
         return CommentDTO.Response
                 .builder()
-                .id(editComment.getId())
-                .body(editComment.getBody())
+                .id(comment.getId())
+                .body(comment.getBody())
                 .build();
     }
+
 
     public void commentDelete(Member member, Long id) {
 
