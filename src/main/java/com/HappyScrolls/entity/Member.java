@@ -1,20 +1,18 @@
 package com.HappyScrolls.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 @Builder
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -25,4 +23,14 @@ public class Member {
     private String nickname;
 
     private String thumbnail;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id) && Objects.equals(email, member.email) && Objects.equals(nickname, member.nickname) && Objects.equals(thumbnail, member.thumbnail);
+    }
+
+
 }
