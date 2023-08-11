@@ -3,11 +3,13 @@ package com.HappyScrolls.repository;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class ArticleRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
     private static final Long USER_ID = 1L;
+
+
     @Test
     @DisplayName("게시글 DB에 저장이 잘 되는지 확인")
     void 게시글_저장_성공_테스트() {
@@ -55,9 +59,27 @@ public class ArticleRepositoryTest {
         articles.add(article2);
         articles.add(article3);
 
+        System.out.println("Read 시작 시점");
         List<Article> response = articleRepository.findAllByMember(member);
 
         assertThat(response).isEqualTo(articles);
     }
 
+
+
+
+    @Test
+    @DisplayName("N+1 문제 확인용 테스트")
+    void N플러스1문제_테스트() {
+
+        System.out.println("Read 시작 시점");
+        List<Article> response = articleRepository.findAll();
+        System.out.println("N+1 문제 시작 시점");
+        for (Article article : response) {
+            System.out.println(article.getTitle());
+            Member getMember = article.getMember();
+            System.out.println(getMember);
+        }
+
+    }
 }
