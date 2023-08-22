@@ -113,4 +113,8 @@ public class ArticleService {
 
         return response;
     }
+
+    public Article articleFind(Long postId) {
+        return articleRepository.findById(postId).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", postId))); //%s?
+    }
 }
