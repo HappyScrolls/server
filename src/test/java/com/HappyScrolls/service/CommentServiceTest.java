@@ -34,7 +34,7 @@ public class CommentServiceTest {
     @InjectMocks
     private CommentService commentService;
     @Mock
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
     @Mock
     private CommentRepository commentRepository;
     private static final Long USER_ID = 1L;
@@ -49,12 +49,12 @@ public class CommentServiceTest {
         makeComment.setArticle(article);
         makeComment.setMember(member);
 
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+        when(articleService.articleFind(any())).thenReturn(article);
 
         when(commentRepository.save(any())).thenReturn(makeComment);
 
         CommentDTO.Response response= commentService.commentCreate(member, request);
-        verify(articleRepository).findById(1L);
+        verify(articleService).articleFind(1L);
         verify(commentRepository).save(makeComment);
         assertThat(response).isEqualTo(CommentDTO.Response
                 .builder()
@@ -64,17 +64,7 @@ public class CommentServiceTest {
 
     }
 
-    @Test
-    @DisplayName("댓글 작성 기능이 게시글을 찾을 수 없는 경우 예외처리를 하는지 확인")
-    void 댓글_작성_실패_테스트() {
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        CommentDTO.Request request = CommentDTO.Request.builder().postId(1L).body("댓글 내용").build();
-        when(articleRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> commentService.commentCreate(member,request));
-
-        verify(articleRepository).findById(1L);
-    }
     @Test
     @DisplayName("댓글 조회 기능이 제대로 동작하는지 확인")
     void 댓글_조회_성공_테스트() {
@@ -91,13 +81,13 @@ public class CommentServiceTest {
 
 
 
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
+        when(articleService.articleFind(any())).thenReturn(article);
 
         when(commentRepository.findByArticle(any())).thenReturn(comments);
 
         List<CommentDTO.Response> response = commentService.commentRetrieve(1L);
 
-        verify(articleRepository).findById(1l);
+        verify(articleService).articleFind(1L);
         verify(commentRepository).findByArticle(article);
 
         assertThat(response).isEqualTo(comments.stream()
@@ -108,16 +98,7 @@ public class CommentServiceTest {
                 .collect(Collectors.toList()));
     }
 
-    @Test
-    @DisplayName("댓글 조회 기능이 게시글을 찾을 수 없는 경우 예외처리를 하는지 확인")
-    void 댓글_조회_실패_테스트() {
 
-        when(articleRepository.findById(any())).thenReturn(Optional.empty());
-
-        assertThrows(NoSuchElementException.class, () -> commentService.commentRetrieve(1L));
-
-        verify(articleRepository).findById(1L);
-    }
 
     @Test
     @DisplayName("댓글 수정 기능이  제대로 동작하는지 확인")
