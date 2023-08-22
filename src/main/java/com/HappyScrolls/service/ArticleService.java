@@ -21,13 +21,15 @@ public class ArticleService {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
     public ArticleDTO.Response articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
         article.setMember(member);
 
         articleRepository.save(article);
+
+
         return ArticleDTO.Response.builder()
                 .id(article.getId())
                 .title(article.getTitle())
@@ -95,7 +97,8 @@ public class ArticleService {
     }
 
     public List<ArticleDTO.Response>  userArticleRetrieve(String email) {
-        Member findMember = memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException(String.format("user[%s] 유저를  찾을 수 없습니다", email)));
+        Member findMember = memberService.memberFind(email);
+
         List<Article> articles = articleRepository.findAllByMember(findMember);
 
         List<ArticleDTO.Response> response = new ArrayList<>();
@@ -109,5 +112,9 @@ public class ArticleService {
         }
 
         return response;
+    }
+
+    public Article articleFind(Long postId) {
+        return articleRepository.findById(postId).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", postId))); //%s?
     }
 }

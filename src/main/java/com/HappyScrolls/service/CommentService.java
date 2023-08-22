@@ -19,14 +19,17 @@ import java.util.NoSuchElementException;
 @Service
 public class CommentService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private ArticleService articleService;
+
     public CommentDTO.Response commentCreate(Member member, CommentDTO.Request request) {
 
-        Article article = articleRepository.findById(request.getPostId()).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getPostId()))); //%s?
+        Article article = articleService.articleFind(request.getPostId());
+
 
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
@@ -42,7 +45,7 @@ public class CommentService {
     }
 
     public List<CommentDTO.Response> commentRetrieve(Long id) {
-        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다",id))); //%s?
+        Article article = articleService.articleFind(id);
 
         List<Comment> comments = commentRepository.findByArticle(article);
 

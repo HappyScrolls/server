@@ -45,7 +45,7 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
 
 
@@ -251,13 +251,13 @@ public class ArticleServiceTest {
         articles.add(article1);
         articles.add(article2);
 
-        when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
+        when(memberService.memberFind(any())).thenReturn(member);
         when(articleRepository.findAllByMember(any())).thenReturn(articles);
 
 
         List<ArticleDTO.Response> response= articleService.userArticleRetrieve(testEmail);
 
-        verify(memberRepository).findByEmail(testEmail);
+        verify(memberService).memberFind(testEmail);
         verify(articleRepository).findAllByMember(member);
 
 
@@ -272,18 +272,7 @@ public class ArticleServiceTest {
 
     }
 
-    @Test
-    @DisplayName("게시글 유저별  조회 기능에서 유저를 조회할 수 없을 때 예외처리 확인")
-    void 게시글_유저별조회_예외처리_테스트() {
-        String testEmail = "chs98412@naver,com";
 
-        when(memberRepository.findByEmail(any())).thenReturn(Optional.empty());
-
-
-        assertThrows(UserNotFoundException.class, () -> articleService.userArticleRetrieve(testEmail));
-
-        verify(memberRepository).findByEmail(testEmail);
-    }
 
 
 }
