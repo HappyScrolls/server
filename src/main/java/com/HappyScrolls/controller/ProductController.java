@@ -6,10 +6,7 @@ import com.HappyScrolls.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("product")
@@ -25,5 +22,11 @@ public class ProductController {
         ProductDTO.Response response = productService.productCreate(request);
 
         return new ResponseEntity(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public ResponseEntity retrieveProduct(@RequestParam Long id) {
+        ProductDTO.Response response = productService.productRetrieve(id);
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 }

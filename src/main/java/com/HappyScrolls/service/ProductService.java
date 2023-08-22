@@ -8,6 +8,8 @@ import com.HappyScrolls.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class ProductService {
 
@@ -27,4 +29,19 @@ public class ProductService {
                 .expiration(product.getExpiration())
                 .build();
     }
+
+    public ProductDTO.Response productRetrieve(Long id) {
+
+        Product product = productRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("product[%s] 상품을 찾을 수 없습니다", id)));
+
+
+        return ProductDTO.Response.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .expiration(product.getExpiration())
+                .build();
+
+    }
+
 }
