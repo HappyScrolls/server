@@ -28,6 +28,12 @@ public class CartController {
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("")
+    public ResponseEntity retrieveUserCart(@AuthenticationPrincipal Member member) {
+        List<CartDTO.Response>  response = cartService.userCartRetrieve(member);
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
 
 
 }
