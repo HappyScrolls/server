@@ -3,6 +3,7 @@ package com.HappyScrolls.service;
 
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.CartDTO;
+import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Cart;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.Product;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,5 +49,12 @@ public class CartService {
                         .id(cart.getId())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public Cart cartFind(Long id) {
+        Cart cart = cartRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("cart[%s] 장바구니 항목을 찾을 수 없습니다", id))); //%s?
+
+
+        return cart;
     }
 }
