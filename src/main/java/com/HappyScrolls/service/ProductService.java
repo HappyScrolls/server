@@ -44,4 +44,12 @@ public class ProductService {
 
     }
 
+    public Product productFind(Long id) {
+
+        Product product = productRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("product[%s] 상품을 찾을 수 없습니다", id)));
+
+
+        return product;
+
+    }
 }
