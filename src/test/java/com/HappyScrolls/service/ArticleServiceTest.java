@@ -3,25 +3,19 @@ package com.HappyScrolls.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +26,6 @@ import java.util.stream.Collectors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
@@ -68,11 +60,11 @@ public class ArticleServiceTest {
         when(articleRepository.save(any())).thenReturn(article);
 
 
-        ArticleDTO.Response response=   articleService.articleCreate(member, request);
+        ArticleDTO.DetailResponse detailResponse =   articleService.articleCreate(member, request);
 
         verify(articleRepository).save(article);
-        assertThat(response.getTitle()).isEqualTo(request.getTitle());
-        assertThat(response.getBody()).isEqualTo(request.getBody());
+        assertThat(detailResponse.getTitle()).isEqualTo(request.getTitle());
+        assertThat(detailResponse.getBody()).isEqualTo(request.getBody());
     }
 
     @Test
@@ -92,13 +84,13 @@ public class ArticleServiceTest {
         when(articleRepository.findAll()).thenReturn(articles);
 
 
-        List<ArticleDTO.Response> response = articleService.articleRetrieveAll();
+        List<ArticleDTO.ListResponse> detailResponse = articleService.articleRetrieveAll();
 
         verify(articleRepository).findAll();
 
 
-        assertThat(response).isEqualTo(articles.stream()
-                .map(article -> ArticleDTO.Response.builder()
+        assertThat(detailResponse).isEqualTo(articles.stream()
+                .map(article -> ArticleDTO.DetailResponse.builder()
                         .id(article.getId())
                         .title(article.getTitle())
                         .body(article.getBody())
@@ -116,12 +108,12 @@ public class ArticleServiceTest {
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
 
-        ArticleDTO.Response response = articleService.articleRetrieve(1L);
+        ArticleDTO.DetailResponse detailResponse = articleService.articleRetrieve(1L);
 
         verify(articleRepository).findById(1L);
-        assertThat(response.getId()).isEqualTo(response.getId());
-        assertThat(response.getTitle()).isEqualTo(response.getTitle());
-        assertThat(response.getBody()).isEqualTo(response.getBody());
+        assertThat(detailResponse.getId()).isEqualTo(detailResponse.getId());
+        assertThat(detailResponse.getTitle()).isEqualTo(detailResponse.getTitle());
+        assertThat(detailResponse.getBody()).isEqualTo(detailResponse.getBody());
 
     }
 
@@ -153,13 +145,13 @@ public class ArticleServiceTest {
         when(articleRepository.save(any())).thenReturn(article);
 
 
-        ArticleDTO.Response response = articleService.articleEdit(member, request);
+        ArticleDTO.DetailResponse detailResponse = articleService.articleEdit(member, request);
 
 
 
         verify(articleRepository).findById(1L);
         verify(articleRepository).save(article);
-        assertThat(response).isEqualTo(ArticleDTO.Response.builder().id(article.getId()).title(article.getTitle()).body(article.getBody()).build() );
+        assertThat(detailResponse).isEqualTo(ArticleDTO.DetailResponse.builder().id(article.getId()).title(article.getTitle()).body(article.getBody()).build() );
 
     }
 
@@ -255,14 +247,14 @@ public class ArticleServiceTest {
         when(articleRepository.findAllByMember(any())).thenReturn(articles);
 
 
-        List<ArticleDTO.Response> response= articleService.userArticleRetrieve(testEmail);
+        List<ArticleDTO.DetailResponse> detailResponse = articleService.userArticleRetrieve(testEmail);
 
         verify(memberService).memberFind(testEmail);
         verify(articleRepository).findAllByMember(member);
 
 
-        assertThat(response).isEqualTo(articles.stream()
-                .map(article -> ArticleDTO.Response.builder()
+        assertThat(detailResponse).isEqualTo(articles.stream()
+                .map(article -> ArticleDTO.DetailResponse.builder()
                         .id(article.getId())
                         .title(article.getTitle())
                         .body(article.getBody())
