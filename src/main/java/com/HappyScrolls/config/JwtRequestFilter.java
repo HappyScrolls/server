@@ -30,26 +30,18 @@ public class JwtRequestFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println(((HttpServletRequest)request).getRequestURI());
-        if (((HttpServletRequest) request).getRequestURI().contains("/h2-console")) {
-            chain.doFilter(request, response);
-            return;
-        }
+
+
         String token = ((HttpServletRequest)request).getHeader("Authorization").split(" ")[1];
-        System.out.println(token);
-        System.out.println("filter1");
-//        if (token != null && jwtTokenUtil.verifyToken(token)) {
+
         if (token != null) {
-            System.out.println("filter1start");
+
             String email = jwtTokenUtil.getUid(token);
-            System.out.println("verified usre" + email);
+
 
             Member member = memberRepository.findByEmail(email).get();
-            // DB연동을 안했으니 이메일 정보로 유저를 만들어주겠습니다
-            UserDto userDto = UserDto.builder()
-                    .email(email)
-                    .nickname("이름이에용")
-                    .build();
+
+
             Authentication auth = getAuthentication(member);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
