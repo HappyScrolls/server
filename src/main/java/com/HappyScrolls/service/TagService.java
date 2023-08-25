@@ -48,4 +48,12 @@ public class TagService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    public Tag tagFind(String tag) {
+        return tagRepository.findByBody(tag).get();
+    }
+
+    public List<ArticleTag> articlrTagRetrieveByTag(Tag findTag) {
+        return articleTagRepository.findAllByTag(findTag);
+    }
 }

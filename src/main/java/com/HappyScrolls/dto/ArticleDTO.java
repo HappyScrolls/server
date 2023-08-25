@@ -4,7 +4,6 @@ import com.HappyScrolls.entity.Article;
 import lombok.*;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ArticleDTO {
 
@@ -34,13 +33,25 @@ public class ArticleDTO {
     @RequiredArgsConstructor
     @AllArgsConstructor
     @Data
-    public static class Response {
+    public static class DetailResponse {
         private Long id;
         private String title;
         private String body;
         private List<TagDTO.Response> tags;
 
 
+
+    }
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class ListResponse {
+        private Long id;
+        private String title;
+
+        private String member;
 
     }
 

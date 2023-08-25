@@ -3,17 +3,18 @@ package com.HappyScrolls.service;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Article;
+import com.HappyScrolls.entity.ArticleTag;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.Tag;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -27,7 +28,9 @@ public class ArticleService {
     @Autowired
     private TagService tagService;
 
-    public ArticleDTO.Response articleCreate(Member member, ArticleDTO.Request request) {
+
+
+    public ArticleDTO.DetailResponse articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
         article.setMember(member);
 
@@ -35,34 +38,34 @@ public class ArticleService {
         articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
 
-        return ArticleDTO.Response.builder()
+        return ArticleDTO.DetailResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .body(article.getBody())
                 .build();
     }
 
-    public List<ArticleDTO.Response> articleRetrieveAll() {
+    public List<ArticleDTO.DetailResponse> articleRetrieveAll() {
         List<Article> allArticles = articleRepository.findAll();
 
-        List<ArticleDTO.Response> response = new ArrayList<>();
+        List<ArticleDTO.DetailResponse> detailResponse = new ArrayList<>();
 
         for (Article article : allArticles) {
-            response.add(ArticleDTO.Response.builder()
+            detailResponse.add(ArticleDTO.DetailResponse.builder()
                     .id(article.getId())
                     .title(article.getTitle())
                     .body(article.getBody())
                     .build());
         }
 
-        return response;
+        return detailResponse;
     }
 
-    public ArticleDTO.Response articleRetrieve(Long id) {
+    public ArticleDTO.DetailResponse articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
         List<TagDTO.Response> tags = tagService.tagsRetrieve(article);
 
-        return ArticleDTO.Response.builder()
+        return ArticleDTO.DetailResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .body(article.getBody())
@@ -70,7 +73,7 @@ public class ArticleService {
                 .build();
     }
 
-    public ArticleDTO.Response articleEdit(Member member,ArticleDTO.Edit request) {
+    public ArticleDTO.DetailResponse articleEdit(Member member, ArticleDTO.Edit request) {
 
 
         Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
@@ -83,7 +86,7 @@ public class ArticleService {
 
         Article editedArticle =articleRepository.save(article);
 
-        return ArticleDTO.Response.builder()
+        return ArticleDTO.DetailResponse.builder()
                 .id(editedArticle.getId())
                 .title(editedArticle.getTitle())
                 .body(editedArticle.getBody())
@@ -102,25 +105,38 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public List<ArticleDTO.Response>  userArticleRetrieve(String email) {
+    public List<ArticleDTO.DetailResponse>  userArticleRetrieve(String email) {
         Member findMember = memberService.memberFind(email);
 
         List<Article> articles = articleRepository.findAllByMember(findMember);
 
-        List<ArticleDTO.Response> response = new ArrayList<>();
+        List<ArticleDTO.DetailResponse> detailResponse = new ArrayList<>();
 
         for (Article article : articles) {
-            response.add(ArticleDTO.Response.builder()
+            detailResponse.add(ArticleDTO.DetailResponse.builder()
                     .id(article.getId())
                     .title(article.getTitle())
                     .body(article.getBody())
                     .build());
         }
 
-        return response;
+        return detailResponse;
     }
 
     public Article articleFind(Long postId) {
         return articleRepository.findById(postId).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", postId))); //%s?
+    }
+
+    public List<ArticleDTO.ListResponse> articleRetrieveByTag(String tag) {
+        Tag findTag = tagService.tagFind(tag);
+        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTag(findTag);
+
+        return articleTags.stream()
+                .map(articleTag -> ArticleDTO.ListResponse.builder()
+                        .id(articleTag.getArticle().getId())
+                        .title(articleTag.getArticle().getTitle())
+                        .member(articleTag.getArticle().getMember().getNickname())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
