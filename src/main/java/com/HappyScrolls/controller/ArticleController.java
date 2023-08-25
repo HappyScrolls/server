@@ -5,6 +5,7 @@ import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,12 +20,19 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("/all")
-    public ResponseEntity retrieveAllArticle() {
-        List<ArticleDTO.ListResponse> detailResponse = articleService.articleRetrieveAll();
-        return new ResponseEntity(detailResponse, HttpStatus.ACCEPTED);
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity retrieveAllArticle() {
+//        List<ArticleDTO.ListResponse> response = articleService.articleRetrieveAll();
+//        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+//    }
 
+    @GetMapping("/paging")
+    public ResponseEntity retrieveAllArticlePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePaging(pageRequest);
+
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
     @GetMapping("")
     public ResponseEntity retrieveArticle(@RequestParam Long id) {
         ArticleDTO.DetailResponse detailResponse = articleService.articleRetrieve(id);

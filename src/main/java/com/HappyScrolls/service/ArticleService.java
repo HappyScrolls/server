@@ -9,6 +9,8 @@ import com.HappyScrolls.entity.Tag;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,21 +47,21 @@ public class ArticleService {
                 .build();
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrieveAll() {
-        List<Article> allArticles = articleRepository.findAll();
-
-        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
-
-        for (Article article : allArticles) {
-            detailResponse.add(ArticleDTO.ListResponse.builder()
-                    .id(article.getId())
-                    .title(article.getTitle())
-                    .member(article.getMember().getNickname())
-                    .build());
-        }
-
-        return detailResponse;
-    }
+//    public List<ArticleDTO.ListResponse> articleRetrieveAll() {
+//        List<Article> allArticles = articleRepository.findAll();
+//
+//        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
+//
+//        for (Article article : allArticles) {
+//            detailResponse.add(ArticleDTO.ListResponse.builder()
+//                    .id(article.getId())
+//                    .title(article.getTitle())
+//                    .member(article.getMember().getNickname())
+//                    .build());
+//        }
+//
+//        return detailResponse;
+//    }
 
     public ArticleDTO.DetailResponse articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
@@ -138,5 +140,21 @@ public class ArticleService {
                         .member(articleTag.getArticle().getMember().getNickname())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
+        Page<Article> pages = articleRepository.findAll(pageRequest);
+
+        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
+
+        for (Article article : pages.getContent()) {
+            detailResponse.add(ArticleDTO.ListResponse.builder()
+                    .id(article.getId())
+                    .title(article.getTitle())
+                    .member(article.getMember().getNickname())
+                    .build());
+        }
+
+        return detailResponse;
     }
 }

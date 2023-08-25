@@ -22,12 +22,14 @@ spring:
             user-name-attribute: id
 
   jpa:
-    hibernate:
-      ddl-auto: none
-      show-sql: true
-    defer-datasource-initialization: on
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url:  jdbc:mysql://localhost:3306/happyscrollslocal
     username: root
     password: Chlgurtns98!
+  properties:
+    hibernate:
+      show-sql: true
+      ddl-auto: none
+      format_sql: true
