@@ -19,4 +19,13 @@ public class TagDTO {
         private String body;
 
     }
+
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+        private Long id;
+        private String body;
+    }
 }

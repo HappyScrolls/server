@@ -1,5 +1,6 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.dto.CartDTO;
 import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.ArticleTag;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -33,5 +35,17 @@ public class TagService {
             ArticleTag articleTag = ArticleTag.builder().article(article).tag(tag).build();
             articleTagRepository.save(articleTag);
         }
+    }
+
+    public List<TagDTO.Response> tagsRetrieve(Article article) {
+        List<ArticleTag> articleTags = articleTagRepository.findByArticle(article);
+
+
+        return articleTags.stream()
+                .map(articleTag -> TagDTO.Response.builder()
+                        .id(articleTag.getTag().getId())
+                        .body(articleTag.getTag().getBody())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

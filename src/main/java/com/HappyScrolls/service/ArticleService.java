@@ -1,6 +1,7 @@
 package com.HappyScrolls.service;
 
 import com.HappyScrolls.dto.ArticleDTO;
+import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
@@ -59,12 +60,13 @@ public class ArticleService {
 
     public ArticleDTO.Response articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
-
+        List<TagDTO.Response> tags = tagService.tagsRetrieve(article);
 
         return ArticleDTO.Response.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .body(article.getBody())
+                .tags(tags)
                 .build();
     }
 

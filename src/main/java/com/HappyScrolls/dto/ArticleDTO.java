@@ -38,7 +38,7 @@ public class ArticleDTO {
         private Long id;
         private String title;
         private String body;
-        private List<String> tags;
+        private List<TagDTO.Response> tags;
 
 
 
