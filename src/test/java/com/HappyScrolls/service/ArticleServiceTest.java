@@ -84,7 +84,7 @@ public class ArticleServiceTest {
         when(articleRepository.findAll()).thenReturn(articles);
 
 
-        List<ArticleDTO.DetailResponse> detailResponse = articleService.articleRetrieveAll();
+        List<ArticleDTO.ListResponse> detailResponse = articleService.articleRetrieveAll();
 
         verify(articleRepository).findAll();
 
