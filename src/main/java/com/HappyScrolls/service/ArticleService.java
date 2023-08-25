@@ -23,12 +23,16 @@ public class ArticleService {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private TagService tagService;
+
     public ArticleDTO.Response articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
         article.setMember(member);
 
-        articleRepository.save(article);
 
+        articleRepository.save(article);
+        tagService.tagCreate(article, request.getTags());
 
         return ArticleDTO.Response.builder()
                 .id(article.getId())

@@ -3,6 +3,7 @@ package com.HappyScrolls.dto;
 import com.HappyScrolls.entity.Article;
 import lombok.*;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ArticleDTO {
@@ -16,12 +17,15 @@ public class ArticleDTO {
         private String title;
         private String body;
 
+        private List<TagDTO.Request> tags;
+
         public Article toEntity() {
             return Article.builder()
                     .title(this.title)
                     .body(this.body)
                     .build();
         }
+
     }
 
 
@@ -29,19 +33,14 @@ public class ArticleDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
+    @Data
     public static class Response {
         private Long id;
         private String title;
         private String body;
+        private List<String> tags;
 
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Response response = (Response) o;
-            return Objects.equals(id, response.id) && Objects.equals(title, response.title) && Objects.equals(body, response.body);
-        }
 
     }
 

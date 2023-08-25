@@ -2,6 +2,7 @@ package com.HappyScrolls.controller;
 
 
 import com.HappyScrolls.dto.ArticleDTO;
+import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,6 @@ public class ArticleController {
 
     @PostMapping("")
     public ResponseEntity createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
-        System.out.println("!!!! "+member);
 
         ArticleDTO.Response response = articleService.articleCreate(member,request);
 
