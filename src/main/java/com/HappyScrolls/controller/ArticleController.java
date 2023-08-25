@@ -21,7 +21,7 @@ public class ArticleController {
 
     @GetMapping("/all")
     public ResponseEntity retrieveAllArticle() {
-        List<ArticleDTO.DetailResponse> detailResponse = articleService.articleRetrieveAll();
+        List<ArticleDTO.ListResponse> detailResponse = articleService.articleRetrieveAll();
         return new ResponseEntity(detailResponse, HttpStatus.ACCEPTED);
     }
 

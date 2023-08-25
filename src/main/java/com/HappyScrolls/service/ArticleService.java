@@ -45,16 +45,16 @@ public class ArticleService {
                 .build();
     }
 
-    public List<ArticleDTO.DetailResponse> articleRetrieveAll() {
+    public List<ArticleDTO.ListResponse> articleRetrieveAll() {
         List<Article> allArticles = articleRepository.findAll();
 
-        List<ArticleDTO.DetailResponse> detailResponse = new ArrayList<>();
+        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
 
         for (Article article : allArticles) {
-            detailResponse.add(ArticleDTO.DetailResponse.builder()
+            detailResponse.add(ArticleDTO.ListResponse.builder()
                     .id(article.getId())
                     .title(article.getTitle())
-                    .body(article.getBody())
+                    .member(article.getMember().getNickname())
                     .build());
         }
 
