@@ -14,7 +14,6 @@ public class CommentDTO {
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static class ChildRequest {
-        private Long postId;
         private String body;
 
         private Boolean isParent;
@@ -66,6 +65,7 @@ public class CommentDTO {
     @Data
     public static class ChildResponse {
         private Long id;
+
         private String body;
 
         private Long parentId;
@@ -79,4 +79,18 @@ public class CommentDTO {
         private Long id;
         private String body;
     }
+
+
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+        private Long id;
+        private String body;
+        private Boolean isParent;
+        private Long parentId;
+
+    }
+
 }

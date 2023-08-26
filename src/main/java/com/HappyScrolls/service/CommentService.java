@@ -23,10 +23,9 @@ public class CommentService {
     @Autowired
     private ArticleService articleService;
 
-    public CommentDTO.ParentResponse commentCreate(Member member, CommentDTO.ParentRequest request) {
+    public CommentDTO.ParentResponse commentParentCreate(Member member, CommentDTO.ParentRequest request) {
 
         Article article = articleService.articleFind(request.getPostId());
-
 
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
@@ -40,22 +39,49 @@ public class CommentService {
                 .body(comment.getBody())
                 .build();
     }
+    public CommentDTO.ChildResponse commentChildCreate(Member member, CommentDTO.ChildRequest request) {
+        Comment parentComment = commentRetrieveById(request.getParentId());
+        Comment makeComment = request.toEntity();
+        makeComment.setMember(member);
+        makeComment.setArticle(parentComment.getArticle());
 
-    public List<CommentDTO.ParentResponse> commentRetrieve(Long id) {
+        commentRepository.save(makeComment);
+
+        return CommentDTO.ChildResponse
+                .builder()
+                .id(makeComment.getId())
+                .parentId(makeComment.getParentId())
+                .body(makeComment.getBody())
+                .build();
+    }
+
+
+
+    public List<CommentDTO.Response> commentRetrieve(Long id) {
         Article article = articleService.articleFind(id);
 
         List<Comment> comments = commentRepository.findByArticle(article);
 
-        List<CommentDTO.ParentResponse> response = new ArrayList<>();
+        List<CommentDTO.Response> response = new ArrayList<>();
         for (Comment comment : comments) {
-            response.add(CommentDTO.ParentResponse
+            response.add(CommentDTO.Response
                     .builder()
                     .id(comment.getId())
                     .body(comment.getBody())
+                    .isParent(comment.getIsParent())
+                    .parentId(comment.getParentId())
                     .build());
         }
 
         return response;
+
+    }
+
+    public Comment commentRetrieveById(Long id) {
+
+        Comment comment = commentRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
+
+        return comment;
 
     }
 
@@ -93,5 +119,8 @@ public class CommentService {
         commentRepository.delete(deleteComment);
 
     }
+
+
+
 }
 
