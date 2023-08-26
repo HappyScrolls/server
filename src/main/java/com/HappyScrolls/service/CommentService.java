@@ -5,11 +5,8 @@ import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.CommentRepository;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +23,9 @@ public class CommentService {
     @Autowired
     private ArticleService articleService;
 
-    public CommentDTO.Response commentCreate(Member member, CommentDTO.Request request) {
+    public CommentDTO.ParentResponse commentParentCreate(Member member, CommentDTO.ParentRequest request) {
 
         Article article = articleService.articleFind(request.getPostId());
-
 
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
@@ -37,12 +33,29 @@ public class CommentService {
 
         Comment comment=commentRepository.save(makeComment);
 
-        return CommentDTO.Response
+        return CommentDTO.ParentResponse
                 .builder()
                 .id(comment.getId())
                 .body(comment.getBody())
                 .build();
     }
+    public CommentDTO.ChildResponse commentChildCreate(Member member, CommentDTO.ChildRequest request) {
+        Comment parentComment = commentRetrieveById(request.getParentId());
+        Comment makeComment = request.toEntity();
+        makeComment.setMember(member);
+        makeComment.setArticle(parentComment.getArticle());
+
+        commentRepository.save(makeComment);
+
+        return CommentDTO.ChildResponse
+                .builder()
+                .id(makeComment.getId())
+                .parentId(makeComment.getParentId())
+                .body(makeComment.getBody())
+                .build();
+    }
+
+
 
     public List<CommentDTO.Response> commentRetrieve(Long id) {
         Article article = articleService.articleFind(id);
@@ -55,6 +68,8 @@ public class CommentService {
                     .builder()
                     .id(comment.getId())
                     .body(comment.getBody())
+                    .isParent(comment.getIsParent())
+                    .parentId(comment.getParentId())
                     .build());
         }
 
@@ -62,8 +77,16 @@ public class CommentService {
 
     }
 
+    public Comment commentRetrieveById(Long id) {
 
-    public CommentDTO.Response commentEdit(Member member, CommentDTO.Edit request) {
+        Comment comment = commentRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
+
+        return comment;
+
+    }
+
+
+    public CommentDTO.ParentResponse commentEdit(Member member, CommentDTO.Edit request) {
 
 
         Comment editComment = commentRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",request.getId())));
@@ -76,7 +99,7 @@ public class CommentService {
 
         Comment comment = commentRepository.save(editComment);
 
-        return CommentDTO.Response
+        return CommentDTO.ParentResponse
                 .builder()
                 .id(comment.getId())
                 .body(comment.getBody())
@@ -96,5 +119,8 @@ public class CommentService {
         commentRepository.delete(deleteComment);
 
     }
+
+
+
 }
 

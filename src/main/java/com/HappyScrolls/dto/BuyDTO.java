@@ -2,6 +2,7 @@ package com.HappyScrolls.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class BuyDTO {
@@ -24,6 +25,10 @@ public class BuyDTO {
     @Data
     public static class Response {
         private Long id;
+
+        private Long productId;
+
+        private LocalDateTime createTime;
     }
 
 }

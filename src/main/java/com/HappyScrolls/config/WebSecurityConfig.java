@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Autowired
 //    private UserDetailsService jwtUserDetailsService;
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+ //   private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     private UserOAuth2Service userOAuth2Service;
@@ -42,7 +42,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**");
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+            web.ignoring()
+                    .antMatchers(
+                            "/**"
+                            );
 
+        };
+    }
 
 
     @Override
@@ -53,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .authorizeRequests()
-               .antMatchers("/**","/product/**", "/member/authenticate", "/auth/**", "/order/**","/h2-console/**","/friend/**").permitAll()
+               .antMatchers("/**","/product/**", "/member/authenticate", "/auth/**", "/order/**","/h2-console/**","/articles/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/notodo/**").anonymous()
                         .and()
@@ -71,6 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(userOAuth2Service);
 
 
-        httpSecurity.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterAfter(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

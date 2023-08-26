@@ -12,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class Comment {
 
     @Id
@@ -26,19 +27,19 @@ public class Comment {
 
     private String body;
 
+    private Boolean isParent;
+
+    private Long parentId;
+
+
+
     public void edit(CommentDTO.Edit request) {
         if (request.getBody() != null) {
             this.body= request.getBody();
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return Objects.equals(id, comment.id) && Objects.equals(member, comment.member) && Objects.equals(article, comment.article) && Objects.equals(body, comment.body);
-    }
+
 
 
 }

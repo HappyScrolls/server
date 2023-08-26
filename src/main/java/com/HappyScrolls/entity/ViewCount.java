@@ -1,9 +1,9 @@
 package com.HappyScrolls.entity;
 
-
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,15 +12,20 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MemberProduct {
+public class ViewCount {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Member member;
+    private LocalDate createDate;
 
     @ManyToOne
-    private Product product;
-    private LocalDateTime createDate;
+    private Article article;
+
+    private Integer count;
+
+    public void increaseViewCount() {
+        this.count += 1;
+    }
 }
