@@ -1,6 +1,7 @@
 package com.HappyScrolls.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
+@Data
 public class Member {
 
     @Id
@@ -24,13 +26,9 @@ public class Member {
 
     private String thumbnail;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
-        return Objects.equals(id, member.id) && Objects.equals(email, member.email) && Objects.equals(nickname, member.nickname) && Objects.equals(thumbnail, member.thumbnail);
-    }
+    @ColumnDefault("0")
+    private Integer point;
+
 
 
 }
