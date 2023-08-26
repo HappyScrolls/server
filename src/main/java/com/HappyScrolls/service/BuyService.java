@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BuyService {
@@ -45,5 +46,18 @@ public class BuyService {
         }
 
         return response;
+    }
+
+    public List<BuyDTO.Response> buyRetrieveUser(Member member) {
+        List<Buy> buyList = buyRepository.findAllByMember(member);
+
+        return buyList.stream()
+                .map(buy -> BuyDTO.Response
+                        .builder()
+                        .id(buy.getId())
+                        .productId(buy.getProduct().getId())
+                        .createTime(buy.getCreateDate())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
