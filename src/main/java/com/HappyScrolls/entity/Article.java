@@ -25,6 +25,12 @@ public class Article {
 
     private String body;
 
+    private Integer viewCount;
+
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
+
     public void edit(ArticleDTO.Edit request) {
         if (request.getTitle() != null) {
             this.title = request.getTitle();

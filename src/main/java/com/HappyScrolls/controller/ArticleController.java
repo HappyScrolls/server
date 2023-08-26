@@ -3,7 +3,9 @@ package com.HappyScrolls.controller;
 
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.ViewCount;
 import com.HappyScrolls.service.ArticleService;
+import com.HappyScrolls.service.ViewCountService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ViewCountService viewCountService;
 
 //    @GetMapping("/all")
 //    public ResponseEntity retrieveAllArticle() {
@@ -40,6 +45,7 @@ public class ArticleController {
     @GetMapping("")
     public ResponseEntity retrieveArticle(@RequestParam Long id) {
         ArticleDTO.DetailResponse detailResponse = articleService.articleRetrieve(id);
+        viewCountService.viewCountIncrease(id);
         return new ResponseEntity(detailResponse, HttpStatus.ACCEPTED);
     }
 

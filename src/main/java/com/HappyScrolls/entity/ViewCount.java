@@ -3,6 +3,7 @@ package com.HappyScrolls.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,10 +18,14 @@ public class ViewCount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime createTime;
+    private LocalDate createDate;
 
     @ManyToOne
     private Article article;
 
     private Integer count;
+
+    public void increaseViewCount() {
+        this.count += 1;
+    }
 }
