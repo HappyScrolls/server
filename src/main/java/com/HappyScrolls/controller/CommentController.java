@@ -2,7 +2,6 @@ package com.HappyScrolls.controller;
 
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.service.ArticleService;
 import com.HappyScrolls.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +23,15 @@ public class CommentController {
 
     @ApiOperation(value = "댓글 생성")
     @PostMapping("")
-    public ResponseEntity createComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.Request request) {
-        CommentDTO.Response response = commentService.commentCreate(member, request);
+    public ResponseEntity createComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.ParentRequest request) {
+        CommentDTO.ParentResponse response = commentService.commentCreate(member, request);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "댓글 id로 단건 조회")
     @GetMapping("")
     public ResponseEntity retrieveComment(@RequestParam Long id) {
-        List<CommentDTO.Response> response = commentService.commentRetrieve(id);
+        List<CommentDTO.ParentResponse> response = commentService.commentRetrieve(id);
 
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
@@ -40,7 +39,7 @@ public class CommentController {
     @ApiOperation(value = "댓글 수정")
     @PutMapping("")
     public ResponseEntity editComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.Edit request) {
-        CommentDTO.Response response = commentService.commentEdit(member, request);
+        CommentDTO.ParentResponse response = commentService.commentEdit(member, request);
 
         return new ResponseEntity(response, HttpStatus.CREATED);
     }

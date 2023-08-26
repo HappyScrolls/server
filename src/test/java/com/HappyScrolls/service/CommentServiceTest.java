@@ -1,12 +1,10 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.CommentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +42,7 @@ public class CommentServiceTest {
     void 댓글_작성_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         Article article = new Article(1l, member, "제목1", "내용1");
-        CommentDTO.Request request = CommentDTO.Request.builder().postId(1L).body("댓글 내용").build();
+        CommentDTO.ParentRequest request = CommentDTO.ParentRequest.builder().postId(1L).body("댓글 내용").build();
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
         makeComment.setMember(member);
@@ -53,10 +51,10 @@ public class CommentServiceTest {
 
         when(commentRepository.save(any())).thenReturn(makeComment);
 
-        CommentDTO.Response response= commentService.commentCreate(member, request);
+        CommentDTO.ParentResponse response= commentService.commentCreate(member, request);
         verify(articleService).articleFind(1L);
         verify(commentRepository).save(makeComment);
-        assertThat(response).isEqualTo(CommentDTO.Response
+        assertThat(response).isEqualTo(CommentDTO.ParentResponse
                 .builder()
                 .id(makeComment.getId())
                 .body(makeComment.getBody())
@@ -85,13 +83,13 @@ public class CommentServiceTest {
 
         when(commentRepository.findByArticle(any())).thenReturn(comments);
 
-        List<CommentDTO.Response> response = commentService.commentRetrieve(1L);
+        List<CommentDTO.ParentResponse> response = commentService.commentRetrieve(1L);
 
         verify(articleService).articleFind(1L);
         verify(commentRepository).findByArticle(article);
 
         assertThat(response).isEqualTo(comments.stream()
-                .map(comment -> CommentDTO.Response.builder()
+                .map(comment -> CommentDTO.ParentResponse.builder()
                         .id(comment.getId())
                         .body(comment.getBody())
                         .build())
@@ -116,13 +114,13 @@ public class CommentServiceTest {
         when(commentRepository.save(any())).thenReturn(cmt);
 
 
-        CommentDTO.Response response = commentService.commentEdit(member, request);
+        CommentDTO.ParentResponse response = commentService.commentEdit(member, request);
 
 
 
         verify(commentRepository).findById(1l);
        verify(commentRepository).save(cmt);
-       assertThat(response).isEqualTo(CommentDTO.Response.builder().id(cmt.getId()).body(cmt.getBody()).build() );
+       assertThat(response).isEqualTo(CommentDTO.ParentResponse.builder().id(cmt.getId()).body(cmt.getBody()).build() );
 
     }
 

@@ -13,37 +13,64 @@ public class CommentDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    public static class Request{
+    public static class ChildRequest {
         private Long postId;
         private String body;
+
+        private Boolean isParent;
+
+        private Long parentId;
 
         public Comment toEntity() {
             return Comment.builder()
                     .body(this.body)
+                    .isParent(this.isParent)
+                    .parentId(this.parentId)
                     .build();
         }
     }
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class ParentRequest {
+        private Long postId;
+        private String body;
 
+        private Boolean isParent;
+
+        public Comment toEntity() {
+            return Comment.builder()
+                    .body(this.body)
+                    .isParent(this.isParent)
+                    .parentId(null)
+                    .build();
+        }
+    }
 
     @Builder
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    public static class Response {
+    @Data
+    public static class ParentResponse {
         private Long id;
         private String body;
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Response response = (Response) o;
-            return Objects.equals(id, response.id) && Objects.equals(body, response.body);
-        }
-
-
 
     }
 
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class ChildResponse {
+        private Long id;
+        private String body;
+
+        private Long parentId;
+
+    }
     @Builder
     @Getter
     @RequiredArgsConstructor

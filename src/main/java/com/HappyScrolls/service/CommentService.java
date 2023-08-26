@@ -5,11 +5,8 @@ import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.repository.ArticleRepository;
 import com.HappyScrolls.repository.CommentRepository;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class CommentService {
     @Autowired
     private ArticleService articleService;
 
-    public CommentDTO.Response commentCreate(Member member, CommentDTO.Request request) {
+    public CommentDTO.ParentResponse commentCreate(Member member, CommentDTO.ParentRequest request) {
 
         Article article = articleService.articleFind(request.getPostId());
 
@@ -37,21 +34,21 @@ public class CommentService {
 
         Comment comment=commentRepository.save(makeComment);
 
-        return CommentDTO.Response
+        return CommentDTO.ParentResponse
                 .builder()
                 .id(comment.getId())
                 .body(comment.getBody())
                 .build();
     }
 
-    public List<CommentDTO.Response> commentRetrieve(Long id) {
+    public List<CommentDTO.ParentResponse> commentRetrieve(Long id) {
         Article article = articleService.articleFind(id);
 
         List<Comment> comments = commentRepository.findByArticle(article);
 
-        List<CommentDTO.Response> response = new ArrayList<>();
+        List<CommentDTO.ParentResponse> response = new ArrayList<>();
         for (Comment comment : comments) {
-            response.add(CommentDTO.Response
+            response.add(CommentDTO.ParentResponse
                     .builder()
                     .id(comment.getId())
                     .body(comment.getBody())
@@ -63,7 +60,7 @@ public class CommentService {
     }
 
 
-    public CommentDTO.Response commentEdit(Member member, CommentDTO.Edit request) {
+    public CommentDTO.ParentResponse commentEdit(Member member, CommentDTO.Edit request) {
 
 
         Comment editComment = commentRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",request.getId())));
@@ -76,7 +73,7 @@ public class CommentService {
 
         Comment comment = commentRepository.save(editComment);
 
-        return CommentDTO.Response
+        return CommentDTO.ParentResponse
                 .builder()
                 .id(comment.getId())
                 .body(comment.getBody())
