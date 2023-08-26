@@ -1,14 +1,14 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.ProductDTO;
-import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Product;
 import com.HappyScrolls.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -26,7 +26,7 @@ public class ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .expiration(product.getExpiration())
+                .price(product.getPrice())
                 .build();
     }
 
@@ -39,7 +39,7 @@ public class ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .expiration(product.getExpiration())
+                .price(product.getPrice())
                 .build();
 
     }
@@ -51,5 +51,19 @@ public class ProductService {
 
         return product;
 
+    }
+
+    public List<ProductDTO.Response> productAllRetrieve() {
+        List<Product> products =productRepository.findAll();
+
+        return products.stream()
+                .map(product -> ProductDTO.Response
+                        .builder()
+                        .id(product.getId())
+                        .body(product.getName())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

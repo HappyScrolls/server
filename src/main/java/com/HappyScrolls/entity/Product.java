@@ -23,7 +23,7 @@ public class Product {
 
     private String name;
     private String description;
-    private Integer expiration;
+    private Integer price;
 
 
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("product")
 public class ProductController {
@@ -31,5 +33,12 @@ public class ProductController {
     public ResponseEntity retrieveProduct(@RequestParam Long id) {
         ProductDTO.Response response = productService.productRetrieve(id);
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
+    @ApiOperation(value = "모든 제품 조회")
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductDTO.Response>> retrieveAllProduct() {
+        List<ProductDTO.Response> response = productService.productAllRetrieve();
+        return new ResponseEntity<List<ProductDTO.Response>>(response, HttpStatus.ACCEPTED);
     }
 }

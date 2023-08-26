@@ -1,10 +1,7 @@
 package com.HappyScrolls.dto;
 
-import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Product;
 import lombok.*;
-
-import java.util.Objects;
 
 public class ProductDTO {
 
@@ -19,13 +16,13 @@ public class ProductDTO {
 
         private String name;
         private String description;
-        private Integer expiration;
+        private Integer price;
 
         public Product toEntity() {
             return Product.builder()
                     .name(name)
                     .description(description)
-                    .expiration(expiration)
+                    .price(price)
                     .build();
         }
     }
@@ -42,7 +39,7 @@ public class ProductDTO {
 
         private String name;
         private String description;
-        private Integer expiration;
+        private Integer price;
 
 
     }
