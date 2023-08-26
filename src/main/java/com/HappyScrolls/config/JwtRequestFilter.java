@@ -3,6 +3,9 @@ package com.HappyScrolls.config;
 
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.repository.MemberRepository;
+import com.HappyScrolls.service.MemberService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +23,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
-@Component
+
 @RequiredArgsConstructor
-@Service
 public class JwtRequestFilter extends GenericFilterBean {
+
+
     private final JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberService memberService;
+
+    public JwtRequestFilter() {
+        this.jwtTokenUtil = new JwtTokenUtil();
+        this.memberService = new MemberService();
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -39,7 +47,7 @@ public class JwtRequestFilter extends GenericFilterBean {
             String email = jwtTokenUtil.getUid(token);
 
 
-            Member member = memberRepository.findByEmail(email).get();
+            Member member = memberService.memberFind(email);
 
 
             Authentication auth = getAuthentication(member);
