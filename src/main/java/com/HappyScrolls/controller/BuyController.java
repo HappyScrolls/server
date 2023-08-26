@@ -4,6 +4,7 @@ import com.HappyScrolls.dto.BuyDTO;
 import com.HappyScrolls.dto.CartDTO;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.service.BuyService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class BuyController {
     private BuyService buyService;
 
 
+    @ApiOperation(value = "구매 생성")
     @PostMapping("")
     public ResponseEntity createBuy(@AuthenticationPrincipal Member member, @RequestBody BuyDTO.RequestCart request) {
 
