@@ -6,6 +6,8 @@ import com.HappyScrolls.entity.Buy;
 import com.HappyScrolls.entity.Cart;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.Product;
+import com.HappyScrolls.exception.NoAuthorityExceoption;
+import com.HappyScrolls.exception.PointLackException;
 import com.HappyScrolls.repository.BuyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +29,26 @@ public class BuyService {
 
     @Autowired
     private ProductService productService;
+
+
     public List<BuyDTO.Response> buyCreate(Member member, BuyDTO.RequestCart request) {
 
         List<BuyDTO.Response> response = new ArrayList<>();
 
+        Integer requirePoints=0;
+        List<Cart> cartList = new ArrayList<>();
         for (Long cartId : request.getCart()) {
 
-            Cart cart = cartService.cartFind(cartId);
+            Cart cart=cartService.cartFind(cartId);
+            requirePoints += cart.getProduct().getPrice();
+            cartList.add(cart);
+        }
+        if (requirePoints < member.getPoint()) {
+            throw new PointLackException("포인트가 부족합니다");
+        }
+        member.decreasePoint(requirePoints); //더티체킹 되는지??
 
+        for (Cart cart : cartList) {
             Buy buy = new Buy();
             buy.setCreateDate(LocalDateTime.now());
             buy.setMember(member);
@@ -44,6 +58,7 @@ public class BuyService {
                     .id(buy.getId())
                     .build());
         }
+
 
         return response;
     }

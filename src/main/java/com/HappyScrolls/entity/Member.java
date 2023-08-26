@@ -29,6 +29,9 @@ public class Member {
     @ColumnDefault("0")
     private Integer point;
 
+    public void decreasePoint(int point) {
+        this.point += point;
+    }
 
 
 }
