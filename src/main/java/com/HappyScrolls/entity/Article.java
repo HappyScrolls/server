@@ -4,6 +4,7 @@ import com.HappyScrolls.dto.ArticleDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,8 @@ public class Article {
     private String body;
 
     private Integer viewCount;
+
+    private LocalDate createDate;
 
     public void increaseViewCount() {
         this.viewCount += 1;

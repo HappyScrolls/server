@@ -26,7 +26,7 @@ public class Member {
 
     private String thumbnail;
 
-    @ColumnDefault("0")
+
     private Integer point;
 
     public void decreasePoint(int point) {

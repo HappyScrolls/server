@@ -71,6 +71,7 @@ public class ArticleService {
                 .id(article.getId())
                 .title(article.getTitle())
                 .body(article.getBody())
+                .createDate(article.getCreateDate())
                 .tags(tags)
                 .build();
     }
@@ -119,6 +120,7 @@ public class ArticleService {
                     .id(article.getId())
                     .title(article.getTitle())
                     .body(article.getBody())
+                    .createDate(article.getCreateDate())
                     .build());
         }
 
