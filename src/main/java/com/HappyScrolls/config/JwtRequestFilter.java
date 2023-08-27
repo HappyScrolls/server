@@ -24,17 +24,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Component
 @RequiredArgsConstructor
 public class JwtRequestFilter extends GenericFilterBean {
 
-
-    private final JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private  JwtTokenUtil jwtTokenUtil;
+    @Autowired
     private final MemberService memberService;
 
-    public JwtRequestFilter() {
-        this.jwtTokenUtil = new JwtTokenUtil();
-        this.memberService = new MemberService();
-    }
+//    public JwtRequestFilter() {
+//        this.jwtTokenUtil = new JwtTokenUtil();
+//        this.memberService = new MemberService();
+//    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
