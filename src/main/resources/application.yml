@@ -1,5 +1,11 @@
 
 spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+    hibernate:
+      ddl-auto: create
   security:
     oauth2:
       client:
@@ -23,15 +29,12 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  jpa:
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://localhost:3306/happyscrollslocal
-    username: root
-    password: Chlgurtns98!
-  properties:
-    hibernate:
-      show-sql: true
-      ddl-auto: none
-      format_sql: true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url:  jdbc:mysql://localhost:3306/happyscrollslocal
+      username: root
+      password: Chlgurtns98!
+
+
+

@@ -47,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return web -> {
             web.ignoring()
                     .antMatchers(
-                            "/**"
+                            "/article/**"
+
                             );
 
         };
@@ -62,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .authorizeRequests()
-               .antMatchers("/**","/product/**", "/member/authenticate", "/auth/**", "/order/**","/h2-console/**","/articles/**").permitAll()
+               .antMatchers("/member/authenticate", "/swagger-ui/**", "/order/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/notodo/**").anonymous()
                         .and()
