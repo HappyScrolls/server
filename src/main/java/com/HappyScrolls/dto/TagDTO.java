@@ -24,6 +24,15 @@ public class TagDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
+    public static class ListRequest {
+        private List<String> tags;
+
+    }
+
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
     public static class Response {
         private Long id;
         private String body;

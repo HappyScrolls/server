@@ -164,4 +164,20 @@ public class ArticleService {
         article.increaseViewCount();
         articleRepository.save(article);
     }
+
+    public List<ArticleDTO.ListResponse> articleRetrieveByTagList( TagDTO.ListRequest request) {
+        List<Tag> tags = new ArrayList<>();
+        for (String tag : request.getTags()) {
+            tags.add(tagService.tagFind(tag));
+        }
+        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagList(tags);
+
+        return articleTags.stream()
+                .map(articleTag -> ArticleDTO.ListResponse.builder()
+                        .id(articleTag.getArticle().getId())
+                        .title(articleTag.getArticle().getTitle())
+                        .member(articleTag.getArticle().getMember().getNickname())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
