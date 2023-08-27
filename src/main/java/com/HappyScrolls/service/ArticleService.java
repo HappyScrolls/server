@@ -159,4 +159,9 @@ public class ArticleService {
 
         return detailResponse;
     }
+
+    public void increaseViewCount(Article article) {
+        article.increaseViewCount();
+        articleRepository.save(article);
+    }
 }

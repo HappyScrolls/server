@@ -30,7 +30,7 @@ public class Member {
     private Integer point;
 
     public void decreasePoint(int point) {
-        this.point += point;
+        this.point -= point;
     }
 
 

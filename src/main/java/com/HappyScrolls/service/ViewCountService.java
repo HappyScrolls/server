@@ -27,18 +27,19 @@ public class ViewCountService {
         LocalDate today = LocalDate.now();
 
         ViewCount viewCount;
-        Optional<ViewCount> optionalViewCount = viewCountRepository.findByCreateDate(today);
+        Optional<ViewCount> optionalViewCount = viewCountRepository.findByCreateDateAndArticle(today,article);
         if (optionalViewCount.isPresent()) {
             viewCount = optionalViewCount.get();
         } else {
             viewCount = ViewCount.builder()
                     .createDate(today)
                     .count(0)
+                    .article(article)
                     .build();
         }
         viewCount.increaseViewCount();
         viewCountRepository.save(viewCount);
-        article.increaseViewCount(); //더티체킹 되는지??
+        articleService.increaseViewCount(article);
 
     }
 }
