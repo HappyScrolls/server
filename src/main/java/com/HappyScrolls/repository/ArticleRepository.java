@@ -10,9 +10,9 @@ import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article,Long> {
-    @Override
-    @EntityGraph(attributePaths = "member")
+public interface ArticleRepository extends JpaRepository<Article,Long> ,ArticleDAO{
+
+
     List<Article> findAll();
 
     List<Article> findAllByMember(Member findMember);

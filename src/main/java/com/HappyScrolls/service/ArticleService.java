@@ -160,6 +160,22 @@ public class ArticleService {
         return detailResponse;
     }
 
+
+    public List<ArticleDTO.ListResponse> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
+        List<Article> pages = articleRepository.zeroOffsetPaging(lastindex,limit);
+
+        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
+
+        for (Article article : pages) {
+            detailResponse.add(ArticleDTO.ListResponse.builder()
+                    .id(article.getId())
+                    .title(article.getTitle())
+                    .member(article.getMember().getNickname())
+                    .build());
+        }
+
+        return detailResponse;
+    }
     public void increaseViewCount(Article article) {
         article.increaseViewCount();
         articleRepository.save(article);
@@ -180,4 +196,6 @@ public class ArticleService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
 }
