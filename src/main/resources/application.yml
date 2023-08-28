@@ -14,7 +14,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   security:
     oauth2:
       client:
@@ -58,7 +58,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   security:
     oauth2:
       client:
