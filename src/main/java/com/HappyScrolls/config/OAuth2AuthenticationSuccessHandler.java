@@ -32,7 +32,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = jwtTokenUtil.generateToken("kakao", email, nickname,thumbnail);
 
         String url = makeRedirectUrl(token);
-        System.out.println("url: " + url);
 
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
@@ -42,7 +41,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl(String token) {
-        System.out.println(token);
 
         return UriComponentsBuilder.fromUriString("http://localhost:3000/redirect")
                 .queryParam("token", token)

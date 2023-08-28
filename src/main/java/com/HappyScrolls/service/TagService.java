@@ -56,4 +56,8 @@ public class TagService {
     public List<ArticleTag> articlrTagRetrieveByTag(Tag findTag) {
         return articleTagRepository.findAllByTag(findTag);
     }
+
+    public List<ArticleTag> articlrTagRetrieveByTagList(List<Tag> tags) {
+        return articleTagRepository.findAllByTagIn(tags);
+    }
 }

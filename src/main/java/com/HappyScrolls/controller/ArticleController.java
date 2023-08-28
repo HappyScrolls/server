@@ -2,6 +2,7 @@ package com.HappyScrolls.controller;
 
 
 import com.HappyScrolls.dto.ArticleDTO;
+import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.ViewCount;
 import com.HappyScrolls.service.ArticleService;
@@ -56,6 +57,12 @@ public class ArticleController {
         return new ResponseEntity(detailResponse, HttpStatus.ACCEPTED);
     }
 
+    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
+    @GetMapping("/taglist")
+    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrieveByTagList(request);
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
     @ApiOperation(value = "특정 유저가 작성한 모든 게시글 조회")
     @GetMapping("/user")
     public ResponseEntity retrieveUserArticle(@RequestParam String email) {

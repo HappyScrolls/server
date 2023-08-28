@@ -12,4 +12,6 @@ public interface ArticleTagRepository extends JpaRepository<ArticleTag, Long> {
     List<ArticleTag> findByArticle(Article article);
 
     List<ArticleTag> findAllByTag(Tag findTag);
+
+    List<ArticleTag> findAllByTagIn(List<Tag> tags);
 }

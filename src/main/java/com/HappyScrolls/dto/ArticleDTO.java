@@ -4,6 +4,7 @@ import com.HappyScrolls.entity.Article;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ArticleDTO {
@@ -23,6 +24,8 @@ public class ArticleDTO {
             return Article.builder()
                     .title(this.title)
                     .body(this.body)
+                    .createDate(LocalDate.now())
+                    .viewCount(0)
                     .build();
         }
 
@@ -38,6 +41,7 @@ public class ArticleDTO {
         private Long id;
         private String title;
         private String body;
+        private LocalDate createDate;
         private List<TagDTO.Response> tags;
 
 

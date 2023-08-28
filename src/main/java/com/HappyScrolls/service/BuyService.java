@@ -29,6 +29,8 @@ public class BuyService {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private MemberService memberService;
 
 
     public List<BuyDTO.Response> buyCreate(Member member, BuyDTO.RequestCart request) {
@@ -43,10 +45,11 @@ public class BuyService {
             requirePoints += cart.getProduct().getPrice();
             cartList.add(cart);
         }
-        if (requirePoints < member.getPoint()) {
-            throw new PointLackException("포인트가 부족합니다");
+
+        if (requirePoints > member.getPoint()) {
+            throw new PointLackException(String.format("포인트가 부족합니다 보유 포인트 :[%s] 필요 포인트 : [%s] 부족한 포인트 : [%s]",  member.getPoint(),requirePoints,requirePoints- member.getPoint()));
         }
-        member.decreasePoint(requirePoints); //더티체킹 되는지??
+        memberService.decreasePoint(member,requirePoints); //더티체킹 되는지??
 
         for (Cart cart : cartList) {
             Buy buy = new Buy();

@@ -23,8 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    @Autowired
 //    private UserDetailsService jwtUserDetailsService;
-
- //   private final JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private  JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     private UserOAuth2Service userOAuth2Service;
@@ -42,16 +42,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**");
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> {
-            web.ignoring()
-                    .antMatchers(
-                            "/**"
-                            );
-
-        };
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(){
+//        return web -> {
+//            web.ignoring()
+//                    .antMatchers(
+//                            "/**"
+//
+//                            );
+//
+//        };
+//    }
 
 
     @Override
@@ -62,9 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .authorizeRequests()
-               .antMatchers("/**","/product/**", "/member/authenticate", "/auth/**", "/order/**","/h2-console/**","/articles/**").permitAll()
+               .antMatchers("/member/authenticate", "/swagger-ui/**", "/order/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/notodo/**").anonymous()
                         .and()
 
 
@@ -80,6 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(userOAuth2Service);
 
 
-        httpSecurity.addFilterAfter(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

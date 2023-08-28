@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Service
 public class JwtTokenUtil {
-    private String secretKey = "token-secret-keyasbsdasdasdyjgiuhgiuhiasd";
+    private String secretKey = "tokensecreteyasbsdasdasdyjgiuhgiuhiasd";
 
     @PostConstruct
     protected void init() {
@@ -31,7 +31,7 @@ public class JwtTokenUtil {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setIssuer("test") // 토큰발급자(iss)
                 .setIssuedAt(now) // 발급시간(iat)
-                .setExpiration(new Date(System.currentTimeMillis()+60*10000*60)) // 만료시간(exp)
+                .setExpiration(new Date(System.currentTimeMillis()+60*10000000*60)) // 만료시간(exp)
                 .setSubject(uid) //  토큰 제목(subject)
                 .claim("nickname", nickname)
                 .claim("uid", uid)
@@ -46,7 +46,7 @@ public class JwtTokenUtil {
         System.out.println("verify");
         try {
             Jws<Claims> claims = Jwts.parser()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(secretKey.getBytes())
                     .parseClaimsJws(token);
 
             return claims.getBody()
@@ -59,6 +59,10 @@ public class JwtTokenUtil {
 
 
     public String getUid(String token) {
-        return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(secretKey.getBytes())
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

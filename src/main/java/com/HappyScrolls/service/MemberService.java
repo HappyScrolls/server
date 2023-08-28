@@ -14,4 +14,9 @@ public class MemberService {
     public Member memberFind(String email) {
         return memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException(String.format("user[%s] 유저를  찾을 수 없습니다", email)));
     }
+
+    public void decreasePoint(Member member, Integer requirePoints) {
+        member.decreasePoint(requirePoints);
+        memberRepository.save(member);
+    }
 }
