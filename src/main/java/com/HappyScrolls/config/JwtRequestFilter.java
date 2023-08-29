@@ -28,7 +28,7 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends GenericFilterBean {
 
     @Autowired
     private  JwtTokenUtil jwtTokenUtil;
@@ -36,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final MemberService memberService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = ((HttpServletRequest)request).getHeader("Authorization").split(" ")[1];
 
         if (token != null) {
@@ -51,8 +51,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
-        filterChain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
+
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//
+//    }
 
 
 
