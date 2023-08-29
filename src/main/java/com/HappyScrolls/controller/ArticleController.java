@@ -44,8 +44,8 @@ public class ArticleController {
 
     @ApiOperation(value = "zero offset 페이징 조회")
     @GetMapping("/zeropaging")
-    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePageWithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer  limit) {
-        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePagingWithZeroIndex(lastindex,limit);
+    public ResponseEntity<List<ArticleDTO.Test>> retrieveAllArticlePageWithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer  limit) {
+        List<ArticleDTO.Test> response = articleService.articleRetrievePagingWithZeroIndex(lastindex,limit);
 
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }

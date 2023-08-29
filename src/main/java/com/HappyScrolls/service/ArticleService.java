@@ -2,6 +2,7 @@ package com.HappyScrolls.service;
 
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.TagDTO;
+import com.HappyScrolls.dto.testRepo;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.ArticleTag;
 import com.HappyScrolls.entity.Member;
@@ -34,7 +35,7 @@ public class ArticleService {
 
     public ArticleDTO.DetailResponse articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
-        article.setMember(member);
+        article.setMemberId(member.getId());
 
 
         articleRepository.save(article);
@@ -81,9 +82,9 @@ public class ArticleService {
 
         Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
 
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
-        }
+//        if (!article.getMember().equals(member)) {
+//            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+//        }
 
         article.edit(request);
 
@@ -101,9 +102,9 @@ public class ArticleService {
 
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
 
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
-        }
+//        if (!article.getMember().equals(member)) {
+//            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
+//        }
 
         articleRepository.delete(article);
     }
@@ -111,7 +112,7 @@ public class ArticleService {
     public List<ArticleDTO.DetailResponse>  userArticleRetrieve(String email) {
         Member findMember = memberService.memberFind(email);
 
-        List<Article> articles = articleRepository.findAllByMember(findMember);
+        List<Article> articles = articleRepository.findAllByMemberId(findMember.getId());
 
         List<ArticleDTO.DetailResponse> detailResponse = new ArrayList<>();
 
@@ -139,9 +140,10 @@ public class ArticleService {
                 .map(articleTag -> ArticleDTO.ListResponse.builder()
                         .id(articleTag.getArticle().getId())
                         .title(articleTag.getArticle().getTitle())
-                        .member(articleTag.getArticle().getMember().getNickname())
+                  //      .member(articleTag.getArticle().getMember().getNickname())
                         .build())
                 .collect(Collectors.toList());
+
     }
 
     public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
@@ -153,7 +155,7 @@ public class ArticleService {
             detailResponse.add(ArticleDTO.ListResponse.builder()
                     .id(article.getId())
                     .title(article.getTitle())
-                    .member(article.getMember().getNickname())
+                 //   .member(article.getMember().getNickname())
                     .build());
         }
 
@@ -161,20 +163,15 @@ public class ArticleService {
     }
 
 
-    public List<ArticleDTO.ListResponse> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
-        List<Article> pages = articleRepository.zeroOffsetPaging(lastindex,limit);
-
-        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
-
-        for (Article article : pages) {
-            detailResponse.add(ArticleDTO.ListResponse.builder()
-                    .id(article.getId())
-                    .title(article.getTitle())
-                    .member(article.getMember().getNickname())
-                    .build());
+    public List<ArticleDTO.Test> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
+        List<testRepo> response = articleRepository.zeroOffsetPaging(lastindex,limit);
+        System.out.println(response);
+        for (testRepo res : response) {
+            System.out.print(res.getid()+" ");
+            System.out.print(res.getBody()+" ");
+            System.out.println(res.getNickname()+" ");
         }
-
-        return detailResponse;
+        return null;
     }
     public void increaseViewCount(Article article) {
         article.increaseViewCount();
@@ -192,7 +189,7 @@ public class ArticleService {
                 .map(articleTag -> ArticleDTO.ListResponse.builder()
                         .id(articleTag.getArticle().getId())
                         .title(articleTag.getArticle().getTitle())
-                        .member(articleTag.getArticle().getMember().getNickname())
+                       // .member(articleTag.getArticle().getMember().getNickname())
                         .build())
                 .collect(Collectors.toList());
     }

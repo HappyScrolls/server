@@ -15,6 +15,7 @@ public interface ArticleRepository extends JpaRepository<Article,Long> ,ArticleD
 
     List<Article> findAll();
 
-    List<Article> findAllByMember(Member findMember);
+
+    List<Article> findAllByMemberId(Long id);
 }
 
