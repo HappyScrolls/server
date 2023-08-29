@@ -1,7 +1,9 @@
 package com.HappyScrolls.config;
 
 
+import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.MemberRepository;
 import com.HappyScrolls.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -25,19 +27,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtRequestFilter extends GenericFilterBean {
+public class JwtRequestFilter  {
 
     @Autowired
     private  JwtTokenUtil jwtTokenUtil;
     @Autowired
     private final MemberService memberService;
 
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = ((HttpServletRequest)request).getHeader("Authorization").split(" ")[1];
+        String token;
+        try {
+           token = ((HttpServletRequest) request).getHeader("Authorization").split(" ")[1];
+
+        } catch (Exception e) {
+            throw new UserNotFoundException("user not found");
+        }
 
         if (token != null) {
 
