@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return web -> {
             web.ignoring()
                     .antMatchers(
-                            "/**"
+                            "/article/**"
 
                             );
 
@@ -80,6 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(userOAuth2Service);
 
 
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        //httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
