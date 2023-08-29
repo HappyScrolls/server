@@ -19,8 +19,8 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Member member;
+
+    private Long memberId;
 
     private String title;
 
@@ -43,12 +43,6 @@ public class Article {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return Objects.equals(id, article.id) && Objects.equals(member, article.member) && Objects.equals(title, article.title) && Objects.equals(body, article.body);
-    }
+
 
 }
