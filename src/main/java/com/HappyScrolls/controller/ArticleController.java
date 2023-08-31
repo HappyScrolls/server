@@ -42,6 +42,14 @@ public class ArticleController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
+    @ApiOperation(value = "모든 게시글 페이징 조회 제로 오프셋")
+    @GetMapping("/zeropaging")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer limit) {
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePagingWithZeroOffset(lastindex,limit);
+
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
     @ApiOperation(value = "게시글 id로 단건 조회")
     @GetMapping("")
     public ResponseEntity retrieveArticle(@RequestParam Long id) {
