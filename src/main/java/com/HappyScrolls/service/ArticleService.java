@@ -32,19 +32,13 @@ public class ArticleService {
 
 
 
-    public ArticleDTO.DetailResponse articleCreate(Member member, ArticleDTO.Request request) {
+    public Article articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
         article.setMember(member);
 
-
         articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
-
-        return ArticleDTO.DetailResponse.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .body(article.getBody())
-                .build();
+        return article;
     }
 
 //    public List<ArticleDTO.ListResponse> articleRetrieveAll() {
@@ -63,101 +57,56 @@ public class ArticleService {
 //        return detailResponse;
 //    }
 
-    public ArticleDTO.DetailResponse articleRetrieve(Long id) {
+    public Article articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
         List<TagDTO.Response> tags = tagService.tagsRetrieve(article);
 
-        return ArticleDTO.DetailResponse.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .body(article.getBody())
-                .createDate(article.getCreateDate())
-                .tags(tags)
-                .build();
+        return article;
     }
 
-    public ArticleDTO.DetailResponse articleEdit(Member member, ArticleDTO.Edit request) {
-
+    public Article articleEdit(Member member, ArticleDTO.Edit request) {
 
         Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
 
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
         }
-
         article.edit(request);
-
-        Article editedArticle =articleRepository.save(article);
-
-        return ArticleDTO.DetailResponse.builder()
-                .id(editedArticle.getId())
-                .title(editedArticle.getTitle())
-                .body(editedArticle.getBody())
-                .build();
+        articleRepository.save(article);
+        return article;
     }
 
     public void articleDelete(Member member,Long id) {
-
-
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
-
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
         }
-
         articleRepository.delete(article);
     }
 
-    public List<ArticleDTO.DetailResponse>  userArticleRetrieve(String email) {
+    public List<Article>  userArticleRetrieve(String email) {
         Member findMember = memberService.memberFind(email);
-
         List<Article> articles = articleRepository.findAllByMember(findMember);
-
-        List<ArticleDTO.DetailResponse> detailResponse = new ArrayList<>();
-
-        for (Article article : articles) {
-            detailResponse.add(ArticleDTO.DetailResponse.builder()
-                    .id(article.getId())
-                    .title(article.getTitle())
-                    .body(article.getBody())
-                    .createDate(article.getCreateDate())
-                    .build());
-        }
-
-        return detailResponse;
+        return articles;
     }
 
     public Article articleFind(Long postId) {
         return articleRepository.findById(postId).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", postId))); //%s?
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrieveByTag(String tag) {
+    public List<Article> articleRetrieveByTag(String tag) {
         Tag findTag = tagService.tagFind(tag);
         List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTag(findTag);
 
         return articleTags.stream()
-                .map(articleTag -> ArticleDTO.ListResponse.builder()
-                        .id(articleTag.getArticle().getId())
-                        .title(articleTag.getArticle().getTitle())
-                        .member(articleTag.getArticle().getMember().getNickname())
-                        .build())
+                .map(articleTag -> articleTag.getArticle())
                 .collect(Collectors.toList());
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
+    public List<Article> articleRetrievePaging(PageRequest pageRequest) {
         Page<Article> pages = articleRepository.findAll(pageRequest);
 
-        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
-
-        for (Article article : pages.getContent()) {
-            detailResponse.add(ArticleDTO.ListResponse.builder()
-                    .id(article.getId())
-                    .title(article.getTitle())
-                    .member(article.getMember().getNickname())
-                    .build());
-        }
-
-        return detailResponse;
+        return pages.getContent();
     }
 
     public void increaseViewCount(Article article) {
@@ -165,7 +114,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrieveByTagList( TagDTO.ListRequest request) {
+    public List<Article> articleRetrieveByTagList( TagDTO.ListRequest request) {
         List<Tag> tags = new ArrayList<>();
         for (String tag : request.getTags()) {
             tags.add(tagService.tagFind(tag));
@@ -173,35 +122,19 @@ public class ArticleService {
         List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagList(tags);
 
         return articleTags.stream()
-                .map(articleTag -> ArticleDTO.ListResponse.builder()
-                        .id(articleTag.getArticle().getId())
-                        .title(articleTag.getArticle().getTitle())
-                        .member(articleTag.getArticle().getMember().getNickname())
-                        .build())
+                .map(articleTag -> articleTag.getArticle())
                 .collect(Collectors.toList());
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
+    public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
         List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);
 
-        return articles.stream()
-                .map(article -> ArticleDTO.ListResponse.builder()
-                        .id(article.getId())
-                        .title(article.getTitle())
-                        .member(article.getMember().getNickname())
-                        .build())
-                .collect(Collectors.toList());
+        return articles;
     }
 
-    public List<ArticleDTO.ListResponse> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
+    public List<Article> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
         List<Article> articles = articleRepository.coveringPaging(page, limit);
 
-        return articles.stream()
-                .map(article -> ArticleDTO.ListResponse.builder()
-                        .id(article.getId())
-                        .title(article.getTitle())
-                        .member(article.getMember().getNickname())
-                        .build())
-                .collect(Collectors.toList());
+        return articles;
     }
 }

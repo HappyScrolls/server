@@ -27,34 +27,26 @@ public class CartService {
     @Autowired
     private ProductService productService;
 
-    public CartDTO.Response cartCreate(Member member, CartDTO.Request request) {
+    public Cart cartCreate(Member member, CartDTO.Request request) {
 
-        Product product = productService.productFind(request.getProductId());
+        Product product = productService.productRetrieve(request.getProductId());
         Cart cart = Cart.builder()
                 .product(product)
                 .member(member)
                 .build();
         cartRepository.save(cart);
 
-        return CartDTO.Response.builder()
-                .id(cart.getId())
-                .build();
+        return cart;
     }
 
-    public List<CartDTO.Response> userCartRetrieve(Member member) {
+    public List<Cart> userCartRetrieve(Member member) {
         List<Cart> userCarts = cartRepository.findAllByMember(member);
 
-        return userCarts.stream()
-                .map(cart -> CartDTO.Response.builder()
-                        .id(cart.getId())
-                        .build())
-                .collect(Collectors.toList());
+        return userCarts;
     }
 
     public Cart cartFind(Long id) {
         Cart cart = cartRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("cart[%s] 장바구니 항목을 찾을 수 없습니다", id))); //%s?
-
-
         return cart;
     }
 }

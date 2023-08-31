@@ -33,9 +33,9 @@ public class BuyService {
     private MemberService memberService;
 
 
-    public List<BuyDTO.Response> buyCreate(Member member, BuyDTO.RequestCart request) {
+    public List<Buy> buyCreate(Member member, BuyDTO.RequestCart request) {
 
-        List<BuyDTO.Response> response = new ArrayList<>();
+        List<Buy> response = new ArrayList<>();
 
         Integer requirePoints=0;
         List<Cart> cartList = new ArrayList<>();
@@ -57,25 +57,16 @@ public class BuyService {
             buy.setMember(member);
             buy.setProduct(cart.getProduct());
             buyRepository.save(buy);
-            response.add(BuyDTO.Response.builder()
-                    .id(buy.getId())
-                    .build());
+            response.add(buy);
         }
 
 
         return response;
     }
 
-    public List<BuyDTO.Response> buyRetrieveUser(Member member) {
+    public List<Buy> buyRetrieveUser(Member member) {
         List<Buy> buyList = buyRepository.findAllByMember(member);
 
-        return buyList.stream()
-                .map(buy -> BuyDTO.Response
-                        .builder()
-                        .id(buy.getId())
-                        .productId(buy.getProduct().getId())
-                        .createTime(buy.getCreateDate())
-                        .build())
-                .collect(Collectors.toList());
+        return buyList;
     }
 }
