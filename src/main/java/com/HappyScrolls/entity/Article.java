@@ -20,7 +20,9 @@ public class Article {
     private Long id;
 
 
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
 
     private String title;
 
