@@ -42,10 +42,20 @@ public class ArticleController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
-    @ApiOperation(value = "zero offset 페이징 조회")
+
+    @ApiOperation(value = "모든 게시글 페이징 조회 제로 오프셋")
     @GetMapping("/zeropaging")
-    public ResponseEntity<List<ArticleDTO.Test>> retrieveAllArticlePageWithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer  limit) {
-        List<ArticleDTO.Test> response = articleService.articleRetrievePagingWithZeroIndex(lastindex,limit);
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer limit) {
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePagingWithZeroOffset(lastindex,limit);
+
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
+    @ApiOperation(value = "모든 게시글 커버링 인덱스")
+    @GetMapping("/coveringaging")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithCoveringIndex(@RequestParam Integer page, @RequestParam Integer limit) {
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePagingWithCoveringIndex(page,limit);
+
 
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }

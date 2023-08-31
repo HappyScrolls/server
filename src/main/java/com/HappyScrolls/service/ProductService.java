@@ -16,54 +16,21 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductDTO.Response productCreate(ProductDTO.Request request) {
+    public Product productCreate(ProductDTO.Request request) {
         Product product = request.toEntity();
-
         productRepository.save(product);
-
-
-        return ProductDTO.Response.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
+        return product;
     }
 
-    public ProductDTO.Response productRetrieve(Long id) {
-
+    public Product productRetrieve(Long id) {
         Product product = productRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("product[%s] 상품을 찾을 수 없습니다", id)));
-
-
-        return ProductDTO.Response.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-
-    }
-
-    public Product productFind(Long id) {
-
-        Product product = productRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("product[%s] 상품을 찾을 수 없습니다", id)));
-
-
         return product;
 
     }
 
-    public List<ProductDTO.Response> productAllRetrieve() {
+    public List<Product> productAllRetrieve() {
         List<Product> products =productRepository.findAll();
 
-        return products.stream()
-                .map(product -> ProductDTO.Response
-                        .builder()
-                        .id(product.getId())
-                        .body(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .build())
-                .collect(Collectors.toList());
+        return products;
     }
 }

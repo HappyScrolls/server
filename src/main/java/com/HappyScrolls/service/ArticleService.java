@@ -195,4 +195,28 @@ public class ArticleService {
     }
 
 
+    public List<ArticleDTO.ListResponse> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
+        List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);
+
+        return articles.stream()
+                .map(article -> ArticleDTO.ListResponse.builder()
+                        .id(article.getId())
+                        .title(article.getTitle())
+                        .member(article.getMember().getNickname())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<ArticleDTO.ListResponse> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
+        List<Article> articles = articleRepository.coveringPaging(page, limit);
+
+        return articles.stream()
+                .map(article -> ArticleDTO.ListResponse.builder()
+                        .id(article.getId())
+                        .title(article.getTitle())
+                        .member(article.getMember().getNickname())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }

@@ -10,11 +10,8 @@ import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article,Long> ,ArticleDAO{
 
-
-    List<Article> findAll();
-
+public interface ArticleRepository extends JpaRepository<Article,Long>,ArticleCustomRepository {
 
     List<Article> findAllByMemberId(Long id);
 }
