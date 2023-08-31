@@ -25,4 +25,22 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .limit(limitPage)
                 .fetch();
     }
+
+
+    @Override
+    public List<Article> coveringPaging(Integer page, Integer limit) {
+        List<Long> ids = jpaQueryFactory
+                .select(article.id)
+                .from(article)
+                .limit(limit)
+                .offset(page * limit)
+                .fetch();
+
+        return jpaQueryFactory
+                .selectFrom(article)
+                .innerJoin(article.member, member)
+                .fetchJoin()
+                .where(article.id.in(ids))
+                .fetch();
+    }
 }

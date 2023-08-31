@@ -7,4 +7,6 @@ import java.util.List;
 public interface ArticleCustomRepository {
 
     List<Article> zeroOffsetPaging(Long startIdx,Integer limitPage);
+
+    List<Article> coveringPaging(Integer page, Integer limit);
 }
