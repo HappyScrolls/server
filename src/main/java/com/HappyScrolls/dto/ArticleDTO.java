@@ -74,4 +74,17 @@ public class ArticleDTO {
         private String title;
         private String body;
     }
+
+    @Builder
+    @Getter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class Test {
+        private Long id;
+        private String title;
+        private String body;
+        private Long memberId;
+        private String nickname;
+
+    }
 }

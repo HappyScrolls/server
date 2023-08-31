@@ -10,10 +10,9 @@ import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface ArticleRepository extends JpaRepository<Article,Long>,ArticleCustomRepository {
 
-
-
-    List<Article> findAllByMember(Member findMember);
+    List<Article> findAllByMemberId(Long id);
 }
 
