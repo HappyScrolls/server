@@ -2,6 +2,7 @@ package com.HappyScrolls.service;
 
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.TagDTO;
+import com.HappyScrolls.dto.testRepo;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.ArticleTag;
 import com.HappyScrolls.entity.Member;
@@ -34,7 +35,7 @@ public class ArticleService {
 
     public Article articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
-        article.setMember(member);
+        article.setMemberId(member.getId());
 
         articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
@@ -68,6 +69,7 @@ public class ArticleService {
 
         Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
 
+
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
         }
@@ -78,6 +80,7 @@ public class ArticleService {
 
     public void articleDelete(Member member,Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
+
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
         }
@@ -86,8 +89,10 @@ public class ArticleService {
 
     public List<Article>  userArticleRetrieve(String email) {
         Member findMember = memberService.memberFind(email);
+
         List<Article> articles = articleRepository.findAllByMember(findMember);
         return articles;
+
     }
 
     public Article articleFind(Long postId) {
@@ -101,14 +106,28 @@ public class ArticleService {
         return articleTags.stream()
                 .map(articleTag -> articleTag.getArticle())
                 .collect(Collectors.toList());
+
     }
 
     public List<Article> articleRetrievePaging(PageRequest pageRequest) {
         Page<Article> pages = articleRepository.findAll(pageRequest);
 
+
         return pages.getContent();
+
     }
 
+
+    public List<ArticleDTO.Test> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
+        List<testRepo> response = articleRepository.zeroOffsetPaging(lastindex,limit);
+        System.out.println(response);
+        for (testRepo res : response) {
+            System.out.print(res.getid()+" ");
+            System.out.print(res.getBody()+" ");
+            System.out.println(res.getNickname()+" ");
+        }
+        return null;
+    }
     public void increaseViewCount(Article article) {
         article.increaseViewCount();
         articleRepository.save(article);
@@ -127,6 +146,7 @@ public class ArticleService {
     }
 
     public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
+
         List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);
 
         return articles;
@@ -137,4 +157,5 @@ public class ArticleService {
 
         return articles;
     }
+
 }
