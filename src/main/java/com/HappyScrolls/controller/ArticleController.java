@@ -50,6 +50,14 @@ public class ArticleController {
         return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
+    @ApiOperation(value = "모든 게시글 커버링 인덱스")
+    @GetMapping("/coveringaging")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithCoveringIndex(@RequestParam Integer page, @RequestParam Integer limit) {
+        List<ArticleDTO.ListResponse> response = articleService.articleRetrievePagingWithCoveringIndex(page,limit);
+
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    }
+
     @ApiOperation(value = "게시글 id로 단건 조회")
     @GetMapping("")
     public ResponseEntity retrieveArticle(@RequestParam Long id) {
