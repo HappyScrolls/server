@@ -42,17 +42,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/h2-console/**");
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer(){
-//        return web -> {
-//            web.ignoring()
-//                    .antMatchers(
-//                            "/**"
-//
-//                            );
-//
-//        };
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+            web.ignoring()
+                    .antMatchers(
+                            "/article/**"
+
+                            );
+
+        };
+    }
 
 
     @Override
@@ -80,6 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(userOAuth2Service);
 
 
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        //httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
