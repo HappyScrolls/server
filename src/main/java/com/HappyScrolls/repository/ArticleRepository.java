@@ -13,6 +13,6 @@ import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article,Long>,ArticleCustomRepository {
 
-    List<Article> findAllByMemberId(Long id);
+    List<Article> findAllByMember(Member member);
 }
 
