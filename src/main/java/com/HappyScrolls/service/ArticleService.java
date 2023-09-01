@@ -35,7 +35,7 @@ public class ArticleService {
 
     public Article articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
-        article.setMemberId(member.getId());
+        article.setMember(member);
 
         articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
@@ -118,15 +118,10 @@ public class ArticleService {
     }
 
 
-    public List<ArticleDTO.Test> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
-        List<testRepo> response = articleRepository.zeroOffsetPaging(lastindex,limit);
-        System.out.println(response);
-        for (testRepo res : response) {
-            System.out.print(res.getid()+" ");
-            System.out.print(res.getBody()+" ");
-            System.out.println(res.getNickname()+" ");
-        }
-        return null;
+    public List<Article> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
+        List<Article> response = articleRepository.zeroOffsetPaging(lastindex,limit);
+
+        return response;
     }
     public void increaseViewCount(Article article) {
         article.increaseViewCount();
