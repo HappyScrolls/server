@@ -55,15 +55,15 @@ public class ArticleController {
         return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
     }
 
-    @ApiOperation(value = "모든 게시글 커버링 인덱스")
-    @GetMapping("/coveringaging")
-    public ResponseEntity retrieveAllArticlePagewithCoveringIndex(@RequestParam Integer page, @RequestParam Integer limit) {
-        List<Article> response = articleService.articleRetrievePagingWithCoveringIndex(page,limit);
-
-
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
-
-    }
+//    @ApiOperation(value = "모든 게시글 커버링 인덱스")
+//    @GetMapping("/coveringaging")
+//    public ResponseEntity retrieveAllArticlePagewithCoveringIndex(@RequestParam Integer page, @RequestParam Integer limit) {
+//        List<Article> response = articleService.articleRetrievePagingWithCoveringIndex(page,limit);
+//
+//
+//        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+//
+//    }
 
     @ApiOperation(value = "게시글 id로 단건 조회")
     @GetMapping("")
@@ -80,12 +80,12 @@ public class ArticleController {
         return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
     }
 
-    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
-    @GetMapping("/taglist")
-    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {
-        List<Article> response = articleService.articleRetrieveByTagList(request);
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
-    }
+//    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
+//    @GetMapping("/taglist")
+//    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {
+//        List<Article> response = articleService.articleRetrieveByTagList(request);
+//        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+//    }
     @ApiOperation(value = "특정 유저가 작성한 모든 게시글 조회")
     @GetMapping("/user")
     public ResponseEntity retrieveUserArticle(@RequestParam String email) {

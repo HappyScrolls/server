@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,8 @@ public class TagService {
     }
 
     public Tag tagFind(String tag) {
-        return tagRepository.findByBody(tag).get();
+        return tagRepository.findByBody(tag).orElseThrow(()-> new NoSuchElementException(String.format("tag[%s] 태그를 찾을 수 없습니다", tag)));
+
     }
 
     public List<ArticleTag> articlrTagRetrieveByTag(Tag findTag) {

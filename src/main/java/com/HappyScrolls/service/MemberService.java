@@ -4,6 +4,7 @@ import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,14 @@ public class MemberService {
     }
 
     public void decreasePoint(Member member, Integer requirePoints) {
+        member.decreasePoint(requirePoints);
+        memberRepository.save(member);
+    }
+
+    @EventListener
+    public void test(BuyEvent event) {
+        Member member = event.getMember();
+        Integer requirePoints = event.getPrice();
         member.decreasePoint(requirePoints);
         memberRepository.save(member);
     }

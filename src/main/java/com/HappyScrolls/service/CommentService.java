@@ -24,7 +24,7 @@ public class CommentService {
     private ArticleService articleService;
 
     public Comment commentParentCreate(Member member, CommentDTO.ParentRequest request) {
-        Article article = articleService.articleFind(request.getPostId());
+        Article article = articleService.articleRetrieve(request.getPostId());
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
         makeComment.setMember(member);
@@ -43,7 +43,7 @@ public class CommentService {
 
 
     public List<Comment> commentRetrieve(Long id) {
-        Article article = articleService.articleFind(id);
+        Article article = articleService.articleRetrieve(id);
         List<Comment> comments = commentRepository.findByArticle(article);
         return comments;
     }
