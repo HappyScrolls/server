@@ -14,7 +14,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   security:
     oauth2:
       client:
@@ -41,7 +41,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://hyppyscrolls.crrhuulgwkis.ap-northeast-2.rds.amazonaws.com:3306/happyscrolls?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://dbdbdbd.crrhuulgwkis.ap-northeast-2.rds.amazonaws.com:3306/happyscrolls?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
     password: Chlgurtns98!
 
