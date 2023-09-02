@@ -11,7 +11,6 @@ public class BuyDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class RequestCart{
 
         private List<Long> cart;
@@ -22,7 +21,6 @@ public class BuyDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class Response {
         private Long id;
 

@@ -10,7 +10,6 @@ public class CartDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class Request{
 
         private Long productId;
@@ -21,7 +20,6 @@ public class CartDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class Response {
         private Long id;
     }

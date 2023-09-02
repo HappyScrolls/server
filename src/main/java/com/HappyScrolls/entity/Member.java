@@ -14,7 +14,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
-@Data
 public class Member {
 
     @Id

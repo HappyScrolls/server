@@ -9,6 +9,7 @@ import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.Product;
 import com.HappyScrolls.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +49,16 @@ public class CartService {
     public Cart cartFind(Long id) {
         Cart cart = cartRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("cart[%s] 장바구니 항목을 찾을 수 없습니다", id))); //%s?
         return cart;
+    }
+
+//    public void cartDelete(Cart cart) {
+//        cartRepository.delete(cart);
+//    }
+
+    @EventListener
+    public void test(BuyEvent event) {
+        for (Cart cart : event.getCartList()) {
+            cartRepository.delete(cart);
+        }
     }
 }

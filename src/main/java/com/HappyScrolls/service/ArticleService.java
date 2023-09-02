@@ -42,21 +42,7 @@ public class ArticleService {
         return article;
     }
 
-//    public List<ArticleDTO.ListResponse> articleRetrieveAll() {
-//        List<Article> allArticles = articleRepository.findAll();
-//
-//        List<ArticleDTO.ListResponse> detailResponse = new ArrayList<>();
-//
-//        for (Article article : allArticles) {
-//            detailResponse.add(ArticleDTO.ListResponse.builder()
-//                    .id(article.getId())
-//                    .title(article.getTitle())
-//                    .member(article.getMember().getNickname())
-//                    .build());
-//        }
-//
-//        return detailResponse;
-//    }
+
 
     public Article articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
@@ -95,9 +81,6 @@ public class ArticleService {
 
     }
 
-    public Article articleFind(Long postId) {
-        return articleRepository.findById(postId).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", postId))); //%s?
-    }
 
     public List<Article> articleRetrieveByTag(String tag) {
         Tag findTag = tagService.tagFind(tag);
@@ -111,34 +94,27 @@ public class ArticleService {
 
     public List<Article> articleRetrievePaging(PageRequest pageRequest) {
         Page<Article> pages = articleRepository.findAll(pageRequest);
-
-
         return pages.getContent();
 
     }
 
-
-    public List<Article> articleRetrievePagingWithZeroIndex(Long lastindex, Integer limit) {
-        List<Article> response = articleRepository.zeroOffsetPaging(lastindex,limit);
-
-        return response;
-    }
     public void increaseViewCount(Article article) {
         article.increaseViewCount();
         articleRepository.save(article);
     }
 
-    public List<Article> articleRetrieveByTagList( TagDTO.ListRequest request) {
-        List<Tag> tags = new ArrayList<>();
-        for (String tag : request.getTags()) {
-            tags.add(tagService.tagFind(tag));
-        }
-        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagList(tags);
-
-        return articleTags.stream()
-                .map(articleTag -> articleTag.getArticle())
-                .collect(Collectors.toList());
-    }
+    //기능 개선
+//    public List<Article> articleRetrieveByTagList( TagDTO.ListRequest request) {
+//        List<Tag> tags = new ArrayList<>();
+//        for (String tag : request.getTags()) {
+//            tags.add(tagService.tagFind(tag));
+//        }
+//        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagList(tags);
+//
+//        return articleTags.stream()
+//                .map(articleTag -> articleTag.getArticle())
+//                .collect(Collectors.toList());
+//    }
 
     public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
 
@@ -147,10 +123,11 @@ public class ArticleService {
         return articles;
     }
 
-    public List<Article> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
-        List<Article> articles = articleRepository.coveringPaging(page, limit);
-
-        return articles;
-    }
+    //안쓰는 코드
+//    public List<Article> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
+//        List<Article> articles = articleRepository.coveringPaging(page, limit);
+//
+//        return articles;
+//    }
 
 }
