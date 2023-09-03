@@ -60,5 +60,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/happyscrolls
+            docker rm -f $(docker ps -qa)
             docker run -d -p 8080:8080 -e USE_PROFILE=prod ${{ secrets.DOCKER_USERNAME }}/happyscrolls
             docker image prune -f
