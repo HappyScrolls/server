@@ -6,6 +6,9 @@ server:
   port: 8080
 
 spring:
+  redis:
+    host: 13.209.177.160
+    port: 6379
   config:
     activate:
       on-profile: prod
@@ -50,6 +53,9 @@ server:
   port: 8080
 
 spring:
+  redis:
+    host: localhost
+    port: 6379
   config:
     activate:
       on-profile: dev
