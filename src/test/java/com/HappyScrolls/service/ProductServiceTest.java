@@ -44,12 +44,8 @@ class ProductServiceTest {
         Product product = request.toEntity();
         when(productRepository.save(any())).thenReturn(product);
 
-        Product response =   productService.productCreate( request);
-
-        //verify(productRepository).save(product);
-        assertThat(response.getName()).isEqualTo(product.getName());
-        assertThat(response.getDescription()).isEqualTo(product.getDescription());
-        assertThat(response.getPrice()).isEqualTo(product.getPrice());
+        Long response =   productService.productCreate( request);
+        verify(productRepository).save(any());
 
     }
 
@@ -96,17 +92,9 @@ class ProductServiceTest {
         when(productRepository.findAll()).thenReturn(products);
 
 
-        List<Product> response = productService.productAllRetrieve();
+        List<Long> response = productService.productAllRetrieve();
 
         verify(productRepository).findAll();
 
-
-//        assertThat(detailResponse).isEqualTo(articles.stream()
-//                .map(article -> ArticleDTO.DetailResponse.builder()
-//                        .id(article.getId())
-//                        .title(article.getTitle())
-//                        .body(article.getBody())
-//                        .build())
-//                .collect(Collectors.toList()));
     }
 }

@@ -61,10 +61,9 @@ class BuyServiceTest {
         when(cartService.cartFind(any())).thenReturn(cart1);
 
         when(buyRepository.save(any())).thenReturn(buy);
-        List<Buy> response = buyService.buyCreate(member, request);
+        List<Long> response = buyService.buyCreate(member, request);
 
-        assertThat(response.get(0).getMember()).isEqualTo(member);
-        assertThat(response.get(0).getProduct()).isEqualTo(product1);
+        assertThat(response.get(0)).isEqualTo(buy.getId());
     }
 
     @Test

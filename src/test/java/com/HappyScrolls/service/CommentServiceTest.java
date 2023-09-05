@@ -51,7 +51,7 @@ public class CommentServiceTest {
 
         when(commentRepository.save(any())).thenReturn(makeComment);
 
-        Comment response= commentService.commentParentCreate(member, request);
+        Long response= commentService.commentParentCreate(member, request);
         verify(articleService).articleRetrieve(1L);
         verify(commentRepository).save(any());
 
@@ -110,7 +110,7 @@ public class CommentServiceTest {
         when(commentRepository.save(any())).thenReturn(cmt);
 
 
-        Comment response = commentService.commentEdit(member, request);
+        Long response = commentService.commentEdit(member, request);
 
 
 

@@ -51,11 +51,9 @@ class CartServiceTest {
         when(cartRepository.save(any())).thenReturn(cart);
         when(productService.productRetrieve(any())).thenReturn(product);
 
-        Cart response =   cartService.cartCreate(member, request);
+        Long response =   cartService.cartCreate(member, request);
 
         verify(cartRepository).save(any());
-        assertThat(response.getMember()).isEqualTo(member);
-        assertThat(response.getProduct()).isEqualTo(product);
     }
 
     @Test

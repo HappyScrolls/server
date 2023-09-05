@@ -61,43 +61,12 @@ public class ArticleServiceTest {
         article.setMember(member);
         when(articleRepository.save(any())).thenReturn(article);
 
-        Article response =   articleService.articleCreate(member, request);
+        Long response =   articleService.articleCreate(member, request);
 
         verify(articleRepository).save(any());
-        assertThat(response.getTitle()).isEqualTo(article.getTitle());
-        assertThat(response.getBody()).isEqualTo(article.getBody());
+        assertThat(response).isEqualTo(article.getId());
     }
 
-//    @Test
-//    @DisplayName("게시물 전체 조회 기능이 제대로 동작하는지 확인")
-//    void 게시물_전체조회_성공_테스트() {
-//
-//        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-//        Article article1 = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
-//        Article article2 = new Article(2l, member, "제목2", "내용2",0, LocalDate.now());
-//        Article article3 = new Article(3l, member, "제목3", "내용3",0, LocalDate.now());
-//
-//        List<Article> articles = new ArrayList<>();
-//        articles.add(article1);
-//        articles.add(article2);
-//        articles.add(article3);
-//
-//        when(articleRepository.findAll()).thenReturn(articles);
-//
-//
-//        List<ArticleDTO.ListResponse> detailResponse = articleService.articleRetrieveAll();
-//
-//        verify(articleRepository).findAll();
-//
-//
-//        assertThat(detailResponse).isEqualTo(articles.stream()
-//                .map(article -> ArticleDTO.DetailResponse.builder()
-//                        .id(article.getId())
-//                        .title(article.getTitle())
-//                        .body(article.getBody())
-//                        .build())
-//                .collect(Collectors.toList()));
-//    }
 
     @Test
     @DisplayName("게시글 단건 조회 기능이 제대로 동작하는지 확인")
@@ -142,12 +111,12 @@ public class ArticleServiceTest {
         article.edit(request);
         when(articleRepository.save(any())).thenReturn(article);
 
-        Article response = articleService.articleEdit(member, request);
+        Long response = articleService.articleEdit(member, request);
 
 
         verify(articleRepository).findById(1L);
         verify(articleRepository).save(article);
-        assertThat(response).isEqualTo(article);
+        assertThat(response).isEqualTo(article.getId());
 
     }
 

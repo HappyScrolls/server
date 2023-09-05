@@ -50,8 +50,8 @@ public class CommentController {
     @ApiOperation(value = "댓글 수정")
     @PutMapping("")
     public ResponseEntity editComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.Edit request) {
-        Comment response = commentService.commentEdit(member, request);
-        return new ResponseEntity(toParentResponseDto(response), HttpStatus.CREATED);
+        Long response = commentService.commentEdit(member, request);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "댓글 수정")
