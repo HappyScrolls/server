@@ -25,18 +25,18 @@ public class CartController {
 
     @ApiOperation(value = "장바구니 생성")
     @PostMapping("")
-    public ResponseEntity createCart(@AuthenticationPrincipal Member member, @RequestBody CartDTO.Request request) {
+    public ResponseEntity<Long> createCart(@AuthenticationPrincipal Member member, @RequestBody CartDTO.Request request) {
 
         Long response = cartService.cartCreate(member,request);
 
-        return new ResponseEntity(response, HttpStatus.CREATED);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "사용자 장바구니 조회")
     @GetMapping("")
-    public ResponseEntity retrieveUserCart(@AuthenticationPrincipal Member member) {
+    public ResponseEntity<List<CartDTO.Response>> retrieveUserCart(@AuthenticationPrincipal Member member) {
         List<Cart>  response = cartService.userCartRetrieve(member);
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(toResponseDtoList(response));
     }
     public static CartDTO.Response toResponseDto(Cart cart) {
         return CartDTO.Response.builder()
