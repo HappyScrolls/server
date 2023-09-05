@@ -39,20 +39,20 @@ public class ArticleController {
 
     @ApiOperation(value = "모든 게시글 페이징 조회")
     @GetMapping("/paging")
-    public ResponseEntity retrieveAllArticlePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         List<Article> response = articleService.articleRetrievePaging(pageRequest);
 
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
 
     @ApiOperation(value = "모든 게시글 페이징 조회 제로 오프셋")
     @GetMapping("/zeropaging")
-    public ResponseEntity retrieveAllArticlePagewithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer limit) {
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer limit) {
         List<Article> response = articleService.articleRetrievePagingWithZeroOffset(lastindex,limit);
 
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(toResponseDtoList(response));
     }
 
 //    @ApiOperation(value = "모든 게시글 커버링 인덱스")
@@ -67,17 +67,17 @@ public class ArticleController {
 
     @ApiOperation(value = "게시글 id로 단건 조회")
     @GetMapping("")
-    public ResponseEntity retrieveArticle(@RequestParam Long id) {
+    public ResponseEntity<ArticleDTO.DetailResponse> retrieveArticle(@RequestParam Long id) {
         Article response = articleService.articleRetrieve(id);
         viewCountService.viewCountIncrease(id);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(toResponseDto(response));
     }
 
     @ApiOperation(value = "태그별 모든 게시글 조회")
     @GetMapping("/tag")
-    public ResponseEntity retrieveAllArticleByTag(@RequestParam String tag) {
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticleByTag(@RequestParam String tag) {
         List<Article> response = articleService.articleRetrieveByTag(tag);
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
 //    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
@@ -88,30 +88,30 @@ public class ArticleController {
 //    }
     @ApiOperation(value = "특정 유저가 작성한 모든 게시글 조회")
     @GetMapping("/user")
-    public ResponseEntity retrieveUserArticle(@RequestParam String email) {
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveUserArticle(@RequestParam String email) {
         List<Article> response = articleService.userArticleRetrieve(email);
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
     @ApiOperation(value = "게시글 작성")
     @PostMapping("")
-    public ResponseEntity createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
+    public ResponseEntity<Long> createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
         Long response = articleService.articleCreate(member,request);
-        return new ResponseEntity(response, HttpStatus.CREATED);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "게시글 수정")
     @PutMapping("")
-    public ResponseEntity editArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Edit request) {
+    public ResponseEntity<Long> editArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Edit request) {
         Long response = articleService.articleEdit(member,request);
-        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "게시글 삭제")
     @DeleteMapping("")
-    public ResponseEntity deleteArticle(@AuthenticationPrincipal Member member,@RequestParam Long id) {
+    public ResponseEntity<Integer> deleteArticle(@AuthenticationPrincipal Member member,@RequestParam Long id) {
         articleService.articleDelete(member,id);
-        return new ResponseEntity(HttpStatus.OK);
+        return  ResponseEntity.ok(1); //삭제한 로우 수를 반환
     }
 
     public static ArticleDTO. DetailResponse toResponseDto(Article article) {
