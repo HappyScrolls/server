@@ -23,21 +23,21 @@ public class CommentService {
     @Autowired
     private ArticleService articleService;
 
-    public Comment commentParentCreate(Member member, CommentDTO.ParentRequest request) {
+    public Long commentParentCreate(Member member, CommentDTO.ParentRequest request) {
         Article article = articleService.articleRetrieve(request.getPostId());
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
         makeComment.setMember(member);
         commentRepository.save(makeComment);
-        return makeComment;
+        return makeComment.getId();
     }
-    public Comment commentChildCreate(Member member, CommentDTO.ChildRequest request) {
+    public Long commentChildCreate(Member member, CommentDTO.ChildRequest request) {
         Comment parentComment = commentRetrieveById(request.getParentId());
         Comment makeComment = request.toEntity();
         makeComment.setMember(member);
         makeComment.setArticle(parentComment.getArticle());
         commentRepository.save(makeComment);
-        return makeComment;
+        return makeComment.getId();
     }
 
 
@@ -54,7 +54,7 @@ public class CommentService {
     }
 
 
-    public Comment commentEdit(Member member, CommentDTO.Edit request) {
+    public Long commentEdit(Member member, CommentDTO.Edit request) {
 
         Comment editComment = commentRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",request.getId())));
         if (!editComment.getMember().equals(member)) {
@@ -62,7 +62,7 @@ public class CommentService {
         }
         editComment.edit(request);
         commentRepository.save(editComment);
-        return editComment;
+        return editComment.getId();
     }
 
 

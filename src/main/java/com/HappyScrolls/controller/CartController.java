@@ -27,9 +27,9 @@ public class CartController {
     @PostMapping("")
     public ResponseEntity createCart(@AuthenticationPrincipal Member member, @RequestBody CartDTO.Request request) {
 
-        Cart response = cartService.cartCreate(member,request);
+        Long response = cartService.cartCreate(member,request);
 
-        return new ResponseEntity(toResponseDto(response), HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "사용자 장바구니 조회")

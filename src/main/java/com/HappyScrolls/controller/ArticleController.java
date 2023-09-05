@@ -96,15 +96,15 @@ public class ArticleController {
     @ApiOperation(value = "게시글 작성")
     @PostMapping("")
     public ResponseEntity createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
-        Article response = articleService.articleCreate(member,request);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.CREATED);
+        Long response = articleService.articleCreate(member,request);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "게시글 수정")
     @PutMapping("")
     public ResponseEntity editArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Edit request) {
-        Article response = articleService.articleEdit(member,request);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.ACCEPTED);
+        Long response = articleService.articleEdit(member,request);
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
     @ApiOperation(value = "게시글 삭제")

@@ -23,8 +23,8 @@ public class ProductController {
     @ApiOperation(value = "제품 생성")
     @PostMapping("")
     public ResponseEntity createProduct(@RequestBody ProductDTO.Request request) {
-        Product response = productService.productCreate(request);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.CREATED);
+        Long response = productService.productCreate(request);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "제품 id로 단건 조회")
@@ -37,8 +37,8 @@ public class ProductController {
     @ApiOperation(value = "모든 제품 조회")
     @GetMapping("/all")
     public ResponseEntity<List<ProductDTO.Response>> retrieveAllProduct() {
-        List<Product>  response = productService.productAllRetrieve();
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+        List<Long>  response = productService.productAllRetrieve();
+        return new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 
 

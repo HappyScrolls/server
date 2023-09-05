@@ -27,15 +27,15 @@ public class CommentController {
     @ApiOperation(value = "댓글 생성")
     @PostMapping("")
     public ResponseEntity createParentComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.ParentRequest request) {
-        Comment response = commentService.commentParentCreate(member, request);
-        return new ResponseEntity(toParentResponseDto(response), HttpStatus.CREATED);
+        Long response = commentService.commentParentCreate(member, request);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "대댓글 생성")
     @PostMapping("/child")
     public ResponseEntity<CommentDTO.ChildResponse> createChildComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.ChildRequest request) {
-        Comment response = commentService.commentChildCreate(member, request);
-        return new ResponseEntity(toChildResponseDto(response), HttpStatus.CREATED);
+        Long response = commentService.commentChildCreate(member, request);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "게시글 id로 댓글 조회")

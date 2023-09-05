@@ -34,13 +34,13 @@ public class ArticleService {
 
 
 
-    public Article articleCreate(Member member, ArticleDTO.Request request) {
+    public Long articleCreate(Member member, ArticleDTO.Request request) {
         Article article = request.toEntity();
         article.setMember(member);
 
         articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
-        return article;
+        return article.getId();
     }
 
 
@@ -52,7 +52,7 @@ public class ArticleService {
         return article;
     }
 
-    public Article articleEdit(Member member, ArticleDTO.Edit request) {
+    public Long articleEdit(Member member, ArticleDTO.Edit request) {
 
         Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
 
@@ -62,7 +62,7 @@ public class ArticleService {
         }
         article.edit(request);
         articleRepository.save(article);
-        return article;
+        return article.getId();
     }
 
     public void articleDelete(Member member,Long id) {

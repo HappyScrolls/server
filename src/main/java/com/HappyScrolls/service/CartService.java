@@ -28,7 +28,7 @@ public class CartService {
     @Autowired
     private ProductService productService;
 
-    public Cart cartCreate(Member member, CartDTO.Request request) {
+    public Long cartCreate(Member member, CartDTO.Request request) {
 
         Product product = productService.productRetrieve(request.getProductId());
         Cart cart = Cart.builder()
@@ -37,7 +37,7 @@ public class CartService {
                 .build();
         cartRepository.save(cart);
 
-        return cart;
+        return cart.getId();
     }
 
     public List<Cart> userCartRetrieve(Member member) {
