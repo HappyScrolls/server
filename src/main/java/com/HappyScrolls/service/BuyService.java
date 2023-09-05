@@ -1,6 +1,7 @@
 package com.HappyScrolls.service;
 
 
+import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.BuyDTO;
 import com.HappyScrolls.entity.Buy;
 import com.HappyScrolls.entity.Cart;
@@ -36,7 +37,7 @@ public class BuyService {
     @Autowired
     private  ApplicationEventPublisher applicationEventPublisher;
 
-    public List<Buy> buyCreate(Member member, BuyDTO.RequestCart request) {
+    public List<Long> buyCreate(Member member, BuyDTO.RequestCart request) {
 
         List<Buy> response = new ArrayList<>();
 
@@ -51,8 +52,6 @@ public class BuyService {
             throw new PointLackException(String.format("포인트가 부족합니다 보유 포인트 :[%s] 필요 포인트 : [%s] 부족한 포인트 : [%s]",  member.getPoint(),requirePoints,requirePoints- member.getPoint()));
         }
 
-//        memberService.decreasePoint(member,requirePoints);
-
         for (Cart cart : cartList) {
             Buy buy = new Buy();
             buy.setCreateDate(LocalDateTime.now());
@@ -61,16 +60,12 @@ public class BuyService {
             buyRepository.save(buy);
             response.add(buy);
         }
-        System.out.println(member);
-        System.out.println(requirePoints);
-        System.out.println(cartList);
+
         applicationEventPublisher.publishEvent(new BuyEvent(member,requirePoints,cartList));//어떻게테스트??
 
-//        for (Cart cart : cartList) {
-//            cartService.cartDelete(cart);
-//        }
 
-        return response;
+        return response.stream().map(res-> res.getId())
+                .collect(Collectors.toList());
     }
 
     public List<Buy> buyRetrieveUser(Member member) {

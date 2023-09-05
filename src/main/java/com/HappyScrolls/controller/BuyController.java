@@ -27,9 +27,9 @@ public class BuyController {
     @PostMapping("")
     public ResponseEntity createBuy(@AuthenticationPrincipal Member member, @RequestBody BuyDTO.RequestCart request) {
         System.out.println(member);
-        List<Buy> response = buyService.buyCreate(member,request);
+        List<Long> response = buyService.buyCreate(member,request);
 
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "사용자 구매 조회")

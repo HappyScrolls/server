@@ -16,10 +16,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product productCreate(ProductDTO.Request request) {
+    public Long productCreate(ProductDTO.Request request) {
         Product product = request.toEntity();
         productRepository.save(product);
-        return product;
+        return product.getId();
     }
 
     public Product productRetrieve(Long id) {
@@ -27,9 +27,9 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> productAllRetrieve() {
+    public List<Long> productAllRetrieve() {
         List<Product> products =productRepository.findAll();
 
-        return products;
+        return products.stream().map(product -> product.getId()).collect(Collectors.toList());
     }
 }
