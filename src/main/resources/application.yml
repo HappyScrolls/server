@@ -98,6 +98,10 @@ spring:
 
 
 ---
+
+
+
+
 server:
   port: 8080
 
@@ -110,4 +114,33 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 30868b9c31c9a71f6552214d741491a6
+            redirect-uri: http://happyscrolls-1206748601.ap-northeast-2.elb.amazonaws.com:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.219.109:3306/happyscrollspi
+    username: root
+    password: 1234
