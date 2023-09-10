@@ -31,6 +31,11 @@ public class ArticleController {
     @Autowired
     private ViewCountService viewCountService;
 
+    @GetMapping("/test")
+    public ResponseEntity testAPI() {
+        return ResponseEntity.ok(null);
+    }
+
 //    @GetMapping("/all")
 //    public ResponseEntity retrieveAllArticle() {
 //        List<ArticleDTO.ListResponse> response = articleService.articleRetrieveAll();
