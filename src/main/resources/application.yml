@@ -114,7 +114,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   security:
     oauth2:
       client:
@@ -141,7 +141,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://localhost:3306/happyscrollslocal
+    url:  jdbc:mysql://mysql-container:3306/hs
     username: root
-    password: Chlgurtns98!
+    password: 1234
 
