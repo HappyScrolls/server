@@ -45,7 +45,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'io.micrometer:micrometer-registry-prometheus'
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 }
 
 tasks.named('test') {
