@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return web -> {
             web.ignoring()
                     .antMatchers(
-                            "/article/**"
+                            "/article/**","/actuator/**"
 
                             );
 
@@ -81,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(userOAuth2Service);
 
-        httpSecurity.addFilterBefore(new JwtRequestFilter(jwtTokenUtil,memberService) , UsernamePasswordAuthenticationFilter.class);
+    //   httpSecurity.addFilterAfter(new JwtRequestFilter(jwtTokenUtil,memberService) , UsernamePasswordAuthenticationFilter.class);
+        //테스트 후 복귀
     }
 }
