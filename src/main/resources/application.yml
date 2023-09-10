@@ -114,7 +114,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   security:
     oauth2:
       client:
