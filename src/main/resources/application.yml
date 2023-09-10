@@ -145,3 +145,11 @@ spring:
     username: sa
     password:
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info
+  metrics:
+    tags:
+      application: ${spring.application.name}
