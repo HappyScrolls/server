@@ -139,9 +139,4 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://mysql-container2:3301/hsmain
-    username: root
-    password: 1234
 
