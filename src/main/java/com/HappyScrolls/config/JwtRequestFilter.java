@@ -29,13 +29,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-@Component
 @RequiredArgsConstructor
 public class JwtRequestFilter  extends OncePerRequestFilter {
 
-    @Autowired
-    private  JwtTokenUtil jwtTokenUtil;
-    @Autowired
+    private  final JwtTokenUtil jwtTokenUtil;
     private final MemberService memberService;
 
     @Override
