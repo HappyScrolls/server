@@ -29,19 +29,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-@Component
 @RequiredArgsConstructor
-public class JwtRequestFilter  {
+public class JwtRequestFilter  extends OncePerRequestFilter {
 
-    @Autowired
-    private  JwtTokenUtil jwtTokenUtil;
-    @Autowired
+    private  final JwtTokenUtil jwtTokenUtil;
     private final MemberService memberService;
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token;
         try {
-           token = ((HttpServletRequest) request).getHeader("Authorization").split(" ")[1];
+            token = ((HttpServletRequest) request).getHeader("Authorization").split(" ")[1];
 
         } catch (Exception e) {
             throw new UserNotFoundException("user not found");
@@ -59,13 +57,8 @@ public class JwtRequestFilter  {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//
-//    }
 
 
 

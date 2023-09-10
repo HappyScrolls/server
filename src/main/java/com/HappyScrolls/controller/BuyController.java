@@ -25,20 +25,20 @@ public class BuyController {
 
     @ApiOperation(value = "구매 생성")
     @PostMapping("")
-    public ResponseEntity createBuy(@AuthenticationPrincipal Member member, @RequestBody BuyDTO.RequestCart request) {
+    public ResponseEntity<List<Long>> createBuy(@AuthenticationPrincipal Member member, @RequestBody BuyDTO.RequestCart request) {
+        System.out.println(member);
+        List<Long> response = buyService.buyCreate(member,request);
 
-        List<Buy> response = buyService.buyCreate(member,request);
-
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.CREATED);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "사용자 구매 조회")
     @GetMapping("/user")
-    public ResponseEntity retrieveUserBuy(@AuthenticationPrincipal Member member) {
+    public ResponseEntity<List<BuyDTO.Response>> retrieveUserBuy(@AuthenticationPrincipal Member member) {
 
         List<Buy> response = buyService.buyRetrieveUser(member);
 
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.CREATED);
+        return ResponseEntity.ok(toResponseDtoList(response));
     }
 
     public static List<BuyDTO.Response> toResponseDtoList(List<Buy> buyList) {

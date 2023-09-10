@@ -1,6 +1,7 @@
 package com.HappyScrolls.service;
 
 
+import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.BuyDTO;
 import com.HappyScrolls.entity.Buy;
 import com.HappyScrolls.entity.Cart;
@@ -10,6 +11,8 @@ import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.exception.PointLackException;
 import com.HappyScrolls.repository.BuyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,25 +34,23 @@ public class BuyService {
     private ProductService productService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private  ApplicationEventPublisher applicationEventPublisher;
 
-
-    public List<Buy> buyCreate(Member member, BuyDTO.RequestCart request) {
+    public List<Long> buyCreate(Member member, BuyDTO.RequestCart request) {
 
         List<Buy> response = new ArrayList<>();
 
         Integer requirePoints=0;
         List<Cart> cartList = new ArrayList<>();
         for (Long cartId : request.getCart()) {
-
             Cart cart=cartService.cartFind(cartId);
             requirePoints += cart.getProduct().getPrice();
             cartList.add(cart);
         }
-
         if (requirePoints > member.getPoint()) {
             throw new PointLackException(String.format("포인트가 부족합니다 보유 포인트 :[%s] 필요 포인트 : [%s] 부족한 포인트 : [%s]",  member.getPoint(),requirePoints,requirePoints- member.getPoint()));
         }
-        memberService.decreasePoint(member,requirePoints); //더티체킹 되는지??
 
         for (Cart cart : cartList) {
             Buy buy = new Buy();
@@ -60,8 +61,11 @@ public class BuyService {
             response.add(buy);
         }
 
+        applicationEventPublisher.publishEvent(new BuyEvent(member,requirePoints,cartList));//어떻게테스트??
 
-        return response;
+
+        return response.stream().map(res-> res.getId())
+                .collect(Collectors.toList());
     }
 
     public List<Buy> buyRetrieveUser(Member member) {
@@ -69,4 +73,7 @@ public class BuyService {
 
         return buyList;
     }
+
+
+
 }

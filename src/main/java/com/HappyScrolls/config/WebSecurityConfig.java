@@ -1,5 +1,6 @@
 package com.HappyScrolls.config;
 
+import com.HappyScrolls.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +22,11 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private UserDetailsService jwtUserDetailsService;
+
     @Autowired
-    private  JwtRequestFilter jwtRequestFilter;
+    private   JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private  MemberService memberService;
 
     @Autowired
     private UserOAuth2Service userOAuth2Service;
@@ -47,8 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return web -> {
             web.ignoring()
                     .antMatchers(
+
                             "/article/**"
                                                             ,"/actuator/**"
+
                             );
 
         };
@@ -79,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(userOAuth2Service);
 
-
-        //httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    //   httpSecurity.addFilterAfter(new JwtRequestFilter(jwtTokenUtil,memberService) , UsernamePasswordAuthenticationFilter.class);
+        //테스트 후 복귀
     }
 }

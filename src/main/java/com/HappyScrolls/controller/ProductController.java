@@ -22,25 +22,24 @@ public class ProductController {
 
     @ApiOperation(value = "제품 생성")
     @PostMapping("")
-    public ResponseEntity createProduct(@RequestBody ProductDTO.Request request) {
-        Product response = productService.productCreate(request);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.CREATED);
+    public ResponseEntity<Long> createProduct(@RequestBody ProductDTO.Request request) {
+        Long response = productService.productCreate(request);
+        return ResponseEntity.ok(response);
     }
 
     @ApiOperation(value = "제품 id로 단건 조회")
     @GetMapping("")
-    public ResponseEntity retrieveProduct(@RequestParam Long id) {
+    public ResponseEntity<ProductDTO.Response> retrieveProduct(@RequestParam Long id) {
         Product response = productService.productRetrieve(id);
-        return new ResponseEntity(toResponseDto(response), HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(toResponseDto(response));
     }
 
     @ApiOperation(value = "모든 제품 조회")
     @GetMapping("/all")
-    public ResponseEntity<List<ProductDTO.Response>> retrieveAllProduct() {
-        List<Product>  response = productService.productAllRetrieve();
-        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Long>> retrieveAllProduct() {
+        List<Long>  response = productService.productAllRetrieve();
+        return ResponseEntity.ok(response);
     }
-
 
     public static ProductDTO.Response toResponseDto(Product product) {
         return ProductDTO.Response.builder()

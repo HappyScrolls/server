@@ -22,9 +22,10 @@ public class ViewCountService {
     private ArticleService articleService;
 
     public void viewCountIncrease(Long id) {
-        Article article = articleService.articleFind(id);
+        Article article = articleService.articleRetrieve(id);
 
         LocalDate today = LocalDate.now();
+
 
         ViewCount viewCount;
         Optional<ViewCount> optionalViewCount = viewCountRepository.findByCreateDateAndArticle(today,article);

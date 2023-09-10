@@ -51,7 +51,6 @@ public class CommentDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class ParentResponse {
         private Long id;
         private String body;
@@ -62,7 +61,6 @@ public class CommentDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class ChildResponse {
         private Long id;
 

@@ -11,7 +11,6 @@ public class ProductDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class Request{
 
         private String name;
@@ -32,7 +31,6 @@ public class ProductDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class Response {
         private Long id;
         private String body;

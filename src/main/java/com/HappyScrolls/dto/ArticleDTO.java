@@ -36,7 +36,6 @@ public class ArticleDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class DetailResponse {
         private Long id;
         private String title;
@@ -51,7 +50,6 @@ public class ArticleDTO {
     @Getter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    @Data
     public static class ListResponse {
 
         @Schema(description = "id", example = "1", required = true)
