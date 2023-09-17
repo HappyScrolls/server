@@ -140,10 +140,10 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db;
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:  jdbc:mysql://192.168.219.103:3306/test_db
+    username: root
+    password: 1234
 
 management:
   endpoints:
