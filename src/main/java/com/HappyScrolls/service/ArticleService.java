@@ -92,7 +92,6 @@ public class ArticleService {
                 .collect(Collectors.toList());
 
     }
-    @Cacheable(cacheNames = "paging", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
     public List<Article> articleRetrievePaging(PageRequest pageRequest) {
         Page<Article> pages = articleRepository.findAll(pageRequest);
         List<Article> articles=pages.getContent();
