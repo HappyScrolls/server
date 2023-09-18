@@ -117,7 +117,7 @@ public class ArticleService {
 //                .collect(Collectors.toList());
 //    }
 
-    @Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
+    //@Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
     public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
 
         List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);
