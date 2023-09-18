@@ -42,7 +42,7 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:5.0.0"
 	testImplementation 'com.h2database:h2'
 	runtimeOnly 'com.h2database:h2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
