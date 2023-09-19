@@ -20,19 +20,38 @@ public class JobScheduler {
     private final JobLauncher jobLauncher;
     private final BatchConfig batchConfig;
 
-    @Scheduled(cron="0 10 * * * *")
+//    @Scheduled(cron="0 10 * * * *")
+//    public void runJob(){
+//
+//        Map<String, JobParameter> confMap = new HashMap<>();
+//        confMap.put("time", new JobParameter(System.currentTimeMillis()));
+//        JobParameters jobParameters = new JobParameters(confMap);
+//
+//        try {
+//            jobLauncher.run(batchConfig.notificationJob(), jobParameters);
+//
+//        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
+//                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+//
+//        }
+//    }
+
+
+        @Scheduled(cron="0 10 * * * *")
     public void runJob(){
 
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
 
-        try {
-            jobLauncher.run(batchConfig.notificationJob(), jobParameters);
 
-        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+                try {
+                    jobLauncher.run(batchConfig.notificationJob(), jobParameters);
 
-        }
+                } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
+                         | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+
+            }
+
     }
 }

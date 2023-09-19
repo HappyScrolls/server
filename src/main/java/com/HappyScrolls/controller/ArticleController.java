@@ -85,6 +85,20 @@ public class ArticleController {
         return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
+    @ApiOperation(value = "태그별 모든 게시글 페이징 조회")
+    @GetMapping("/tagpaging")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticleByTagPaging(@RequestParam Long lastindex,@RequestParam String tag) {
+        List<Article> response = articleService.articleRetrieveByTagPaging(lastindex,tag);
+        return  ResponseEntity.ok(toResponseDtoList(response));
+    }
+
+    @ApiOperation(value = "태그별 모든 게시글 페이징 조회2")
+    @GetMapping("/tagpaging2")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticleByTagPaging2(@RequestParam Long lastindex,@RequestParam String tag) {
+        List<Article> response = articleService.articleRetrieveByTagPaging2(lastindex,tag);
+        return  ResponseEntity.ok(toResponseDtoList(response));
+    }
+
 //    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
 //    @GetMapping("/taglist")
 //    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {

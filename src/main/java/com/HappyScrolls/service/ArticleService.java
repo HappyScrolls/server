@@ -126,6 +126,26 @@ public class ArticleService {
         return articles;
     }
 
+    public List<Article> articleRetrieveByTagPaging(Long lastindex, String tag) {
+
+        Tag findTag = tagService.tagFind(tag);
+        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagPaging(lastindex,findTag);
+
+        return articleTags.stream()
+                .map(articleTag -> articleTag.getArticle())
+                .collect(Collectors.toList());
+
+    }
+
+    public List<Article> articleRetrieveByTagPaging2(Long lastindex, String tag) {
+
+        Tag findTag = tagService.tagFind(tag);
+        List<Article> articles =  articleRepository.findByTagPaging(lastindex,findTag);
+
+        return articles;
+
+    }
+
     //안쓰는 코드
 //    public List<Article> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
 //        List<Article> articles = articleRepository.coveringPaging(page, limit);

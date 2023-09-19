@@ -62,4 +62,9 @@ public class TagService {
     public List<ArticleTag> articlrTagRetrieveByTagList(List<Tag> tags) {
         return articleTagRepository.findAllByTagIn(tags);
     }
+
+
+    public List<ArticleTag> articlrTagRetrieveByTagPaging(Long lastindex, Tag tag) {
+        return articleTagRepository.findByTagPaging(lastindex,tag);
+    }
 }
