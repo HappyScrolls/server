@@ -114,7 +114,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   security:
     oauth2:
       client:
@@ -141,7 +141,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://192.168.219.103:3306/test_db
+    url:  jdbc:mysql://db-master:3306/test_hps
     username: root
     password: 1234
 
