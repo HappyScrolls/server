@@ -44,12 +44,12 @@ public class BatchConfig {
     private final EntityManagerFactory emf;
 
 
-    @Bean
-    public Job job() {
-        return jobBuilderFactory.get("job")
-                .start(step())
-                .build();
-    }
+//    @Bean
+//    public Job job() {
+//        return jobBuilderFactory.get("job")
+//                .start(step())
+//                .build();
+//    }
 
     @Bean
     public Step step() {
@@ -71,12 +71,12 @@ public class BatchConfig {
 
 
     //Batch Job 생성
-    @Bean
-    public Job notificationJob() {
-        return jobBuilderFactory.get("notificationJob2")
-                .start(notificationStep())
-                .build();
-    }
+//    @Bean
+//    public Job notificationJob() {
+//        return jobBuilderFactory.get("notificationJob2")
+//                .start(notificationStep())
+//                .build();
+//    }
 
 
 

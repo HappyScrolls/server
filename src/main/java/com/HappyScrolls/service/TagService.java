@@ -54,6 +54,10 @@ public class TagService {
         return tagRepository.findByBody(tag).orElseThrow(()-> new NoSuchElementException(String.format("tag[%s] 태그를 찾을 수 없습니다", tag)));
 
     }
+    public List<Tag> tagsFind(List<String> tags) {
+        return tagRepository.findByBodyIn(tags);
+
+    }
 
     public List<ArticleTag> articlrTagRetrieveByTag(Tag findTag) {
         return articleTagRepository.findAllByTag(findTag);

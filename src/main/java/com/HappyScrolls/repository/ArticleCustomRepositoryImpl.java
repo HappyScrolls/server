@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.HappyScrolls.entity.QArticle.article;
 import static com.HappyScrolls.entity.QArticleTag.articleTag;
@@ -31,6 +32,46 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .fetch();
     }
 
+    @Override
+    public List<Article> findByTagPaging(Long lastindex, Tag tag) {
+        List<ArticleTag> articleTags=  jpaQueryFactory
+                .selectFrom(articleTag)
+                .innerJoin(articleTag.article,article)
+                .fetchJoin()
+                .where(article.id.gt(lastindex),articleTag.tag.eq(tag))
+                .limit(100)
+                .fetch();
+        List<Long> ids = articleTags.stream()
+                .map(articleTag -> articleTag.getArticle().getId())
+                .collect(Collectors.toList());
+        return jpaQueryFactory
+                .selectFrom(article)
+                .innerJoin(article.member, member)
+                .fetchJoin()
+                .where(article.id.in(ids))
+                .fetch();
+    }
+
+
+    @Override
+    public List<Article> findByTagListPaging(Long lastindex, List<Tag> tags) {
+        List<ArticleTag> articleTags=  jpaQueryFactory
+                .selectFrom(articleTag)
+                .innerJoin(articleTag.article,article)
+                .fetchJoin()
+                .where(article.id.gt(lastindex),articleTag.tag.in(tags))
+                .limit(100)
+                .fetch();
+        List<Long> ids = articleTags.stream()
+                .map(articleTag -> articleTag.getArticle().getId())
+                .collect(Collectors.toList());
+        return jpaQueryFactory
+                .selectFrom(article)
+                .innerJoin(article.member, member)
+                .fetchJoin()
+                .where(article.id.in(ids))
+                .fetch();
+    }
 
     @Override
     public List<Article> coveringPaging(Integer page, Integer limit) {
@@ -59,19 +100,5 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .fetch();
     }
 
-    @Override
-    public List<Article> findByTagPaging(Long lastindex, Tag tag) {
-        List<Article> articles= jpaQueryFactory.selectFrom(article)
-                .innerJoin(article,articleTag.article)
-                .fetchJoin()
-                .where(article.id.gt(lastindex))
-                .limit(100)
-                .fetch();
-        return jpaQueryFactory
-                .selectFrom(article)
-                .innerJoin(article.member, member)
-                .fetchJoin()
-                .where(article.in(articles))
-                .fetch();
-    }
+
 }

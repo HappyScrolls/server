@@ -146,6 +146,12 @@ public class ArticleService {
 
     }
 
+    public List<Article> articleRetrieveByTagList(TagDTO.ListRequest request) {
+        List<Tag> tags = tagService.tagsFind(request.getTags());
+        List<Article> articles = articleRepository.findByTagListPaging(request.getLastindex(), tags);
+        return articles;
+    }
+
     //안쓰는 코드
 //    public List<Article> articleRetrievePagingWithCoveringIndex(Integer page, Integer limit) {
 //        List<Article> articles = articleRepository.coveringPaging(page, limit);

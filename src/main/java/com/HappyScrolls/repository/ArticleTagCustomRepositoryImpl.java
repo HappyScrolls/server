@@ -16,9 +16,29 @@ public class ArticleTagCustomRepositoryImpl implements ArticleTagCustomRepositor
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
+//    @Override
+//    public List<ArticleTag> findByTagPaging(Long lastindex, Tag tag) {
+//        return jpaQueryFactory.selectFrom(articleTag)
+//                .innerJoin(articleTag.article, article)
+//                .fetchJoin()
+//                .where(article.id.gt(lastindex))
+//                .limit(100)
+//                .fetch();
+//    }
+
     @Override
     public List<ArticleTag> findByTagPaging(Long lastindex, Tag tag) {
-        return jpaQueryFactory.selectFrom(articleTag)
+        jpaQueryFactory
+                .select(articleTag)
+                .from(articleTag)
+                .innerJoin(articleTag.article, article)
+                .fetchJoin()
+                .where(article.id.gt(lastindex))
+                .limit(100)
+                .fetch();
+        return jpaQueryFactory
+                .select(articleTag)
+                .from(articleTag)
                 .innerJoin(articleTag.article, article)
                 .fetchJoin()
                 .where(article.id.gt(lastindex))

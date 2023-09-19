@@ -99,12 +99,12 @@ public class ArticleController {
         return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
-//    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
-//    @GetMapping("/taglist")
-//    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {
-//        List<Article> response = articleService.articleRetrieveByTagList(request);
-//        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
-//    }
+    @ApiOperation(value = "다중 태그별 모든 게시글 조회")
+    @GetMapping("/taglist")
+    public ResponseEntity retrieveAllArticleByTagList(@RequestBody TagDTO.ListRequest request) {
+        List<Article> response = articleService.articleRetrieveByTagList(request);
+        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
+    }
     @ApiOperation(value = "특정 유저가 작성한 모든 게시글 조회")
     @GetMapping("/user")
     public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveUserArticle(@RequestParam String email) {

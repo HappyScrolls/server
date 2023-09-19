@@ -27,6 +27,7 @@ public class TagDTO {
     public static class ListRequest {
         private List<String> tags;
 
+        private Long lastindex;
     }
 
     @Builder
