@@ -1,5 +1,9 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.service;
 
+import com.HappyScrolls.config.JwtRequestFilter;
+import com.HappyScrolls.config.JwtTokenUtil;
+import com.HappyScrolls.config.OAuth2AuthenticationSuccessHandler;
+import com.HappyScrolls.config.UserOAuth2Service;
 import com.HappyScrolls.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +26,8 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Autowired
-    private   JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private  MemberService memberService;
 
