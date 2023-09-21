@@ -1,4 +1,4 @@
-package com.HappyScrolls.service;
+package com.HappyScrolls.config;
 
 import com.HappyScrolls.config.JwtRequestFilter;
 import com.HappyScrolls.config.JwtTokenUtil;
