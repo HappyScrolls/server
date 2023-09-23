@@ -1,23 +1,16 @@
 package com.HappyScrolls.service;
 
 
-import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.BuyDTO;
-import com.HappyScrolls.entity.Buy;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
+import com.HappyScrolls.entity.*;
 import com.HappyScrolls.exception.PointLackException;
 import com.HappyScrolls.repository.BuyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +39,9 @@ public class BuyService {
         for (Long cartId : request.getCart()) {
             Cart cart=cartService.cartFind(cartId);
             requirePoints += cart.getProduct().getPrice();
+            if (cart.getProduct().getQuantity() <= 0) {
+                throw new PointLackException(String.format(" 재고수량이 부족합니다 [%s]", cart.getProduct().getId()));
+            }
             cartList.add(cart);
         }
         if (requirePoints > member.getPoint()) {

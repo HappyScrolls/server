@@ -1,4 +1,4 @@
-package com.HappyScrolls.service;
+package com.HappyScrolls.entity;
 
 import com.HappyScrolls.entity.Cart;
 import com.HappyScrolls.entity.Member;

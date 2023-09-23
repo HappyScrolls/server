@@ -1,5 +1,7 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.entity.BuyEvent;
+import com.HappyScrolls.entity.CommentEvent;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.exception.UserNotFoundException;
 import com.HappyScrolls.repository.MemberRepository;
@@ -28,4 +30,12 @@ public class MemberService {
         member.decreasePoint(requirePoints);
         memberRepository.save(member);
     }
+    @EventListener
+    public void commentEvent(CommentEvent event) {
+        Member member = memberFind(event.getEmail());
+        member.increasePoint(77);
+        memberRepository.save(member);
+    }
+
+
 }
