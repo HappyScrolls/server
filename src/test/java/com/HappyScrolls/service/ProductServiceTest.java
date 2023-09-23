@@ -53,7 +53,7 @@ class ProductServiceTest {
     @DisplayName("상품 단건 조회 기능이 제대로 동작하는지 확인")
     void 상품_단건조회_성공_테스트() {
 
-        Product product = new Product(1l, "이름", "내용", 100);
+        Product product = new Product(1l, "이름", "내용", 100,10);
         when(productRepository.findById(any())).thenReturn(Optional.of(product));
 
 
@@ -79,9 +79,9 @@ class ProductServiceTest {
     @DisplayName("상품 전체 조회 기능이 제대로 동작하는지 확인")
     void 상품_전체조회_성공_테스트() {
 
-        Product product1 = new Product(1l, "이름1", "내용1", 100);
-        Product product2 = new Product(2l, "이름2", "내용2", 100);
-        Product product3 = new Product(3l, "이름3", "내용3", 100);
+        Product product1 = new Product(1l, "이름1", "내용1", 100,10);
+        Product product2 = new Product(2l, "이름2", "내용2", 100,10);
+        Product product3 = new Product(3l, "이름3", "내용3", 100,10);
 
 
         List<Product> products = new ArrayList<>();

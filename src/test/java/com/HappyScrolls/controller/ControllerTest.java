@@ -1,15 +1,13 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.config.OAuth2AuthenticationSuccessHandler;
-import com.HappyScrolls.config.UserOAuth2Service;
-import com.HappyScrolls.config.WebSecurityConfig;
+import com.HappyScrolls.config.*;
 import com.HappyScrolls.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
@@ -45,6 +43,9 @@ public class ControllerTest {
     @MockBean
     protected ViewCountService viewCountService;
 
+    @MockBean
+    protected NotificationService notificationService;
+
 
     @MockBean
     protected UserOAuth2Service userOAuth2Service;
@@ -56,4 +57,6 @@ public class ControllerTest {
 
     @Autowired
     protected  ObjectMapper objectMapper;
+
+
 }
