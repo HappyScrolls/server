@@ -1,12 +1,11 @@
 package com.HappyScrolls.service;
 
 import com.HappyScrolls.dto.CommentDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.*;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +22,8 @@ public class CommentService {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
     public Long commentParentCreate(Member member, CommentDTO.ParentRequest request) {
         Article article = articleService.articleRetrieve(request.getPostId());
         Comment makeComment = request.toEntity();
@@ -37,6 +38,12 @@ public class CommentService {
         makeComment.setMember(member);
         makeComment.setArticle(parentComment.getArticle());
         commentRepository.save(makeComment);
+
+
+        applicationEventPublisher.publishEvent(new CommentEvent("test",parentComment.getMember().getEmail(), member.getEmail(), makeComment.getId(),"댓글생성이벤트" ));//어떻게테스트??
+
+
+
         return makeComment.getId();
     }
 

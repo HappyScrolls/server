@@ -17,11 +17,14 @@ public class ProductDTO {
         private String description;
         private Integer price;
 
+        private Integer quantity;
+
         public Product toEntity() {
             return Product.builder()
                     .name(name)
                     .description(description)
                     .price(price)
+                    .quantity(quantity)
                     .build();
         }
     }
@@ -51,5 +54,6 @@ public class ProductDTO {
         private String name;
         private String description;
         private Integer expiration;
+
     }
 }

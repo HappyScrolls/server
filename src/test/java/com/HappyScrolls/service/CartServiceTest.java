@@ -43,7 +43,7 @@ class CartServiceTest {
     void 장바구니_생성_성공() {
 
         Member member = Member.builder().id(1l).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Product product = new Product(1l, "이름", "내용", 100);
+        Product product = new Product(1l, "이름", "내용", 100,10);
         CartDTO.Request request = CartDTO.Request.builder().productId(1l).build();
 
         Cart cart = Cart.builder().product(product).member(member).build();
@@ -61,8 +61,8 @@ class CartServiceTest {
 
         String testEmail = "chs98412@naver,com";
         Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
-        Product product1 = new Product(1l, "이름1", "내용1", 100);
-        Product product2 = new Product(2l, "이름2", "내용2", 100);
+        Product product1 = new Product(1l, "이름1", "내용1", 100,10);
+        Product product2 = new Product(2l, "이름2", "내용2", 100,10);
         Cart cart1 = Cart.builder().product(product1).member(member).build();
         Cart cart2 = Cart.builder().product(product2).member(member).build();
 
@@ -94,7 +94,7 @@ class CartServiceTest {
     void 장바구니_단건조회_성공_테스트() {
 
         Member member = Member.builder().id(1l).email("email1").nickname("hyuksoon").thumbnail("img").build();
-        Product product1 = new Product(1l, "이름1", "내용1", 100);
+        Product product1 = new Product(1l, "이름1", "내용1", 100,10);
         Cart cart= Cart.builder().id(1l).product(product1).member(member).build();
 
 

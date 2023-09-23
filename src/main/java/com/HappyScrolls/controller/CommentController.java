@@ -27,6 +27,8 @@ public class CommentController {
     @ApiOperation(value = "댓글 생성")
     @PostMapping("")
     public ResponseEntity<Long> createParentComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.ParentRequest request) {
+        System.out.println("??");
+        System.out.println("!!!"+member);
         Long response = commentService.commentParentCreate(member, request);
         return  ResponseEntity.ok(response);
     }

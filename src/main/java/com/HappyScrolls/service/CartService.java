@@ -1,12 +1,8 @@
 package com.HappyScrolls.service;
 
 
-import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.CartDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
+import com.HappyScrolls.entity.*;
 import com.HappyScrolls.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -14,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {
