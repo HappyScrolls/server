@@ -64,7 +64,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   security:
     oauth2:
       client:
@@ -95,7 +95,22 @@ spring:
       username: root
       password: Chlgurtns98!
 
-
+#  datasource:
+#    hikari:
+#      source:
+#        username: root
+#        password: 1234
+#        jdbc-url: jdbc:mysql://localhost:4000/happy
+#      replica:
+#        replica-List:
+#          -   name: replica1
+#              username: root
+#              password: 1234
+#              jdbc-url: jdbc:mysql://localhost:4001/happy
+#          -   name: replica2
+#              username: root
+#              password: 1234
+#              jdbc-url: jdbc:mysql://localhost:4002/happy
 
 ---
 
@@ -138,28 +153,28 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://db-test:3306/hps
-    username: root
-    password: 1234
-
 #  datasource:
-#    hikari:
-#      source:
-#        username: root
-#        password: 1234
-#        jdbc-url: jdbc:mysql://db-master:3306/test
-#      replica:
-#        replica-List:
-#          -   name: replica1
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://db-slave:3306/test
-#          -   name: replica2
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://db-slave2:3306/test
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url:  jdbc:mysql://db-test:3306/hps
+#    username: root
+#    password: 1234
+
+  datasource:
+    hikari:
+      source:
+        username: root
+        password: 1234
+        jdbc-url: jdbc:mysql://db-master:3306/happy
+      replica:
+        replica-List:
+          -   name: replica1
+              username: root
+              password: 1234
+              jdbc-url: jdbc:mysql://db-slave:3306/happy
+          -   name: replica2
+              username: root
+              password: 1234
+              jdbc-url: jdbc:mysql://db-slave2:3306/happy
 
 
 management:
