@@ -56,7 +56,7 @@ class ViewCountServiceTest {
     @Test
     void test2() {
 
-        Article article = new Article(1l, null, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleService.articleRetrieve(any())).thenReturn(article);
         ViewCount viewCount = ViewCount.builder()
                 .createDate(LocalDate.now())

@@ -4,6 +4,7 @@ import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.Sticker;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.CommentRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,7 @@ public class CommentServiceTest {
     @DisplayName("댓글 작성 기능이 제대로 작동하는지 확인")
     void 댓글_작성_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         CommentDTO.ParentRequest request = CommentDTO.ParentRequest.builder().postId(1L).body("댓글 내용").build();
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
@@ -63,7 +64,7 @@ public class CommentServiceTest {
     @DisplayName("댓글 조회 기능이 제대로 동작하는지 확인")
     void 댓글_조회_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
 
         Comment cmt1 = new Comment(1l, member, article, "댓글1",false,null);
         Comment cmt2 = new Comment(2l, member, article, "댓글1",false,null);
@@ -98,7 +99,7 @@ public class CommentServiceTest {
     @DisplayName("댓글 수정 기능이  제대로 동작하는지 확인")
     void 댓글_수정_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         Comment cmt = new Comment(1l, member, article, "댓글1",false,null);
         CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
 
@@ -138,7 +139,7 @@ public class CommentServiceTest {
     void 댓글_수정_실패_테스트2() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         Comment cmt = new Comment(1l, member, article, "댓글1",false,null);
         CommentDTO.Edit request = CommentDTO.Edit.builder().id(1l).body("수정 내용").build();
 
@@ -155,7 +156,7 @@ public class CommentServiceTest {
     void 댓글_삭제_성공_테스트() {
         Long testId = 1L;
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         Comment cmt = new Comment(1l, member, article, "댓글1",false,null);
 
         when(commentRepository.findById(any())).thenReturn(Optional.of(cmt));
@@ -186,7 +187,7 @@ public class CommentServiceTest {
         Long testId = 1L;
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         Comment cmt= new Comment(1l, member, article, "댓글1",false,null);
 
 
