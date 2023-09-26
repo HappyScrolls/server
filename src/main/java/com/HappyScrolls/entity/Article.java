@@ -24,7 +24,7 @@ public class Article {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
 
@@ -37,7 +37,8 @@ public class Article {
     @JsonSerialize(using= LocalDateSerializer.class)
     @JsonDeserialize(using= LocalDateDeserializer.class)
     private LocalDate createDate;
-
+    @Enumerated(EnumType.STRING)
+    private Sticker sticker;
     public void increaseViewCount() {
         this.viewCount += 1;
     }

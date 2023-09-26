@@ -1,6 +1,7 @@
 package com.HappyScrolls.dto;
 
 import com.HappyScrolls.entity.Article;
+import com.HappyScrolls.entity.Sticker;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -20,12 +21,15 @@ public class ArticleDTO {
 
         private List<TagDTO.Request> tags;
 
+        private Sticker sticker;
+
         public Article toEntity() {
             return Article.builder()
                     .title(this.title)
                     .body(this.body)
                     .createDate(LocalDate.now())
                     .viewCount(0)
+                    .sticker(sticker)
                     .build();
         }
 
