@@ -15,6 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
+@Setter
 public class Member implements Serializable {
 
     @Id
