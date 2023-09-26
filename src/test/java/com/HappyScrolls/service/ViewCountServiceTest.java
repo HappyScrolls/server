@@ -1,6 +1,7 @@
 package com.HappyScrolls.service;
 
 import com.HappyScrolls.entity.Article;
+import com.HappyScrolls.entity.Sticker;
 import com.HappyScrolls.entity.ViewCount;
 import com.HappyScrolls.repository.ViewCountRepository;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class ViewCountServiceTest {
     @Test
     void name() {
 
-        Article article = new Article(1l, null, "제목1", "내용1",0, LocalDate.now());
+        Article article = new Article(1l, null, "제목1", "내용1",0, LocalDate.now(), Sticker.NEWHIT);
         when(articleService.articleRetrieve(any())).thenReturn(article);
         when(viewCountRepository.findByCreateDateAndArticle(LocalDate.now(),article)).thenReturn(Optional.empty());
         ViewCount viewCount = ViewCount.builder()

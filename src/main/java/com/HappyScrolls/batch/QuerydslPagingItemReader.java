@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.batch.item.database.AbstractPagingItemReader;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -24,6 +25,7 @@ public class QuerydslPagingItemReader extends AbstractPagingItemReader {
     protected EntityManager entityManager;
     protected Function<JPAQueryFactory, JPAQuery<Article>> queryFunction;
     protected boolean transacted = true;//default value
+
 
     Long lastidx=0l;
 
