@@ -49,7 +49,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
 
             String email = jwtTokenUtil.getUid(token);
 
-
+            System.out.println(email);
             Member member = memberService.memberFind(email);
 
 

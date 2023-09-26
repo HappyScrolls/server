@@ -9,13 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentEvent {
 
-    private String category;
-    private String memberEmail;
+    private Comment parent;
+    private Comment child;
 
-    private String email;
-
-    private Long refId;
-
-    private String msg;
 
 }

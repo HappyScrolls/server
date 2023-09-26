@@ -49,6 +49,8 @@ public class BuyService {
         }
 
         for (Cart cart : cartList) {
+            cart.getProduct().decreaseQuantity();
+
             Buy buy = new Buy();
             buy.setCreateDate(LocalDateTime.now());
             buy.setMember(member);
@@ -56,6 +58,8 @@ public class BuyService {
             buyRepository.save(buy);
             response.add(buy);
         }
+
+
 
         applicationEventPublisher.publishEvent(new BuyEvent(member,requirePoints,cartList));//어떻게테스트??
 

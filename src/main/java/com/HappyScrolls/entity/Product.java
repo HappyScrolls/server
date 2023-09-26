@@ -2,11 +2,10 @@ package com.HappyScrolls.entity;
 
 
 import lombok.*;
+import org.springframework.data.annotation.Version;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 
 @Entity
 @Builder
@@ -23,6 +22,14 @@ public class Product {
     private Integer price;
 
     private Integer quantity;
+
+
+
+//    @Version
+    private Long version;
+    public  void decreaseQuantity() {
+        this.quantity -= 1;
+    }
 
 
 }

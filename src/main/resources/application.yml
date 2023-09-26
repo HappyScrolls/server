@@ -95,24 +95,8 @@ spring:
       username: root
       password: Chlgurtns98!
 
-#  datasource:
-#    hikari:
-#      source:
-#        username: root
-#        password: 1234
-#        jdbc-url: jdbc:mysql://localhost:4000/happy
-#      replica:
-#        replica-List:
-#          -   name: replica1
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://localhost:4001/happy
-#          -   name: replica2
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://localhost:4002/happy
 
----
+
 
 
 
@@ -164,17 +148,17 @@ spring:
       source:
         username: root
         password: 1234
-        jdbc-url: jdbc:mysql://db-master:3306/happy
+        jdbc-url: jdbc:mysql://db-master:3306/test
       replica:
         replica-List:
           -   name: replica1
               username: root
               password: 1234
-              jdbc-url: jdbc:mysql://db-slave:3306/happy
+              jdbc-url: jdbc:mysql://db-slave:3306/test
           -   name: replica2
               username: root
               password: 1234
-              jdbc-url: jdbc:mysql://db-slave2:3306/happy
+              jdbc-url: jdbc:mysql://db-slave2:3306/test
 
 
 management:

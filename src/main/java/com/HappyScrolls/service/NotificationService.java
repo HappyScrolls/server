@@ -25,13 +25,10 @@ public class NotificationService {
 
     @EventListener
     public void notificationCreate(CommentEvent event) {
-        Notification notification = Notification.builder().msg(event.getMsg()).refId(event.getRefId()).category(event.getCategory()).build();
-        Member member = memberService.memberFind(event.getMemberEmail());
-        Notification notification2 = Notification.builder().msg("포인트 추가되었음!").build();
-        Member member2 = memberService.memberFind(event.getEmail());
+        Notification notification = Notification.builder().msg("포인트가 지급되었습니다.").category("포인트").member(event.getParent().getMember()).build();
 
-        notification2.setMember(member2);
-        notification.setMember(member);
+        Notification notification2 = Notification.builder().msg("포인트 추가되었음!").member(event.getChild().getMember()).build();
+
         notificationRepository.save(notification);
         notificationRepository.save(notification2);
     }

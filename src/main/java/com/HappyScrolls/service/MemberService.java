@@ -32,7 +32,7 @@ public class MemberService {
     }
     @EventListener
     public void commentEvent(CommentEvent event) {
-        Member member = memberFind(event.getEmail());
+        Member member = event.getChild().getMember();
         member.increasePoint(77);
         memberRepository.save(member);
     }
