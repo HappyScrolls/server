@@ -6,6 +6,7 @@ import com.HappyScrolls.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -31,5 +32,15 @@ public class ProductService {
         List<Product> products =productRepository.findAll();
 
         return products.stream().map(product -> product.getId()).collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public synchronized void test() {
+        Product product= productRepository.findById(1l).get();
+        if (product.getQuantity() > 0) {
+            product.decreaseQuantity();
+            productRepository.saveAndFlush(product);
+        }
     }
 }

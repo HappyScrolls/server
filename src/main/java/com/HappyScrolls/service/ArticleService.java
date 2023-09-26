@@ -14,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,6 @@ public class ArticleService {
                 .collect(Collectors.toList());
 
     }
-    @Cacheable(cacheNames = "paging", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
     public List<Article> articleRetrievePaging(PageRequest pageRequest) {
         Page<Article> pages = articleRepository.findAll(pageRequest);
         List<Article> articles=pages.getContent();
@@ -118,7 +118,8 @@ public class ArticleService {
 //                .collect(Collectors.toList());
 //    }
 
-    @Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
+    //@Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
+    @Transactional(readOnly = true)
     public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
 
         List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);

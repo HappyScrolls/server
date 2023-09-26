@@ -45,11 +45,7 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         if (! memberRepository.findByEmail(email).isPresent() ) {
             Member newMenber = Member.builder().email(email).nickname(nickname).thumbnail(picture).point(100).build();
             memberRepository.save(newMenber);
-            List<Member> members=memberRepository.findAll();
-            for (Member member : members) {
 
-                System.out.println("member"+member.getEmail());
-            }
         } else {
             System.out.println("가입한적 있음.");
         }

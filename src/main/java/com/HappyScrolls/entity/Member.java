@@ -34,5 +34,8 @@ public class Member implements Serializable {
         this.point -= point;
     }
 
+    public void increasePoint(int point) {
+        this.point += point;
+    }
 
 }

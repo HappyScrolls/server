@@ -102,7 +102,6 @@ spring:
 
 
 
----
 
 
 
@@ -119,7 +118,7 @@ spring:
       hibernate:
         show_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   security:
     oauth2:
       client:
@@ -143,12 +142,29 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url:  jdbc:mysql://db-test:3306/hps
+#    username: root
+#    password: 1234
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db;
-    username: sa
-    password:
+    hikari:
+      source:
+        username: root
+        password: 1234
+        jdbc-url: jdbc:mysql://db-master:3306/test
+      replica:
+        replica-List:
+          -   name: replica1
+              username: root
+              password: 1234
+              jdbc-url: jdbc:mysql://db-slave:3306/test
+          -   name: replica2
+              username: root
+              password: 1234
+              jdbc-url: jdbc:mysql://db-slave2:3306/test
+
 
 management:
   endpoints:

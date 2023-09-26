@@ -47,11 +47,13 @@ class BuyServiceTest {
     private ApplicationEventPublisher applicationEventPublisher;
 
 
+
+
     @Test
     void 구매_생성_성공() {
         String testEmail = "chs98412@naver,com";
         Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").point(120).build();
-        Product product1 = new Product(1l, "이름1", "내용1", 100);
+        Product product1 = Product.builder().price(100).price(100).build();
         Cart cart1 = Cart.builder().id(1l).product(product1).member(member).build();
         List<Long> carts = new ArrayList<>();
         carts.add(1l);
@@ -70,7 +72,7 @@ class BuyServiceTest {
     void 구매_생성_실패() {
         String testEmail = "chs98412@naver,com";
         Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").point(100).build();
-        Product product1 = new Product(1l, "이름1", "내용1", 120);
+        Product product1 = Product.builder().price(100).price(100).build();
         Cart cart1 = Cart.builder().id(1l).product(product1).member(member).build();
         List<Long> carts = new ArrayList<>();
         carts.add(1l);

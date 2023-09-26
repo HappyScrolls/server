@@ -27,16 +27,17 @@ public class JwtTokenUtil {
 
         Date now = new Date();
 
+
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setIssuer("test") // 토큰발급자(iss)
                 .setIssuedAt(now) // 발급시간(iat)
                 .setExpiration(new Date(System.currentTimeMillis()+60*10000000*60)) // 만료시간(exp)
-                .setSubject(uid) //  토큰 제목(subject)
                 .claim("nickname", nickname)
                 .claim("uid", uid)
                 .claim("thumbnail", thumbnail)
                 .claim("platform", platform)
+                .setSubject(uid) //  토큰 제목(subject)
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes())) // 알고리즘, 시크릿 키
                 .compact();
     }
