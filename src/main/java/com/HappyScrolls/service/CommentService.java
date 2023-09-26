@@ -40,7 +40,7 @@ public class CommentService {
         commentRepository.save(makeComment);
 
 
-        applicationEventPublisher.publishEvent(new CommentEvent("test",parentComment.getMember().getEmail(), member.getEmail(), makeComment.getId(),"댓글생성이벤트" ));//어떻게테스트??
+        applicationEventPublisher.publishEvent(new CommentEvent(parentComment,makeComment ));
 
 
 

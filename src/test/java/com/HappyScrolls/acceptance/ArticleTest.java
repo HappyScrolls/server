@@ -34,6 +34,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,17 +44,19 @@ public class ArticleTest extends BaseIntegrationTest {
 
 
     private Long id;
-@Autowired
+    private String tk="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjkzMTE0MDc3LCJleHAiOjE2OTMxNTAwNzcsInN1YiI6ImNoczk4NDEyQG5hdmVyLmNvbSIsIm5pY2tuYW1lIjoi7LWc7ZiB7IicIiwidWlkIjoiY2hzOTg0MTJAbmF2ZXIuY29tIiwicGxhdGZvcm0iOiJrYWthbyJ9.QdxfLJfNc4ueJ4oIkUB95Cuki8qTP4jV7AKlCqJRxRk";
+
+    @Autowired
 private Setup setup;
     @BeforeEach
     public void setup() {
         this.id=setup.saveArticle();
-
+        this.tk = setup.tk();
     }
 
+    @Autowired
+    private ArticleRepository articleRepository;
 
-
-private String tk;
 
 //    @BeforeEach
 //    void setup() {
@@ -95,5 +98,30 @@ private String tk;
         //then
         resultActions
                 .andExpect(status().isOk());
+    }
+
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request)))
+    @Test
+    public void test() throws Exception {
+
+        ArticleDTO.Request request = ArticleDTO.Request.builder().title("qwer").body("!@3").build();
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/notification")
+                        .header("Authorization","Bearer "+tk)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+
+        //then
+        resultActions
+                .andExpect(status().isOk());
+
+
+        List<Article> articles = articleRepository.findAll();
+        for (Article article : articles) {
+            System.out.println(article);
+            System.out.println(article.getMember());
+        }
     }
 }

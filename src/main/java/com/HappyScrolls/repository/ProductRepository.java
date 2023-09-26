@@ -2,6 +2,13 @@ package com.HappyScrolls.repository;
 
 import com.HappyScrolls.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+import javax.persistence.LockModeType;
+import java.util.Optional;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<Product> findById(Long id);
 }
