@@ -46,6 +46,7 @@ public class ArticleService {
 
 
 
+    @Transactional()
     public Article articleRetrieve(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
         List<TagDTO.Response> tags = tagService.tagsRetrieve(article);

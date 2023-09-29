@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return web -> {
             web.ignoring()
                     .antMatchers(
-                            "/article/**","/actuator/**"
+                            "/actuator/**"
 
                             );
 
