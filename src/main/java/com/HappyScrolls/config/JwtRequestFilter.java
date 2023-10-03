@@ -40,7 +40,7 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
         String token;
         try {
             token = ((HttpServletRequest) request).getHeader("Authorization").split(" ")[1];
-
+            System.out.println(token);
         } catch (Exception e) {
             throw new UserNotFoundException("user not found");
         }
@@ -51,9 +51,10 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
 
             System.out.println(email);
             Member member = memberService.memberFind(email);
-
+            System.out.println(member);
 
             Authentication auth = getAuthentication(member);
+            System.out.println("@#"+auth);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

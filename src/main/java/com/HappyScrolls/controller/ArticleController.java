@@ -36,11 +36,6 @@ public class ArticleController {
         return ResponseEntity.ok(null);
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity retrieveAllArticle() {
-//        List<ArticleDTO.ListResponse> response = articleService.articleRetrieveAll();
-//        return new ResponseEntity(response, HttpStatus.ACCEPTED);
-//    }
 
     @ApiOperation(value = "모든 게시글 페이징 조회")
     @GetMapping("/paging")
@@ -60,19 +55,11 @@ public class ArticleController {
         return ResponseEntity.ok(toResponseDtoList(response));
     }
 
-//    @ApiOperation(value = "모든 게시글 커버링 인덱스")
-//    @GetMapping("/coveringaging")
-//    public ResponseEntity retrieveAllArticlePagewithCoveringIndex(@RequestParam Integer page, @RequestParam Integer limit) {
-//        List<Article> response = articleService.articleRetrievePagingWithCoveringIndex(page,limit);
-//
-//
-//        return new ResponseEntity(toResponseDtoList(response), HttpStatus.ACCEPTED);
-//
-//    }
-
     @ApiOperation(value = "게시글 id로 단건 조회")
     @GetMapping("")
-    public ResponseEntity<ArticleDTO.DetailResponse> retrieveArticle(@RequestParam Long id) {
+    public ResponseEntity<ArticleDTO.DetailResponse> retrieveArticle(@AuthenticationPrincipal Member member, @RequestParam Long id) {
+
+        System.out.println("!!!!!!!!!@@@@"+member);
         Article response = articleService.articleRetrieve(id);
         viewCountService.viewCountIncrease(id);
         return ResponseEntity.ok(toResponseDto(response));
@@ -115,6 +102,7 @@ public class ArticleController {
     @ApiOperation(value = "게시글 작성")
     @PostMapping("")
     public ResponseEntity<Long> createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
+        System.out.println("!!!!"+member+member.getEmail());
         Long response = articleService.articleCreate(member,request);
         return ResponseEntity.ok(response);
     }
