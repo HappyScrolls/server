@@ -41,7 +41,7 @@ class TagServiceTest {
     @DisplayName("태그 생성 기능이 제대로 동작하는지 확인")
     void 태그_생성_성공_테스트() {
 
-        Article article = new Article(1l, null, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
 
         List<TagDTO.Request> request = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
@@ -68,7 +68,7 @@ class TagServiceTest {
     @Test
     @DisplayName("태그 조회 기능이 제대로 동작하는지 확인")
     void 게시글에_달린_태그_조회_성공_테스트() {
-        Article article = new Article(1l, null, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         Tag tag1 = new Tag(1l, "tag1");
         Tag tag2 = new Tag(1l, "tag2");
         ArticleTag articleTag1 = new ArticleTag(1l, article, tag1);
@@ -117,8 +117,8 @@ class TagServiceTest {
     @DisplayName("태그  조회 기능이 제대로 동작하는지 확인")
     void 태그기준으로_조회_성공_테스트() {
 
-        Article article1 = new Article(1l, null, "제목1", "내용1",0, LocalDate.now());
-        Article article2 = new Article(1l, null, "제목2", "내용2",0, LocalDate.now());
+        Article article1 = Article.builder().id(1l).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+        Article article2 = Article.builder().id(2l).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
 
         Tag tag1 = new Tag(1l, "tag1");
         ArticleTag articleTag1 = new ArticleTag(1l, article1, tag1);

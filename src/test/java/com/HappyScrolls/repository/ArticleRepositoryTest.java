@@ -4,6 +4,7 @@ import com.HappyScrolls.TestConfig;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.Sticker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,9 +59,10 @@ public class ArticleRepositoryTest {
 
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         memberRepository.save(member);
-        Article article1 = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
-        Article article2 = new Article(2l, member, "제목2", "내용2",0, LocalDate.now());
-        Article article3 = new Article(3l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article1 = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+        Article article2 = Article.builder().id(2l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+        Article article3 = Article.builder().id(3l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+
         articleRepository.save(article1);
         articleRepository.save(article2);
         articleRepository.save(article3);
@@ -88,7 +90,7 @@ public class ArticleRepositoryTest {
         memberRepository.save(member);
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Article article = new Article(Integer.toUnsignedLong(i), member, "제목" + Integer.toString(i), "내용" + Integer.toString(i), 0, LocalDate.now());
+            Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
             articles.add(article);
             articleRepository.save(article);
         }

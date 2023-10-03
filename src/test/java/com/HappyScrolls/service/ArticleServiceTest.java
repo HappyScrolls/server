@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.entity.Sticker;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +74,7 @@ public class ArticleServiceTest {
     void 게시글_단건조회_성공_테스트() {
 
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
 
@@ -103,7 +104,7 @@ public class ArticleServiceTest {
     @DisplayName("게시글 수정 기능이  제대로 동작하는지 확인")
     void 게시글_수정_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
 
@@ -140,7 +141,7 @@ public class ArticleServiceTest {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
         ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
 
@@ -155,7 +156,7 @@ public class ArticleServiceTest {
     void 게시글_삭제_성공_테스트() {
         Long testId = 1L;
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
 
         articleService.articleDelete(member, testId);
@@ -184,7 +185,7 @@ public class ArticleServiceTest {
         Long testId = 1L;
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
         Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         when(articleRepository.findById(any())).thenReturn(Optional.of(article));
         assertThrows(NoAuthorityExceoption.class, () -> articleService.articleDelete(requestMember,testId));
         verify(articleRepository).findById(testId);
@@ -196,8 +197,8 @@ public class ArticleServiceTest {
     void 게시글_유저별조회_성공_테스트() {
         String testEmail = "chs98412@naver,com";
         Member member = Member.builder().id(USER_ID).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
-        Article article1 = new Article(1l, member, "제목1", "내용1",0, LocalDate.now());
-        Article article2 = new Article(2l, member, "제목2", "내용2",0, LocalDate.now());
+        Article article1 = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+        Article article2 = Article.builder().id(2l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
         List<Article> articles = new ArrayList<>();
         articles.add(article1);
         articles.add(article2);
@@ -230,7 +231,9 @@ public class ArticleServiceTest {
         Member member = Member.builder().id(USER_ID).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            articles.add(new Article(Integer.toUnsignedLong(i), member, "제목" + Integer.toString(i), "내용" + Integer.toString(i), 0, LocalDate.now()));
+            Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+
+            articles.add(article);
         }
 
         when(articleRepository.zeroOffsetPaging(any(),any())).thenReturn(articles.subList(3,6));
@@ -256,7 +259,7 @@ public class ArticleServiceTest {
     @DisplayName("게시글 조회수 증가 기능이 제대로 동작하는지 확인")
     void 게시글_조회수_증가_성공_테스트() {
         Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = new Article(1l, member, "제목3", "내용3",0, LocalDate.now());
+        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
 
         when(articleRepository.save(any())).thenReturn(article);
         articleService.increaseViewCount(article);
