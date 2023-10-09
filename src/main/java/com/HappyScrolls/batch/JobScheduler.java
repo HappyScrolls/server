@@ -1,5 +1,6 @@
 package com.HappyScrolls.batch;
 
+import com.HappyScrolls.aop.ExeTimer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -20,38 +21,24 @@ public class JobScheduler {
     private final JobLauncher jobLauncher;
     private final BatchConfig batchConfig;
 
-//    @Scheduled(cron="0 10 * * * *")
-//    public void runJob(){
-//
-//        Map<String, JobParameter> confMap = new HashMap<>();
-//        confMap.put("time", new JobParameter(System.currentTimeMillis()));
-//        JobParameters jobParameters = new JobParameters(confMap);
-//
-//        try {
-//            jobLauncher.run(batchConfig.notificationJob(), jobParameters);
-//
-//        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-//                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-//
-//        }
-//    }
+    @ExeTimer
+    @Scheduled(cron="0 10 * * * *")
+    public void runJob() throws  NoSuchFieldException, NoSuchMethodException,IllegalAccessException{
 
+        Map<String, JobParameter> confMap = new HashMap<>();
+        confMap.put("time", new JobParameter(System.currentTimeMillis()));
+        JobParameters jobParameters = new JobParameters(confMap);
 
-        @Scheduled(cron="0 10 * * * *")
-    public void runJob(){
+        try {
+            jobLauncher.run(batchConfig.job(), jobParameters);
 
-//        Map<String, JobParameter> confMap = new HashMap<>();
-//        confMap.put("time", new JobParameter(System.currentTimeMillis()));
-//        JobParameters jobParameters = new JobParameters(confMap);
-//
-//
-//                try {
-//                    jobLauncher.run(batchConfig.notificationJob(), jobParameters);
-//
-//                } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-//                         | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-//
-//            }
+        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
+                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
 
+        }
     }
+
+
+
+
 }

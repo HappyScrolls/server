@@ -1,6 +1,7 @@
 package com.HappyScrolls.controller;
 
 
+import com.HappyScrolls.aop.ExeTimer;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.ProductDTO;
 import com.HappyScrolls.dto.TagDTO;
@@ -46,7 +47,7 @@ public class ArticleController {
         return  ResponseEntity.ok(toResponseDtoList(response));
     }
 
-
+    @ExeTimer
     @ApiOperation(value = "모든 게시글 페이징 조회 제로 오프셋")
     @GetMapping("/zeropaging")
     public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePagewithZeroOffset(@RequestParam Long lastindex, @RequestParam Integer limit) {
