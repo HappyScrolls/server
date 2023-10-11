@@ -39,7 +39,7 @@ public class ArticleService {
         Article article = request.toEntity();
         article.setMember(member);
 
-        articleRepository.save(article);
+        article=articleRepository.save(article);
         tagService.tagCreate(article, request.getTags());
         return article.getId();
     }
