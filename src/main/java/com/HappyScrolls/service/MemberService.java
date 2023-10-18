@@ -1,5 +1,6 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.MemberAdaptor;
 import com.HappyScrolls.entity.BuyEvent;
 import com.HappyScrolls.entity.CommentEvent;
 import com.HappyScrolls.entity.Member;
@@ -14,14 +15,13 @@ public class MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private MemberAdaptor memberAdaptor;
     public Member memberFind(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException(String.format("user[%s] 유저를  찾을 수 없습니다", email)));
+        return memberAdaptor.memberFind(email);
     }
 
-    public void decreasePoint(Member member, Integer requirePoints) {
-        member.decreasePoint(requirePoints);
-        memberRepository.save(member);
-    }
 
     @EventListener
     public void test(BuyEvent event) {

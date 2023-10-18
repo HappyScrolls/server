@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ViewCountRepository extends JpaRepository<ViewCount,Long> {
 
     Optional<ViewCount> findByCreateDateAndArticle(LocalDate today, Article article);
+
+    Long countByCreateDateAndArticle(LocalDate date, Article article);
 }

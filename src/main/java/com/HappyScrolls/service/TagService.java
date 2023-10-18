@@ -1,5 +1,8 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.ArticleAdaptor;
+import com.HappyScrolls.adaptor.TagAdaptor;
+import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.CartDTO;
 import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Article;
@@ -17,30 +20,59 @@ import java.util.stream.Collectors;
 
 @Service
 public class TagService {
-    @Autowired
-    private TagRepository tagRepository;
-    @Autowired
-    private ArticleTagRepository articleTagRepository;
 
+    @Autowired
+    private TagAdaptor tagAdaptor;
+    @Autowired
+    private ArticleAdaptor articleAdaptor;
+
+    //옮기기
+    public List<ArticleDTO.ListResponse> articleRetrieveByTag(String tag) {
+        Tag findTag = tagAdaptor.tagFind(tag);
+        List<ArticleTag> articleTags = tagAdaptor.articlrTagRetrieveByTag(findTag);
+
+        return ArticleDTO.ListResponse.toResponseDtoList(articleTags.stream()
+                .map(articleTag -> articleTag.getArticle())
+                .collect(Collectors.toList()));
+    }
+
+
+    //이동해야 하는 코드
+    public List<ArticleDTO.ListResponse> articleRetrieveByTagPaging( Long lastindex, String tag) {
+
+        Tag findTag = tagAdaptor.tagFind(tag);
+        List<ArticleTag> articleTags = tagAdaptor.articlrTagRetrieveByTagPaging(lastindex,findTag);
+
+        return ArticleDTO.ListResponse.toResponseDtoList(articleTags.stream()
+                .map(articleTag -> articleTag.getArticle())
+                .collect(Collectors.toList()));
+    }
+
+    //이동해야 하는 코드
+    public List<ArticleDTO.ListResponse> articleRetrieveByTagPaging2(Long lastindex, String tag) {
+
+        Tag findTag = tagAdaptor.tagFind(tag);
+        return ArticleDTO.ListResponse.toResponseDtoList( articleAdaptor.articleRetrieveByTagPaging2(lastindex,tag));
+
+    }
 
     public void tagCreate(Article article, List<TagDTO.Request> tags) {
         for (TagDTO.Request dto : tags) {
             Tag tag;
-            Optional<Tag> opTag = tagRepository.findByBody(dto.getBody());
-            if (opTag.isPresent()) {
-                tag = opTag.get();
-            } else {
-                tag = Tag.builder().body(dto.getBody()).build();
-                tagRepository.save(tag);
+            if (tagAdaptor.count(dto.getBody()).equals(1l)) {
+                tag = tagAdaptor.tagFind(dto.getBody());
             }
+            else {
+                tag = Tag.builder().body(dto.getBody()).build();
+                tagAdaptor.tagCreate(tag);
+            }
+
             ArticleTag articleTag = ArticleTag.builder().article(article).tag(tag).build();
-            articleTagRepository.save(articleTag);
+            tagAdaptor.articleTagCreate(articleTag);
         }
     }
-
     public List<TagDTO.Response> tagsRetrieve(Article article) {
-        List<ArticleTag> articleTags = articleTagRepository.findByArticle(article);
-
+        List<ArticleTag> articleTags = tagAdaptor.tagsRetrieve(article);
 
         return articleTags.stream()
                 .map(articleTag -> TagDTO.Response.builder()
@@ -50,25 +82,4 @@ public class TagService {
                 .collect(Collectors.toList());
     }
 
-    public Tag tagFind(String tag) {
-        return tagRepository.findByBody(tag).orElseThrow(()-> new NoSuchElementException(String.format("tag[%s] 태그를 찾을 수 없습니다", tag)));
-
-    }
-    public List<Tag> tagsFind(List<String> tags) {
-        return tagRepository.findByBodyIn(tags);
-
-    }
-
-    public List<ArticleTag> articlrTagRetrieveByTag(Tag findTag) {
-        return articleTagRepository.findAllByTag(findTag);
-    }
-
-    public List<ArticleTag> articlrTagRetrieveByTagList(List<Tag> tags) {
-        return articleTagRepository.findAllByTagIn(tags);
-    }
-
-
-    public List<ArticleTag> articlrTagRetrieveByTagPaging(Long lastindex, Tag tag) {
-        return articleTagRepository.findByTagPaging(lastindex,tag);
-    }
 }

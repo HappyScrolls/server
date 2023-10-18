@@ -100,5 +100,12 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .fetch();
     }
 
-
+    @Override
+    public List<Article> search(Long lastindex, Integer limit, String param) {
+        return jpaQueryFactory
+                .selectFrom(article)
+                .where(article.title.contains(param),article.id.gt(lastindex))
+                .limit(limit)
+                .fetch();
+    }
 }

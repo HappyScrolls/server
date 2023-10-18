@@ -1,5 +1,7 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.ArticleAdaptor;
+import com.HappyScrolls.adaptor.CommentAdaptor;
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.*;
 import com.HappyScrolls.exception.NoAuthorityExceoption;
@@ -20,39 +22,36 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private ArticleService articleService;
+    private ArticleAdaptor articleAdaptor;
 
+    @Autowired
+    private CommentAdaptor commentAdaptor;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     public Long commentParentCreate(Member member, CommentDTO.ParentRequest request) {
-        Article article = articleService.articleRetrieve(request.getPostId());
+        Article article = articleAdaptor.retrieveArticle(request.getPostId());
         Comment makeComment = request.toEntity();
         makeComment.setArticle(article);
         makeComment.setMember(member);
-        commentRepository.save(makeComment);
-        return makeComment.getId();
+        return commentAdaptor.commentCreate(makeComment);
     }
     public Long commentChildCreate(Member member, CommentDTO.ChildRequest request) {
-        Comment parentComment = commentRetrieveById(request.getParentId());
+        Comment parentComment = commentAdaptor.commentRetrieveById(request.getParentId());
         Comment makeComment = request.toEntity();
         makeComment.setMember(member);
         makeComment.setArticle(parentComment.getArticle());
-        commentRepository.save(makeComment);
-
+        Long response = commentAdaptor.commentCreate(makeComment);
 
         applicationEventPublisher.publishEvent(new CommentEvent(parentComment,makeComment ));
 
-
-
-        return makeComment.getId();
+        return response;
     }
 
 
 
-    public List<Comment> commentRetrieve(Long id) {
-        Article article = articleService.articleRetrieve(id);
-        List<Comment> comments = commentRepository.findByArticle(article);
-        return comments;
+    public List<CommentDTO.Response> commentRetrieve(Long id) {
+        Article article = articleAdaptor.retrieveArticle(id);
+        return CommentDTO.Response.toCommentResponseDtoList(commentAdaptor.commentRetrieve(article));
     }
 
     public Comment commentRetrieveById(Long id) {
@@ -63,23 +62,16 @@ public class CommentService {
 
     public Long commentEdit(Member member, CommentDTO.Edit request) {
 
-        Comment editComment = commentRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",request.getId())));
-        if (!editComment.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
-        }
+        Comment editComment = commentAdaptor.commentRetrieveById(request.getId());
         editComment.edit(request);
-        commentRepository.save(editComment);
-        return editComment.getId();
+        return commentAdaptor.commentEdit(member,editComment);
     }
 
 
-    public void commentDelete(Member member, Long id) {
+    public Integer commentDelete(Member member, Long id) {
 
-        Comment deleteComment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
-        if (!deleteComment.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
-        }
-        commentRepository.delete(deleteComment);
+        Comment deleteComment = commentAdaptor.commentRetrieveById(id);
+        return commentAdaptor.commentDelete(member,deleteComment);
     }
 
 

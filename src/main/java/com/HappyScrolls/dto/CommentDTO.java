@@ -3,7 +3,9 @@ package com.HappyScrolls.dto;
 import com.HappyScrolls.entity.Comment;
 import lombok.*;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class CommentDTO {
 
@@ -27,6 +29,7 @@ public class CommentDTO {
                     .parentId(this.parentId)
                     .build();
         }
+
     }
     @Builder
     @Getter
@@ -54,6 +57,24 @@ public class CommentDTO {
     public static class ParentResponse {
         private Long id;
         private String body;
+        public static CommentDTO.ParentResponse toParentResponseDto(Comment comment) {
+            return CommentDTO.ParentResponse
+                    .builder()
+                    .id(comment.getId())
+                    .body(comment.getBody())
+                    .build();
+        }
+
+        public static CommentDTO.ChildResponse toChildResponseDto(Comment comment) {
+            return CommentDTO.ChildResponse
+                    .builder()
+                    .id(comment.getId())
+                    .parentId(comment.getParentId())
+                    .body(comment.getBody())
+                    .build();
+        }
+
+
 
     }
 
@@ -89,6 +110,17 @@ public class CommentDTO {
         private Boolean isParent;
         private Long parentId;
 
+        public static List<Response> toCommentResponseDtoList(List<Comment> comments) {
+            return comments.stream()
+                    .map(comment -> CommentDTO.Response
+                            .builder()
+                            .id(comment.getId())
+                            .body(comment.getBody())
+                            .isParent(comment.getIsParent())
+                            .parentId(comment.getParentId())
+                            .build())
+                    .collect(Collectors.toList());
+        }
     }
 
 }

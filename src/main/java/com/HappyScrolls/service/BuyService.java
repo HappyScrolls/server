@@ -1,6 +1,8 @@
 package com.HappyScrolls.service;
 
 
+import com.HappyScrolls.adaptor.BuyAdaptor;
+import com.HappyScrolls.adaptor.CartAdaptor;
 import com.HappyScrolls.dto.BuyDTO;
 import com.HappyScrolls.entity.*;
 import com.HappyScrolls.exception.PointLackException;
@@ -18,17 +20,13 @@ import java.util.stream.Collectors;
 public class BuyService {
 
     @Autowired
-    private BuyRepository buyRepository;
+    private CartAdaptor cartAdaptor;
 
     @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private MemberService memberService;
+    private BuyAdaptor buyAdaptor;
     @Autowired
     private  ApplicationEventPublisher applicationEventPublisher;
+
 
     public List<Long> buyCreate(Member member, BuyDTO.RequestCart request) {
 
@@ -37,7 +35,7 @@ public class BuyService {
         Integer requirePoints=0;
         List<Cart> cartList = new ArrayList<>();
         for (Long cartId : request.getCart()) {
-            Cart cart=cartService.cartFind(cartId);
+            Cart cart=cartAdaptor.cartFind(cartId);
             requirePoints += cart.getProduct().getPrice();
             if (cart.getProduct().getQuantity() <= 0) {
                 throw new PointLackException(String.format(" 재고수량이 부족합니다 [%s]", cart.getProduct().getId()));
@@ -55,7 +53,7 @@ public class BuyService {
             buy.setCreateDate(LocalDateTime.now());
             buy.setMember(member);
             buy.setProduct(cart.getProduct());
-            buyRepository.save(buy);
+            buyAdaptor.saveEntity(buy);
             response.add(buy);
         }
 
@@ -68,10 +66,9 @@ public class BuyService {
                 .collect(Collectors.toList());
     }
 
-    public List<Buy> buyRetrieveUser(Member member) {
-        List<Buy> buyList = buyRepository.findAllByMember(member);
+    public List<BuyDTO.Response> buyRetrieveUser(Member member) {
+        return BuyDTO.Response.toResponseDtoList(buyAdaptor.buyRetrieveUser(member));
 
-        return buyList;
     }
 
 
