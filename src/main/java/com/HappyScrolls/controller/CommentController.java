@@ -27,8 +27,6 @@ public class CommentController {
     @ApiOperation(value = "댓글 생성")
     @PostMapping("")
     public ResponseEntity<Long> createParentComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.ParentRequest request) {
-        System.out.println("??");
-        System.out.println("!!!"+member);
         Long response = commentService.commentParentCreate(member, request);
         return  ResponseEntity.ok(response);
     }
@@ -43,8 +41,7 @@ public class CommentController {
     @ApiOperation(value = "게시글 id로 댓글 조회")
     @GetMapping("")
     public ResponseEntity< List<CommentDTO.Response> > retrieveParentComment(@RequestParam Long id) {
-        List<Comment> response = commentService.commentRetrieve(id);
-        return ResponseEntity.ok(toCommentResponseDtoList(response));
+        return ResponseEntity.ok(commentService.commentRetrieve(id));
     }
 
 
@@ -52,44 +49,15 @@ public class CommentController {
     @ApiOperation(value = "댓글 수정")
     @PutMapping("")
     public ResponseEntity<Long> editComment(@AuthenticationPrincipal Member member, @RequestBody CommentDTO.Edit request) {
-        Long response = commentService.commentEdit(member, request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(commentService.commentEdit(member, request));
     }
 
     @ApiOperation(value = "댓글 삭제")
     @DeleteMapping("")
     public ResponseEntity<Integer> deleteComment(@AuthenticationPrincipal Member member, @RequestParam Long id) {
-        commentService.commentDelete(member, id);
-        return ResponseEntity.ok(1);
+        return ResponseEntity.ok(commentService.commentDelete(member, id));
     }
 
-    public static CommentDTO.ParentResponse toParentResponseDto(Comment comment) {
-        return CommentDTO.ParentResponse
-                .builder()
-                .id(comment.getId())
-                .body(comment.getBody())
-                .build();
-    }
 
-    public static CommentDTO.ChildResponse toChildResponseDto(Comment comment) {
-        return CommentDTO.ChildResponse
-                .builder()
-                .id(comment.getId())
-                .parentId(comment.getParentId())
-                .body(comment.getBody())
-                .build();
-    }
-
-    public static List<CommentDTO.Response> toCommentResponseDtoList(List<Comment> comments) {
-        return comments.stream()
-                .map(comment -> CommentDTO.Response
-                .builder()
-                .id(comment.getId())
-                .body(comment.getBody())
-                .isParent(comment.getIsParent())
-                .parentId(comment.getParentId())
-                .build())
-                .collect(Collectors.toList());
-    }
 
 }

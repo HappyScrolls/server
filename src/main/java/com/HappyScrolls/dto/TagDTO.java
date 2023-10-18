@@ -1,7 +1,6 @@
 package com.HappyScrolls.dto;
 
 
-import com.HappyScrolls.entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +26,7 @@ public class TagDTO {
     public static class ListRequest {
         private List<String> tags;
 
-        private Long lastindex;
+        private Long lastid;
     }
 
     @Builder

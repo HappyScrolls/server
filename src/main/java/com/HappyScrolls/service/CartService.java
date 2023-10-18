@@ -1,6 +1,8 @@
 package com.HappyScrolls.service;
 
 
+import com.HappyScrolls.adaptor.CartAdaptor;
+import com.HappyScrolls.adaptor.ProductAdaptor;
 import com.HappyScrolls.dto.CartDTO;
 import com.HappyScrolls.entity.*;
 import com.HappyScrolls.repository.CartRepository;
@@ -18,32 +20,29 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private MemberService memberService;
+    private ProductAdaptor productAdaptor;
 
     @Autowired
-    private ProductService productService;
+    private CartAdaptor cartAdaptor;
 
     public Long cartCreate(Member member, CartDTO.Request request) {
 
-        Product product = productService.productRetrieve(request.getProductId());
+        Product product = productAdaptor.productRetrieve(request.getProductId());
         Cart cart = Cart.builder()
                 .product(product)
                 .member(member)
                 .build();
-        cartRepository.save(cart);
 
-        return cart.getId();
+
+        return cartAdaptor.cartCreate(cart);
     }
 
-    public List<Cart> userCartRetrieve(Member member) {
-        List<Cart> userCarts = cartRepository.findAllByMember(member);
-
-        return userCarts;
+    public List<CartDTO.Response> userCartRetrieve(Member member) {
+        return CartDTO.Response.toResponseDtoList(cartAdaptor.userCartRetrieve(member));
     }
 
-    public Cart cartFind(Long id) {
-        Cart cart = cartRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("cart[%s] 장바구니 항목을 찾을 수 없습니다", id))); //%s?
-        return cart;
+    public CartDTO.Response cartFind(Long id) {
+        return CartDTO.Response.toResponseDto(cartAdaptor.cartFind(id));
     }
 
 //    public void cartDelete(Cart cart) {

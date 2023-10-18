@@ -18,4 +18,6 @@ public interface ArticleCustomRepository {
     List<Article> findByTagPaging(Long lastindex, Tag tag);
 
     List<Article> findByTagListPaging(Long lastindex, List<Tag> tags);
+
+    List<Article> search(Long lastindex, Integer limit, String param);
 }

@@ -3,6 +3,9 @@ package com.HappyScrolls.dto;
 import com.HappyScrolls.entity.Product;
 import lombok.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ProductDTO {
 
 
@@ -42,7 +45,26 @@ public class ProductDTO {
         private String description;
         private Integer price;
 
+        public static ProductDTO.Response toResponseDto(Product product) {
+            return ProductDTO.Response.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .build();
+        }
 
+        public static List<Response> toResponseDtoList(List<Product> products) {
+            return products.stream()
+                    .map(product -> ProductDTO.Response
+                            .builder()
+                            .id(product.getId())
+                            .body(product.getName())
+                            .description(product.getDescription())
+                            .price(product.getPrice())
+                            .build())
+                    .collect(Collectors.toList());
+        }
     }
 
     @Builder

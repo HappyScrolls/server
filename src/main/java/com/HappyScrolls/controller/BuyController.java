@@ -36,21 +36,8 @@ public class BuyController {
     @GetMapping("/user")
     public ResponseEntity<List<BuyDTO.Response>> retrieveUserBuy(@AuthenticationPrincipal Member member) {
 
-        List<Buy> response = buyService.buyRetrieveUser(member);
-
-        return ResponseEntity.ok(toResponseDtoList(response));
+        return ResponseEntity.ok(buyService.buyRetrieveUser(member));
     }
 
-    public static List<BuyDTO.Response> toResponseDtoList(List<Buy> buyList) {
-        return buyList.stream()
-                .map(buy -> BuyDTO.Response
-                        .builder()
-                        .id(buy.getId())
-                        .productId(buy.getProduct().getId())
-                        .createTime(buy.getCreateDate())
-                        .build())
-                .collect(Collectors.toList());
-
-    }
 
 }
