@@ -1,8 +1,8 @@
 package com.HappyScrolls.config.security;
 
 
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.repository.MemberRepository;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j

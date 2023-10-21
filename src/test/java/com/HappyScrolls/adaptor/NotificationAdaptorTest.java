@@ -1,18 +1,14 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.adaptor.NotificationAdaptor;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Notification;
-import com.HappyScrolls.repository.NotificationRepository;
-import com.HappyScrolls.service.MemberService;
+import com.HappyScrolls.domain.notification.adaptor.NotificationAdaptor;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.notification.entity.Notification;
+import com.HappyScrolls.domain.notification.repository.NotificationRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

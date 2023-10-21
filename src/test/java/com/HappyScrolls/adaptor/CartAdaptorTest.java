@@ -1,18 +1,15 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.repository.CartRepository;
-import com.HappyScrolls.service.ProductService;
-import org.junit.jupiter.api.BeforeEach;
+import com.HappyScrolls.domain.cart.adaptor.CartAdaptor;
+import com.HappyScrolls.domain.cart.entity.Cart;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.cart.repository.CartRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

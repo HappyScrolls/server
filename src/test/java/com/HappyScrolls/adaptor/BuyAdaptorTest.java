@@ -1,20 +1,18 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.entity.Buy;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.repository.BuyRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.HappyScrolls.domain.buy.adaptor.BuyAdaptor;
+import com.HappyScrolls.domain.buy.entity.Buy;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.buy.repository.BuyRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

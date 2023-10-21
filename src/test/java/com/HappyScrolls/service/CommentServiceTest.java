@@ -1,12 +1,13 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.adaptor.ArticleAdaptor;
-import com.HappyScrolls.adaptor.CommentAdaptor;
-import com.HappyScrolls.dto.CommentDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.repository.CommentRepository;
+import com.HappyScrolls.domain.article.adaptor.ArticleAdaptor;
+import com.HappyScrolls.domain.comment.adaptor.CommentAdaptor;
+import com.HappyScrolls.domain.comment.dto.CommentDTO;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.comment.entity.Comment;
+import com.HappyScrolls.domain.comment.service.CommentService;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.comment.repository.CommentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

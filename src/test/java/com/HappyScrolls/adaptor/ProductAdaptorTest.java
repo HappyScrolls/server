@@ -1,17 +1,15 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.entity.Product;
-import com.HappyScrolls.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.HappyScrolls.domain.product.adaptor.ProductAdaptor;
+import com.HappyScrolls.domain.product.entity.Product;
+import com.HappyScrolls.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

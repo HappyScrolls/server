@@ -1,27 +1,21 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.adaptor.CartAdaptor;
-import com.HappyScrolls.adaptor.ProductAdaptor;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.CartDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
-import com.HappyScrolls.repository.CartRepository;
+import com.HappyScrolls.domain.cart.adaptor.CartAdaptor;
+import com.HappyScrolls.domain.cart.service.CartService;
+import com.HappyScrolls.domain.product.adaptor.ProductAdaptor;
+import com.HappyScrolls.domain.cart.dto.CartDTO;
+import com.HappyScrolls.domain.cart.entity.Cart;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.product.entity.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

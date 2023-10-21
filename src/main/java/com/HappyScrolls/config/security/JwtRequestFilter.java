@@ -1,9 +1,9 @@
 package com.HappyScrolls.config.security;
 
 
-import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.domain.member.entity.Member;
 import com.HappyScrolls.exception.UserNotFoundException;
-import com.HappyScrolls.service.MemberService;
+import com.HappyScrolls.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

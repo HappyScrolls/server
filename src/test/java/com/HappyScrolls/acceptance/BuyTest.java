@@ -1,10 +1,10 @@
 //package com.HappyScrolls.acceptance;
 //
-//import com.HappyScrolls.dto.ArticleDTO;
-//import com.HappyScrolls.dto.BuyDTO;
-//import com.HappyScrolls.dto.TagDTO;
-//import com.HappyScrolls.entity.Article;
-//import com.HappyScrolls.repository.ArticleRepository;
+//import com.HappyScrolls.domain.article.dto.ArticleDTO;
+//import com.HappyScrolls.domain.buy.dto.BuyDTO;
+//import com.HappyScrolls.domain.tag.dto.TagDTO;
+//import com.HappyScrolls.domain.article.entity.Article;
+//import com.HappyScrolls.domain.article.repository.ArticleRepository;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;

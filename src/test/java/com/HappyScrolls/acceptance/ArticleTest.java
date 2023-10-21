@@ -1,15 +1,11 @@
 package com.HappyScrolls.acceptance;
 
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.TagDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.repository.ArticleRepository;
+import com.HappyScrolls.domain.article.dto.ArticleDTO;
+import com.HappyScrolls.domain.tag.dto.TagDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;

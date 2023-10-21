@@ -1,15 +1,14 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.ViewCount;
-import com.HappyScrolls.repository.ViewCountRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.HappyScrolls.domain.article.adaptor.ViewCountAdaptor;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.event.ViewCount;
+import com.HappyScrolls.domain.article.repository.ViewCountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;

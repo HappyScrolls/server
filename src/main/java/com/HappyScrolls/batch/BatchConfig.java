@@ -1,12 +1,10 @@
 package com.HappyScrolls.batch;
 
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Sticker;
-import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.repository.CommentRepository;
-import com.HappyScrolls.repository.MemberRepository;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.article.entity.Sticker;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
+import com.HappyScrolls.domain.comment.repository.CommentRepository;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
 import com.querydsl.core.types.dsl.NumberPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -24,10 +22,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static com.HappyScrolls.entity.QArticle.article;
-import static com.HappyScrolls.entity.QComment.comment;
 
 import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 

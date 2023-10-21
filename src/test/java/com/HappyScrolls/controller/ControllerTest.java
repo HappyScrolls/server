@@ -2,7 +2,15 @@ package com.HappyScrolls.controller;
 
 import com.HappyScrolls.config.security.OAuth2AuthenticationSuccessHandler;
 import com.HappyScrolls.config.security.UserOAuth2Service;
-import com.HappyScrolls.service.*;
+import com.HappyScrolls.domain.article.service.ArticleService;
+import com.HappyScrolls.domain.article.service.ViewCountService;
+import com.HappyScrolls.domain.buy.service.BuyService;
+import com.HappyScrolls.domain.cart.service.CartService;
+import com.HappyScrolls.domain.comment.service.CommentService;
+import com.HappyScrolls.domain.member.service.MemberService;
+import com.HappyScrolls.domain.notification.service.NotificationService;
+import com.HappyScrolls.domain.product.service.ProductService;
+import com.HappyScrolls.domain.tag.service.TagService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

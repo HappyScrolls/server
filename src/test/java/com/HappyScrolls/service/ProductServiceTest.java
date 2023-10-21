@@ -1,13 +1,9 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.adaptor.ProductAdaptor;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.ProductDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
-import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.repository.ProductRepository;
+import com.HappyScrolls.domain.product.adaptor.ProductAdaptor;
+import com.HappyScrolls.domain.product.dto.ProductDTO;
+import com.HappyScrolls.domain.product.entity.Product;
+import com.HappyScrolls.domain.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;

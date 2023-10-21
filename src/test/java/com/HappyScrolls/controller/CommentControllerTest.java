@@ -2,8 +2,8 @@ package com.HappyScrolls.controller;
 
 import com.HappyScrolls.config.security.JwtRequestFilter;
 import com.HappyScrolls.config.security.JwtTokenUtil;
-import com.HappyScrolls.dto.CommentDTO;
-import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.domain.comment.dto.CommentDTO;
+import com.HappyScrolls.domain.member.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;

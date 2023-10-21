@@ -1,8 +1,20 @@
 package com.HappyScrolls.acceptance;
 
 import com.HappyScrolls.config.security.JwtTokenUtil;
-import com.HappyScrolls.entity.*;
-import com.HappyScrolls.repository.*;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
+import com.HappyScrolls.domain.buy.entity.Buy;
+import com.HappyScrolls.domain.buy.repository.BuyRepository;
+import com.HappyScrolls.domain.cart.entity.Cart;
+import com.HappyScrolls.domain.cart.repository.CartRepository;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
+import com.HappyScrolls.domain.product.entity.Product;
+import com.HappyScrolls.domain.product.repository.ProductRepository;
+import com.HappyScrolls.domain.tag.entity.ArticleTag;
+import com.HappyScrolls.domain.tag.entity.Tag;
+import com.HappyScrolls.domain.tag.repository.ArticleTagRepository;
+import com.HappyScrolls.domain.tag.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

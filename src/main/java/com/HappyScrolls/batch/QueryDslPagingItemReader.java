@@ -1,5 +1,4 @@
 package com.HappyScrolls.batch;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -11,20 +10,14 @@ import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
-import com.HappyScrolls.entity.Article;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.database.AbstractPagingItemReader;
 import org.springframework.batch.item.database.orm.JpaQueryProvider;
 import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-
-import static com.HappyScrolls.entity.QArticle.article;
 
 
 public class QueryDslPagingItemReader<T> extends AbstractPagingItemReader<T> {

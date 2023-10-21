@@ -1,18 +1,19 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Tag;
+import com.HappyScrolls.domain.article.adaptor.ArticleAdaptor;
+import com.HappyScrolls.domain.tag.adaptor.TagAdaptor;
+import com.HappyScrolls.domain.article.dto.ArticleDTO;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.tag.entity.Tag;
 import com.HappyScrolls.exception.NoAuthorityException;
 import com.HappyScrolls.exception.NoResultException;
-import com.HappyScrolls.repository.ArticleRepository;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
