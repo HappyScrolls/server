@@ -62,7 +62,7 @@ public class ArticleTest extends BaseIntegrationTest {
                         .header("Authorization","Bearer "+tk)
                         .accept(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id").value(2))
+                        .andExpect(jsonPath("$.id").value(5))
                 .andExpect(jsonPath("$.body").value("새글"));
     }
 
