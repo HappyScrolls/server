@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.HappyScrolls.entity.QArticle.article;
-import static com.HappyScrolls.entity.QArticleTag.articleTag;
-import static com.HappyScrolls.entity.QMember.member;
-
+import static com.HappyScrolls.domain.article.entity.QArticle.article;
+import static com.HappyScrolls.domain.member.entity.QMember.member;
+import static com.HappyScrolls.domain.tag.entity.QArticleTag.articleTag;
 @Repository
 public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 

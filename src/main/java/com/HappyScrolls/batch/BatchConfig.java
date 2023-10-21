@@ -20,12 +20,13 @@ import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.repository.CrudRepository;
 
-import static com.HappyScrolls.entity.QArticle.article;
 
 import javax.persistence.EntityManagerFactory;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import static com.HappyScrolls.domain.article.entity.QArticle.article;
 
 @Configuration
 @RequiredArgsConstructor
@@ -110,7 +111,7 @@ public class BatchConfig {
     @StepScope
     public RepositoryItemWriter<Article> articleWriter(){
         return new RepositoryItemWriterBuilder<Article>()
-                .repository(articleRepository)
+                .repository((CrudRepository<Article, Long>) articleRepository)
                 .build();
     }
 

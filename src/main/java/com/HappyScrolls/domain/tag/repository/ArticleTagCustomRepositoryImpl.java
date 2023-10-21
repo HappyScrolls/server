@@ -8,23 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.HappyScrolls.entity.QArticleTag.articleTag;
-import static com.HappyScrolls.entity.QArticle.article;
-
+import static com.HappyScrolls.domain.article.entity.QArticle.article;
+import static com.HappyScrolls.domain.tag.entity.QArticleTag.articleTag;
 @Repository
 public class ArticleTagCustomRepositoryImpl implements ArticleTagCustomRepository {
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
-//    @Override
-//    public List<ArticleTag> findByTagPaging(Long lastindex, Tag tag) {
-//        return jpaQueryFactory.selectFrom(articleTag)
-//                .innerJoin(articleTag.article, article)
-//                .fetchJoin()
-//                .where(article.id.gt(lastindex))
-//                .limit(100)
-//                .fetch();
-//    }
+
 
     @Override
     public List<ArticleTag> findByTagPaging(Long lastindex, Tag tag) {
