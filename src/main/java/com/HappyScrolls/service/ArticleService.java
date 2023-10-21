@@ -34,6 +34,9 @@ public class ArticleService {
     @Autowired
     private ArticleAdaptor articleAdaptor;
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
 
     public Long articleCreate(Member member, ArticleDTO.Request request) {
         Article article=request.toEntity();
@@ -41,8 +44,6 @@ public class ArticleService {
 
         return articleAdaptor.articleCreate(article);
     }
-
-
 
     public ArticleDTO.DetailResponse articleRetrieve(Long id) {
         return ArticleDTO.DetailResponse.toResponseDto(articleAdaptor.retrieveArticle(id));
@@ -64,17 +65,13 @@ public class ArticleService {
         return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.userArticleRetrieve(findMember)) ;
     }
 
+    //쓰지 않는 페이징 메소드 : 성능 비교용
+    public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
+        Page<Article> pages = articleRepository.findAll(pageRequest);
+        List<Article> articles=pages.getContent();
+        return ArticleDTO.ListResponse.toResponseDtoList(articles);
 
-
-
-
-//    //쓰지 않는 페이징 메소드 : 성능 비교용
-//    public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
-//        Page<Article> pages = articleRepository.findAll(pageRequest);
-//        List<Article> articles=pages.getContent();
-//        return ArticleDTO.ListResponse.toResponseDtoList(articles);
-//
-//    }
+    }
 
 
 
@@ -101,8 +98,6 @@ public class ArticleService {
     private List<ArticleDTO.ListResponse> retrieveAllPagingFallBack(Long lastId, Integer limit,Throwable e) {
         return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.retrieveByPaging(lastId, limit));
     }
-
-
 
     public List<ArticleDTO.ListResponse> articleRetrieveByTagList(TagDTO.ListRequest request) {
         List<Tag> tags = tagAdaptor.tagsFind(request.getTags());

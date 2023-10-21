@@ -119,40 +119,4 @@ public class BatchConfig {
     }
 
 
-    @Bean
-    public QueryDslPagingItemReader queryDslreader2() throws NoSuchFieldException, NoSuchMethodException ,IllegalAccessException{
-
-        String identifierName = "id";
-        Comment entity = new Comment();
-        NumberPath<Long> identifier= (NumberPath<Long>)   comment.getClass().getDeclaredField(identifierName).get(comment);
-        Method method = entity.getClass().getMethod("getId");
-        Member member = memberRepository.findById(1l).get();
-        return new QueryDslPagingItemReaderBuilder<Comment>()
-                .name("QueryDslZeroOffsetPagingTest")
-                .entityManagerFactory(emf)
-                .pageSize(10)
-                .identifier(identifier)
-                .method(method)
-                .queryFunction(queryFactory -> queryFactory
-                        .selectFrom(comment)
-                        .where(comment.member.eq(member)))
-                .build();
-    }
-
-    @Bean
-    @StepScope
-    public ItemProcessor<Comment, Comment> CommentProcessor(){
-        return comment -> {
-            comment.setIsParent(true);
-            return comment;
-        };
-    }
-
-    @Bean
-    @StepScope
-    public RepositoryItemWriter<Comment> commentWriter(){
-        return new RepositoryItemWriterBuilder<Comment>()
-                .repository(commentRepository)
-                .build();
-    }
 }

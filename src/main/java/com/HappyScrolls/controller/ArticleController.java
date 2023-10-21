@@ -39,14 +39,14 @@ public class ArticleController {
         return ResponseEntity.ok(null);
     }
 
+    @ExeTimer
+    @ApiOperation(value = "모든 게시글 페이징 조회")
+    @GetMapping("/paging")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-//    @ApiOperation(value = "모든 게시글 페이징 조회")
-//    @GetMapping("/paging")
-//    public ResponseEntity<List<ArticleDTO.ListResponse>> retrieveAllArticlePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-//        PageRequest pageRequest = PageRequest.of(page, size);
-//
-//        return  ResponseEntity.ok(articleService.articleRetrievePaging(pageRequest));
-//    }
+        return  ResponseEntity.ok(articleService.articleRetrievePaging(pageRequest));
+    }
 
     @ExeTimer
     @ApiOperation(value = "모든 게시글 페이징 조회 제로 오프셋")

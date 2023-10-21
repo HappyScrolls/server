@@ -1,14 +1,10 @@
 package com.HappyScrolls.adaptor;
 
-import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.CommentEvent;
 import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
+import com.HappyScrolls.exception.NoAuthorityException;
 import com.HappyScrolls.repository.CommentRepository;
-import com.HappyScrolls.service.ArticleService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -43,7 +39,7 @@ public class CommentAdaptor {
     public Long commentEdit(Member member, Comment request) {
 
         if (!request.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+            throw new NoAuthorityException("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
         }
 
         return commentRepository.save(request).getId();
@@ -53,7 +49,7 @@ public class CommentAdaptor {
     public Integer commentDelete(Member member, Comment request) {
 
         if (!request.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
+            throw new NoAuthorityException("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
         }
         commentRepository.delete(request);
         return 1;

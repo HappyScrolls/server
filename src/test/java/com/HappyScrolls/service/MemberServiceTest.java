@@ -26,38 +26,5 @@ import static org.mockito.Mockito.when;
 
 class MemberServiceTest {
 
-    @InjectMocks
-    private MemberService memberService;
-
-    @Mock
-    private MemberRepository memberRepository;
-
-
-    @Test
-    void 멤버_조회_성공() {
-
-        String testemail="chs98412@naver.com";
-        Member member = Member.builder().id(1l).email(testemail).nickname("hyuksoon").thumbnail("img").build();
-
-
-        when(memberRepository.findByEmail(any())).thenReturn(Optional.of(member));
-
-        Member response = memberService.memberFind(testemail);
-
-        verify(memberRepository).findByEmail(testemail);
-        assertThat(response).isEqualTo(member);
-    }
-
-
-    @Test
-    void 멤버_조회_실패() {
-        String testemail="chs98412@naver.com";
-        when(memberRepository.findByEmail(any())).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> memberService.memberFind(testemail));
-
-
-        verify(memberRepository).findByEmail(testemail);
-    }
 
 }

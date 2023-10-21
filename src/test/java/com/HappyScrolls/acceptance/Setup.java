@@ -56,9 +56,9 @@ public class Setup {
 
 
         Article article1 = Article.builder().title("제목1").body("내용1").member(member).viewCount(0).build();
-        Article article2 = Article.builder().title("제목2").body("내용1").member(member2).viewCount(0).build();
-        Article article3= Article.builder().title("제목3").body("내용1").member(member3).viewCount(0).build();
-        Article article4= Article.builder().title("제목4").body("내용1").member(member4).viewCount(0).build();
+        Article article2 = Article.builder().title("제목2").body("내용2").member(member2).viewCount(0).build();
+        Article article3= Article.builder().title("제목3").body("내용3").member(member3).viewCount(0).build();
+        Article article4= Article.builder().title("제목4").body("내용4").member(member4).viewCount(0).build();
 
         articleRepository.save(article1);
         articleRepository.save(article2);

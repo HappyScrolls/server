@@ -50,13 +50,13 @@ class ArticleControllerTest extends ControllerTest {
     @Test
     void retrieveAllArticlePagewithZeroOffset() throws Exception{
 
-        List<Article> res = new ArrayList<>();
+        List<ArticleDTO.ListResponse> res = new ArrayList<>();
 
 
-        when(articleService.articleRetrievePagingWithZeroOffset(10l,10)).thenReturn(res);
-        ResultActions resultActions = mockMvc.perform(get("/article/zeropaging?lastindex=10&limit=10")  .header("Authorization","Bearer "+tk));
+        when(articleService.retrieveAllPaging(10l,10)).thenReturn(res);
+        ResultActions resultActions = mockMvc.perform(get("/article/zeropaging?lastid=10&limit=10")  .header("Authorization","Bearer "+tk));
 
-        verify(articleService).articleRetrievePagingWithZeroOffset( 10l,10);
+        verify(articleService).retrieveAllPaging( 10l,10);
 
         resultActions.andExpect(status().isOk())
                 .andDo(print());
@@ -65,7 +65,7 @@ class ArticleControllerTest extends ControllerTest {
     @Test
     void retrieveArticle() throws Exception{
 
-        Article res = new Article();
+        ArticleDTO.DetailResponse res = new ArticleDTO.DetailResponse();
 
 
         when(articleService.articleRetrieve(any())).thenReturn(res);

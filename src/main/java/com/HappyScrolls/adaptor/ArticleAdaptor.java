@@ -2,27 +2,17 @@ package com.HappyScrolls.adaptor;
 
 
 import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.TagDTO;
 import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.ArticleTag;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.Tag;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
+import com.HappyScrolls.exception.NoAuthorityException;
 import com.HappyScrolls.exception.NoResultException;
 import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.service.MemberService;
-import com.HappyScrolls.service.TagService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Adaptor
 public class ArticleAdaptor {
@@ -61,7 +51,7 @@ public class ArticleAdaptor {
 
 
         if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
+            throw new NoAuthorityException("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
         }
         article.edit(request);
         articleRepository.save(article);
@@ -72,7 +62,7 @@ public class ArticleAdaptor {
         Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
 
         if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
+            throw new NoAuthorityException("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
         }
         articleRepository.delete(article);
     }

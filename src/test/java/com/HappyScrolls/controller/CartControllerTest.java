@@ -73,8 +73,8 @@ class CartControllerTest extends ControllerTest{
     @Test
     void retrieveUserCart() throws Exception{
 
-        List<Cart> res = new ArrayList<>();
-        res.add(new Cart());
+        List<CartDTO.Response> res = new ArrayList<>();
+        res.add(new CartDTO.Response());
 
         when(cartService.userCartRetrieve(any())).thenReturn(res);
         ResultActions resultActions = mockMvc.perform(get("/cart")  .header("Authorization","Bearer "+tk));

@@ -4,13 +4,11 @@ import com.HappyScrolls.adaptor.ArticleAdaptor;
 import com.HappyScrolls.adaptor.CommentAdaptor;
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.*;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -54,10 +52,6 @@ public class CommentService {
         return CommentDTO.Response.toCommentResponseDtoList(commentAdaptor.commentRetrieve(article));
     }
 
-    public Comment commentRetrieveById(Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("comment[%s] 댓글을 찾을 수 없습니다",id)));
-        return comment;
-    }
 
 
     public Long commentEdit(Member member, CommentDTO.Edit request) {

@@ -1,12 +1,13 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.BuyAdaptor;
+import com.HappyScrolls.adaptor.CartAdaptor;
 import com.HappyScrolls.dto.BuyDTO;
-import com.HappyScrolls.entity.Buy;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
+import com.HappyScrolls.dto.CartDTO;
+import com.HappyScrolls.entity.*;
 import com.HappyScrolls.exception.PointLackException;
 import com.HappyScrolls.repository.BuyRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,60 +29,45 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
-class BuyServiceTest {
+public class BuyServiceTest {
 
     @InjectMocks
     private BuyService buyService;
-    @Mock
-    private BuyRepository buyRepository;
 
     @Mock
-    private CartService cartService;
+    private CartAdaptor cartAdaptor;
 
     @Mock
-    private ProductService productService;
-    @Mock
-    private MemberService memberService;
+    private BuyAdaptor buyAdaptor;
 
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
 
-
-
-
     @Test
-    void 구매_생성_성공() {
-        String testEmail = "chs98412@naver,com";
-        Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").point(120).build();
-        Product product1 = Product.builder().price(100).price(100).build();
-        Cart cart1 = Cart.builder().id(1l).product(product1).member(member).build();
-        List<Long> carts = new ArrayList<>();
-        carts.add(1l);
-        BuyDTO.RequestCart request = new BuyDTO.RequestCart(carts);
-        Buy buy = Buy.builder().product(product1).member(member).createDate(LocalDateTime.now()).build();
+    @DisplayName("구매 내역 조회 테스트")
+    void 구매_내역_조회_테스트() {
+        Member member = new Member();
 
-        when(cartService.cartFind(any())).thenReturn(cart1);
+        Product product = Product.builder().id(1l).build();
 
-        when(buyRepository.save(any())).thenReturn(buy);
-        List<Long> response = buyService.buyCreate(member, request);
+        Buy buy = Buy.builder()
+                .id(1L)
+                .product(product)
+                .member(member)
+                .createDate(LocalDateTime.now())
+                .build();
 
-        assertThat(response.get(0)).isEqualTo(buy.getId());
-    }
+        List<Buy> buys = new ArrayList<>();
+        buys.add(buy);
 
-    @Test
-    void 구매_생성_실패() {
-        String testEmail = "chs98412@naver,com";
-        Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").point(100).build();
-        Product product1 = Product.builder().price(100).price(100).build();
-        Cart cart1 = Cart.builder().id(1l).product(product1).member(member).build();
-        List<Long> carts = new ArrayList<>();
-        carts.add(1l);
-        BuyDTO.RequestCart request = new BuyDTO.RequestCart(carts);
-        Buy buy = Buy.builder().product(product1).member(member).createDate(LocalDateTime.now()).build();
+        when(buyAdaptor.buyRetrieveUser(any(Member.class))).thenReturn(buys);
 
-        when(cartService.cartFind(any())).thenReturn(cart1);
-        assertThrows(PointLackException.class, () -> buyService.buyCreate(member,request));
+        List<BuyDTO.Response> result = buyService.buyRetrieveUser(member);
 
+
+        assertEquals(1, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals(1L, result.get(0).getProductId());
     }
 
 }

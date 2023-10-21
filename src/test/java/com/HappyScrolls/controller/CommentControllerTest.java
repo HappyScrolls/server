@@ -4,6 +4,7 @@ import com.HappyScrolls.config.JwtRequestFilter;
 import com.HappyScrolls.config.JwtTokenUtil;
 import com.HappyScrolls.config.UserOAuth2Service;
 import com.HappyScrolls.config.WebSecurityConfig;
+import com.HappyScrolls.dto.CartDTO;
 import com.HappyScrolls.dto.CommentDTO;
 import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
@@ -101,8 +102,8 @@ class CommentControllerTest extends ControllerTest {
     @Test
     void retrieveParentComment() throws Exception{
 
-        List<Comment> res = new ArrayList<>();
-        res.add(new Comment());
+        List<CommentDTO.Response> res = new ArrayList<>();
+        res.add(new CommentDTO.Response());
 
         when(commentService.commentRetrieve(any())).thenReturn(res);
         ResultActions resultActions = mockMvc.perform(get("/comment?id=1")  .header("Authorization","Bearer "+tk));
