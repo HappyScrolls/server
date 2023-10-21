@@ -1,9 +1,7 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.WebSecurityConfig;
+import com.HappyScrolls.config.security.WebSecurityConfig;
 import com.HappyScrolls.dto.ProductDTO;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;

@@ -1,7 +1,6 @@
 package com.HappyScrolls.acceptance;
 
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.dto.ArticleDTO;
+import com.HappyScrolls.config.security.JwtTokenUtil;
 import com.HappyScrolls.entity.*;
 import com.HappyScrolls.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,40 +1,20 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.JwtRequestFilter;
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.config.UserOAuth2Service;
-import com.HappyScrolls.config.WebSecurityConfig;
-import com.HappyScrolls.dto.CartDTO;
+import com.HappyScrolls.config.security.JwtRequestFilter;
+import com.HappyScrolls.config.security.JwtTokenUtil;
 import com.HappyScrolls.dto.CommentDTO;
-import com.HappyScrolls.entity.Comment;
 import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.repository.MemberRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

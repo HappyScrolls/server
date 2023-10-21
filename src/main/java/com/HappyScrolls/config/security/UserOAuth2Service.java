@@ -1,4 +1,4 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.config.security;
 
 
 import com.HappyScrolls.entity.Member;

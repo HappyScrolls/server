@@ -1,9 +1,7 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.config.Redis;
 
-import io.lettuce.core.RedisConnectionException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.interceptor.CacheErrorHandler;
-import org.springframework.security.core.parameters.P;
 
 public class CustomCacheErrorHandler implements CacheErrorHandler {
 

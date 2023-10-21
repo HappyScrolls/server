@@ -1,9 +1,5 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.config.security;
 
-import com.HappyScrolls.config.JwtRequestFilter;
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.config.OAuth2AuthenticationSuccessHandler;
-import com.HappyScrolls.config.UserOAuth2Service;
 import com.HappyScrolls.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

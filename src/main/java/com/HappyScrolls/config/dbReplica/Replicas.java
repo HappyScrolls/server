@@ -1,4 +1,4 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.config.dbReplica;
 
 import lombok.Getter;
 import lombok.Setter;

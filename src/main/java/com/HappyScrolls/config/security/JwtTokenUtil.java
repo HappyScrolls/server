@@ -1,4 +1,4 @@
-package com.HappyScrolls.config;
+package com.HappyScrolls.config.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
