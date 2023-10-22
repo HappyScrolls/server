@@ -1,5 +1,6 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.ProductAdaptor;
 import com.HappyScrolls.dto.ProductDTO;
 import com.HappyScrolls.entity.Product;
 import com.HappyScrolls.repository.ProductRepository;
@@ -17,21 +18,19 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductAdaptor productAdaptor;
+
     public Long productCreate(ProductDTO.Request request) {
-        Product product = request.toEntity();
-        productRepository.save(product);
-        return product.getId();
+        return productAdaptor.productCreate(request.toEntity());
     }
 
-    public Product productRetrieve(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("product[%s] 상품을 찾을 수 없습니다", id)));
-        return product;
+    public ProductDTO.Response productRetrieve(Long id) {
+        return ProductDTO.Response.toResponseDto(productAdaptor.productRetrieve(id));
     }
 
     public List<Long> productAllRetrieve() {
-        List<Product> products =productRepository.findAll();
-
-        return products.stream().map(product -> product.getId()).collect(Collectors.toList());
+        return productAdaptor.productAllRetrieve();
     }
 
 

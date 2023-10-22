@@ -1,14 +1,16 @@
 package com.HappyScrolls.service;
 
+import com.HappyScrolls.adaptor.ArticleAdaptor;
+import com.HappyScrolls.adaptor.MemberAdaptor;
+import com.HappyScrolls.adaptor.TagAdaptor;
 import com.HappyScrolls.dto.ArticleDTO;
 import com.HappyScrolls.dto.TagDTO;
-import com.HappyScrolls.dto.testRepo;
 import com.HappyScrolls.entity.Article;
 import com.HappyScrolls.entity.ArticleTag;
 import com.HappyScrolls.entity.Member;
 import com.HappyScrolls.entity.Tag;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
 import com.HappyScrolls.repository.ArticleRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -16,95 +18,65 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
 
     @Autowired
-    private MemberService memberService;
+    private MemberAdaptor memberAdaptor;
 
     @Autowired
-    private TagService tagService;
+    private TagAdaptor tagAdaptor;
 
+    @Autowired
+    private ArticleAdaptor articleAdaptor;
 
 
     public Long articleCreate(Member member, ArticleDTO.Request request) {
-        Article article = request.toEntity();
+        Article article=request.toEntity();
         article.setMember(member);
 
-        articleRepository.save(article);
-        tagService.tagCreate(article, request.getTags());
-        return article.getId();
+        return articleAdaptor.articleCreate(article);
     }
 
 
 
-    @Transactional()
-    public Article articleRetrieve(Long id) {
-        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
-        List<TagDTO.Response> tags = tagService.tagsRetrieve(article);
-
-        return article;
+    public ArticleDTO.DetailResponse articleRetrieve(Long id) {
+        return ArticleDTO.DetailResponse.toResponseDto(articleAdaptor.retrieveArticle(id));
     }
 
     public Long articleEdit(Member member, ArticleDTO.Edit request) {
 
-        Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
-
-
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
-        }
-        article.edit(request);
-        articleRepository.save(article);
-        return article.getId();
+        return articleAdaptor.articleEdit(member,request);
     }
 
     public void articleDelete(Member member,Long id) {
-        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
 
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityExceoption("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
-        }
-        articleRepository.delete(article);
+        articleAdaptor.articleDelete(member,id);
     }
 
-    public List<Article>  userArticleRetrieve(String email) {
-        Member findMember = memberService.memberFind(email);
+    public List<ArticleDTO.ListResponse>  userArticleRetrieve(String email) {
+        Member findMember = memberAdaptor.memberFind(email);
 
-        List<Article> articles = articleRepository.findAllByMember(findMember);
-        return articles;
-
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.userArticleRetrieve(findMember)) ;
     }
 
 
-    public List<Article> articleRetrieveByTag(String tag) {
-        Tag findTag = tagService.tagFind(tag);
-        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTag(findTag);
 
-        return articleTags.stream()
-                .map(articleTag -> articleTag.getArticle())
-                .collect(Collectors.toList());
 
-    }
-    public List<Article> articleRetrievePaging(PageRequest pageRequest) {
-        Page<Article> pages = articleRepository.findAll(pageRequest);
-        List<Article> articles=pages.getContent();
-        return articles;
 
-    }
+//    //쓰지 않는 페이징 메소드 : 성능 비교용
+//    public List<ArticleDTO.ListResponse> articleRetrievePaging(PageRequest pageRequest) {
+//        Page<Article> pages = articleRepository.findAll(pageRequest);
+//        List<Article> articles=pages.getContent();
+//        return ArticleDTO.ListResponse.toResponseDtoList(articles);
+//
+//    }
 
-    public void increaseViewCount(Article article) {
-        article.increaseViewCount();
-        articleRepository.save(article);
-    }
+
 
     //기능 개선
 //    public List<Article> articleRetrieveByTagList( TagDTO.ListRequest request) {
@@ -119,39 +91,22 @@ public class ArticleService {
 //                .collect(Collectors.toList());
 //    }
 
-    //@Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName", sync = true, cacheManager = "rcm")
+    @CircuitBreaker(name = "circuitbreaker_test", fallbackMethod = "retrieveAllPagingFallBack")
+    @Cacheable(cacheNames = "zeropagingarticles", key = "#root.target + #root.methodName",  cacheManager = "cacheManager" )
     @Transactional(readOnly = true)
-    public List<Article> articleRetrievePagingWithZeroOffset(Long lastindex, Integer limit) {
-
-        List<Article> articles = articleRepository.zeroOffsetPaging(lastindex, limit);
-
-        return articles;
+    public List<ArticleDTO.ListResponse> retrieveAllPaging(Long lastId, Integer limit) {
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.retrieveByPaging(lastId, limit));
     }
 
-    public List<Article> articleRetrieveByTagPaging(Long lastindex, String tag) {
-
-        Tag findTag = tagService.tagFind(tag);
-        List<ArticleTag> articleTags = tagService.articlrTagRetrieveByTagPaging(lastindex,findTag);
-
-        return articleTags.stream()
-                .map(articleTag -> articleTag.getArticle())
-                .collect(Collectors.toList());
-
+    private List<ArticleDTO.ListResponse> retrieveAllPagingFallBack(Long lastId, Integer limit,Throwable e) {
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.retrieveByPaging(lastId, limit));
     }
 
-    public List<Article> articleRetrieveByTagPaging2(Long lastindex, String tag) {
 
-        Tag findTag = tagService.tagFind(tag);
-        List<Article> articles =  articleRepository.findByTagPaging(lastindex,findTag);
 
-        return articles;
-
-    }
-
-    public List<Article> articleRetrieveByTagList(TagDTO.ListRequest request) {
-        List<Tag> tags = tagService.tagsFind(request.getTags());
-        List<Article> articles = articleRepository.findByTagListPaging(request.getLastindex(), tags);
-        return articles;
+    public List<ArticleDTO.ListResponse> articleRetrieveByTagList(TagDTO.ListRequest request) {
+        List<Tag> tags = tagAdaptor.tagsFind(request.getTags());
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.articleRetrieveByTagList(request.getLastid(), tags));
     }
 
     //안쓰는 코드
@@ -160,5 +115,11 @@ public class ArticleService {
 //
 //        return articles;
 //    }
+
+    public List<ArticleDTO.ListResponse> search(Long lastindex, Integer limit,String param) {
+
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.search(lastindex, limit,param));
+    }
+
 
 }

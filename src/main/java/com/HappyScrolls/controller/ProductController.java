@@ -30,34 +30,15 @@ public class ProductController {
     @ApiOperation(value = "제품 id로 단건 조회")
     @GetMapping("")
     public ResponseEntity<ProductDTO.Response> retrieveProduct(@RequestParam Long id) {
-        Product response = productService.productRetrieve(id);
-        return ResponseEntity.ok(toResponseDto(response));
+        return ResponseEntity.ok(productService.productRetrieve(id));
     }
 
     @ApiOperation(value = "모든 제품 조회")
     @GetMapping("/all")
     public ResponseEntity<List<Long>> retrieveAllProduct() {
-        List<Long>  response = productService.productAllRetrieve();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(productService.productAllRetrieve());
     }
 
-    public static ProductDTO.Response toResponseDto(Product product) {
-        return ProductDTO.Response.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .build();
-    }
-    public static List<ProductDTO.Response> toResponseDtoList(List<Product> products) {
-        return products.stream()
-                .map(product -> ProductDTO.Response
-                        .builder()
-                        .id(product.getId())
-                        .body(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .build())
-                .collect(Collectors.toList());
-    }
+
+
 }

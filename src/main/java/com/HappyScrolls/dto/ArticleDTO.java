@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArticleDTO {
 
@@ -46,7 +47,13 @@ public class ArticleDTO {
         private String body;
         private LocalDate createDate;
         private List<TagDTO.Response> tags;
-
+        public static ArticleDTO. DetailResponse toResponseDto(Article article) {
+            return ArticleDTO.DetailResponse.builder()
+                    .id(article.getId())
+                    .title(article.getTitle())
+                    .body(article.getBody())
+                    .build();
+        }
 
 
     }
@@ -64,7 +71,15 @@ public class ArticleDTO {
 
         @Schema(description = "작성자", example = "최혁순", required = true)
         private String member;
-
+        public static List<ArticleDTO.ListResponse> toResponseDtoList(List<Article> articles) {
+            return articles.stream()
+                    .map(article -> ArticleDTO.ListResponse.builder()
+                            .id(article.getId())
+                            .title(article.getTitle())
+                            .member(article.getMember().getNickname())
+                            .build())
+                    .collect(Collectors.toList());
+        }
     }
 
     @Builder
@@ -89,4 +104,6 @@ public class ArticleDTO {
         private String nickname;
 
     }
+
+
 }

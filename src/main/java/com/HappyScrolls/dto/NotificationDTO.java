@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class NotificationDTO {
 
     @Builder
@@ -44,6 +47,15 @@ public class NotificationDTO {
         private String msg;
 
 
-
+        public static List<Response> toResponseDtoList(List<Notification> notifications) {
+            return notifications.stream()
+                    .map(notification -> NotificationDTO.Response.builder()
+                            .id(notification.getId())
+                            .category(notification.getCategory())
+                            .msg(notification.getMsg())
+                            .refId(notification.getRefId())
+                            .build())
+                    .collect(Collectors.toList());
+        }
     }
 }

@@ -30,18 +30,8 @@ public class NotificationController {
     @ApiOperation(value = "유저의 알림 조회")
     @GetMapping("")
     public ResponseEntity<List<NotificationDTO.Response>> retrieveUserNotification(@AuthenticationPrincipal Member member) {
-        List<Notification> response = notificationService.userNotificationRetrieve(member);
-        return  ResponseEntity.ok(toResponseDtoList(response));
+        return  ResponseEntity.ok(notificationService.userNotificationRetrieve(member));
     }
 
-    public static List<NotificationDTO.Response> toResponseDtoList(List<Notification> notifications) {
-        return notifications.stream()
-                .map(notification -> NotificationDTO.Response.builder()
-                        .id(notification.getId())
-                        .category(notification.getCategory())
-                        .msg(notification.getMsg())
-                        .refId(notification.getRefId())
-                        .build())
-                .collect(Collectors.toList());
-    }
+
 }

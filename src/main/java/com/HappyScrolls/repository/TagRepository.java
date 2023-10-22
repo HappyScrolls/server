@@ -11,4 +11,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     Optional<Tag> findByBody(String body);
 
     List<Tag> findByBodyIn(List<String> tags);
+
+    Long countByBody(String body);
 }

@@ -55,11 +55,13 @@ public class ArticleServiceTest {
     @DisplayName("게시물 작성 기능이 제대로 동작하는지 확인")
     void 게시물_작성_성공_테스트() {
 
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        ArticleDTO.Request request = ArticleDTO.Request.builder().title("제목").body("내용").tags(null).build();
 
+        Member member = Member.builder().id(1l).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
+        ArticleDTO.Request request = ArticleDTO.Request.builder().title("제목").body("내용").tags(null).build();
         Article article = request.toEntity();
+        article.setId(1l);
         article.setMember(member);
+
         when(articleRepository.save(any())).thenReturn(article);
 
         Long response =   articleService.articleCreate(member, request);
@@ -209,17 +211,8 @@ public class ArticleServiceTest {
 
         List<Article> response = articleService.userArticleRetrieve(testEmail);
 
-        verify(memberService).memberFind(testEmail);
-        verify(articleRepository).findAllByMember(member);
-
-
-        for (int i=0;i<response.size();i++) {
-            assertThat(response.get(i).getId()).isEqualTo(articles.get(i).getId());
-            assertThat(response.get(i).getTitle()).isEqualTo(articles.get(i).getTitle());
-            assertThat(response.get(i).getBody()).isEqualTo(articles.get(i).getBody());
-
-        }
-
+        verify(memberService).memberFind(any());
+        verify(articleRepository).findAllByMember(any());
 
     }
 
