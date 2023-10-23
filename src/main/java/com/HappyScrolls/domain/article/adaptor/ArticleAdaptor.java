@@ -49,8 +49,7 @@ public class ArticleAdaptor {
 
     public Long articleEdit(Member member, ArticleDTO.Edit request) {
 
-        Article article = articleRepository.findById(request.getId()).orElseThrow(() -> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", request.getId()))); //%s?
-
+        Article article = retrieveArticle(request.getId());
 
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityException("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
@@ -61,7 +60,7 @@ public class ArticleAdaptor {
     }
 
     public void articleDelete(Member member,Long id) {
-        Article article = articleRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("article[%s] 게시글을 찾을 수 없습니다", id))); //%s?
+        Article article = retrieveArticle(id);
 
         if (!article.getMember().equals(member)) {
             throw new NoAuthorityException("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
