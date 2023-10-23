@@ -12,6 +12,7 @@ import com.HappyScrolls.exception.PointLackException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class BuyService {
     @Autowired
     private  ApplicationEventPublisher applicationEventPublisher;
 
-
+    @Transactional
     public List<Long> buyCreate(Member member, BuyDTO.RequestCart request) {
 
         List<Buy> response = new ArrayList<>();
@@ -37,28 +38,15 @@ public class BuyService {
         Integer requirePoints=0;
         List<Cart> cartList = new ArrayList<>();
         for (Long cartId : request.getCart()) {
+
             Cart cart=cartAdaptor.cartFind(cartId);
             requirePoints += cart.getProduct().getPrice();
-            if (cart.getProduct().getQuantity() <= 0) {
-                throw new PointLackException(String.format(" 재고수량이 부족합니다 [%s]", cart.getProduct().getId()));
-            }
-            cartList.add(cart);
-        }
-        if (requirePoints > member.getPoint()) {
-            throw new PointLackException(String.format("포인트가 부족합니다 보유 포인트 :[%s] 필요 포인트 : [%s] 부족한 포인트 : [%s]",  member.getPoint(),requirePoints,requirePoints- member.getPoint()));
-        }
-
-        for (Cart cart : cartList) {
             cart.getProduct().decreaseQuantity();
-
-            Buy buy = new Buy();
-            buy.setCreateDate(LocalDateTime.now());
-            buy.setMember(member);
-            buy.setProduct(cart.getProduct());
+            Buy buy = Buy.builder().createDate(LocalDateTime.now()).member(member).product(cart.getProduct()).build();
             buyAdaptor.saveEntity(buy);
             response.add(buy);
-        }
 
+        }
 
 
         applicationEventPublisher.publishEvent(new BuyEvent(member,requirePoints,cartList));//어떻게테스트??

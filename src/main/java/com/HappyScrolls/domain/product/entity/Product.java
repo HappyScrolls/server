@@ -1,6 +1,7 @@
 package com.HappyScrolls.domain.product.entity;
 
 
+import com.HappyScrolls.exception.PointLackException;
 import lombok.*;
 import org.springframework.data.annotation.Version;
 
@@ -28,8 +29,14 @@ public class Product {
 //    @Version
     private Long version;
     public  void decreaseQuantity() {
+        moreThanZero();
         this.quantity -= 1;
     }
 
+    private void moreThanZero() {
+        if (quantity <= 0) {
+            throw new PointLackException(String.format(" 재고수량이 부족합니다 [%s]", id));
+        }
+    }
 
 }

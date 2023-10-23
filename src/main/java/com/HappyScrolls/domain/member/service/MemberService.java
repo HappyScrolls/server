@@ -22,13 +22,7 @@ public class MemberService {
     }
 
 
-    @EventListener
-    public void test(BuyEvent event) {
-        Member member = event.getMember();
-        Integer requirePoints = event.getPrice();
-        member.decreasePoint(requirePoints);
-        memberRepository.save(member);
-    }
+
     @EventListener
     public void commentEvent(CommentEvent event) {
         Member member = event.getChild().getMember();
