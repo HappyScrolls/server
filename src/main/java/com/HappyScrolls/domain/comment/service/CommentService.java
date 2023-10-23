@@ -58,16 +58,12 @@ public class CommentService {
 
     public Long commentEdit(Member member, CommentDTO.Edit request) {
 
-        Comment editComment = commentAdaptor.commentRetrieveById(request.getId());
-        editComment.edit(request);
-        return commentAdaptor.commentEdit(member,editComment);
+        return commentAdaptor.commentEdit(member,request);
     }
 
 
     public Integer commentDelete(Member member, Long id) {
-
-        Comment deleteComment = commentAdaptor.commentRetrieveById(id);
-        return commentAdaptor.commentDelete(member,deleteComment);
+        return commentAdaptor.commentDelete(member,id);
     }
 
 

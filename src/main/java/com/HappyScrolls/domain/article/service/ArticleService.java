@@ -48,7 +48,6 @@ public class ArticleService {
     }
 
     public Long articleEdit(Member member, ArticleDTO.Edit request) {
-
         return articleAdaptor.articleEdit(member,request);
     }
 

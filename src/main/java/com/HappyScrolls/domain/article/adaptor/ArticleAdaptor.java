@@ -46,25 +46,17 @@ public class ArticleAdaptor {
 
     }
 
-
     public Long articleEdit(Member member, ArticleDTO.Edit request) {
 
         Article article = retrieveArticle(request.getId());
-
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityException("수정 권한이 없습니다. 본인 소유의 글만 수정 가능합니다.");
-        }
-        article.edit(request);
-        articleRepository.save(article);
+        article.edit(member,request);
+        articleRepository.save(article);    //없어도 되지 않나??
         return article.getId();
     }
 
     public void articleDelete(Member member,Long id) {
         Article article = retrieveArticle(id);
-
-        if (!article.getMember().equals(member)) {
-            throw new NoAuthorityException("삭제 권한이 없습니다. 본인 소유의 글만 삭제  가능합니다.");
-        }
+        article.checkPermission(member);
         articleRepository.delete(article);
     }
 
