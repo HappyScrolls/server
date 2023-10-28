@@ -1,5 +1,6 @@
 package com.HappyScrolls.domain.article.dto;
 
+import com.HappyScrolls.config.elastic.ArticleDoc;
 import com.HappyScrolls.domain.article.entity.Article;
 import com.HappyScrolls.domain.tag.dto.TagDTO;
 import com.HappyScrolls.domain.article.entity.Sticker;
@@ -77,7 +78,17 @@ public class ArticleDTO {
                     .map(article -> ArticleDTO.ListResponse.builder()
                             .id(article.getId())
                             .title(article.getTitle())
-                            .member(article.getMember().getNickname())
+                            .member(article.getMember().getId().toString())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
+        public static List<ArticleDTO.ListResponse> toResponseDtoListFromArticleDocs(List<ArticleDoc> articleDocs) {
+            return articleDocs.stream()
+                    .map(articleDoc -> ListResponse.builder()
+                            .id(articleDoc.getId())
+                            .title(articleDoc.getTitle())
+                            .member(articleDoc.getMember_id())
                             .build())
                     .collect(Collectors.toList());
         }

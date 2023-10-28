@@ -101,6 +101,8 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
     public List<Article> search(Long lastindex, Integer limit, String param) {
         return jpaQueryFactory
                 .selectFrom(article)
+                .innerJoin(article.member, member)
+                .fetchJoin()
                 .where(article.title.contains(param),article.id.gt(lastindex))
                 .limit(limit)
                 .fetch();
