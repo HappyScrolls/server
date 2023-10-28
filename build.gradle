@@ -51,6 +51,7 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.7.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
 tasks.named('test') {

@@ -110,7 +110,11 @@ resilience4j:
           - java.net.ConnectException
         ignoreExceptions:
           - java.lang.IllegalStateException
-
+      circuitbreaker_test2:
+          failure-rate-threshold: 60
+logging:
+  level:
+    org.elasticsearch.client: DEBUG
 
 ---
 

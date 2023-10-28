@@ -1,30 +1,37 @@
 package com.HappyScrolls.domain.article.controller;
 
-
 import com.HappyScrolls.aop.ExeTimer;
 import com.HappyScrolls.config.elastic.ArticleDoc;
 import com.HappyScrolls.config.elastic.ArticleDocRepository;
 import com.HappyScrolls.domain.article.dto.ArticleDTO;
-import com.HappyScrolls.domain.article.entity.Article;
-import com.HappyScrolls.domain.tag.dto.TagDTO;
-import com.HappyScrolls.domain.member.entity.Member;
 import com.HappyScrolls.domain.article.service.ArticleService;
 import com.HappyScrolls.domain.article.service.ViewCountService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.tag.dto.TagDTO;
 import io.swagger.annotations.ApiOperation;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("article")
-public class ArticleController {
+@RequestMapping("elk")
+public class ArticleDocController {
 
     @Autowired
     private ArticleDocRepository articleDocRepository;
@@ -36,8 +43,49 @@ public class ArticleController {
         return articleDocRepository.findAllByTitle("제목20");
     }
 
+    @Autowired
+    private  RestHighLevelClient client;
 
-@ExeTimer
+    private static final String INDEX = "articletest";
+
+    //전체 쿼리 처리
+    @GetMapping("/elk5")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> search22() throws IOException {
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
+                .query(myQuery())
+                .size(0);
+
+        SearchRequest searchRequest = new SearchRequest(INDEX)
+                .source(searchSourceBuilder);
+
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+
+        SearchHits hits = searchResponse.getHits();
+        List<ArticleDoc> articles = new ArrayList<>();
+        List<ArticleDTO.ListResponse> result = new ArrayList<>();
+        for (SearchHit hit : hits) {
+            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+
+            ArticleDTO.ListResponse response = ArticleDTO.ListResponse.builder()
+                    .id((Long) sourceAsMap.get("id"))
+                    .member((String) sourceAsMap.get("member"))
+                    .title((String) sourceAsMap.get("title"))
+                    .build();
+
+
+            result.add(response);
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    //query 부분
+    private QueryBuilder myQuery(){
+        return QueryBuilders.matchQuery("title","부하테스트");
+    }
+
+
+    @ExeTimer
     @GetMapping("/elk2")
     public ResponseEntity<List<ArticleDTO.ListResponse>> get2(@RequestParam String param) {
         return ResponseEntity.ok(ArticleDTO.ListResponse.toResponseDtoListFromArticleDocs(articleDocRepository.findAllByTitleContaining(param)));
