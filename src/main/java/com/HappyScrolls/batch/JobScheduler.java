@@ -21,8 +21,8 @@ public class JobScheduler {
     private final JobLauncher jobLauncher;
     private final BatchConfig batchConfig;
 
-    @ExeTimer
-    @Scheduled(cron="0 10 * * * *")
+//    @ExeTimer
+//    @Scheduled(cron="0 10 * * * *")
     public void runJob() throws  NoSuchFieldException, NoSuchMethodException,IllegalAccessException{
 
         Map<String, JobParameter> confMap = new HashMap<>();

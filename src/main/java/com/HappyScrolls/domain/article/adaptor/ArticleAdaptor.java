@@ -88,4 +88,9 @@ public class ArticleAdaptor {
 
     }
 
+    //로그인 한 유저가 작성한 게시글 페이징 조회
+    public List<Article> usersearch(Member member, Long lastindex, Integer limit) {
+        return articleRepository.usersearch(member,lastindex,limit);
+    }
+
 }

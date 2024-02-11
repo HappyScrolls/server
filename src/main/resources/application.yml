@@ -96,9 +96,9 @@ spring:
 
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url:  jdbc:mysql://localhost:3306/happyscrollslocal
+      url:  jdbc:mysql://localhost:3307/happyscrollslocal
       username: root
-      password: Chlgurtns98!
+      password: root
 
 resilience4j:
   circuitbreaker:
@@ -122,6 +122,11 @@ server:
   port: 8080
 
 spring:
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
+    job:
+      enabled: false
   config:
     activate:
       on-profile: test
@@ -155,27 +160,23 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://plz:3000/test
-    username: root
-    password: root
 #  datasource:
-#    hikari:
-#      source:
-#        username: root
-#        password: 1234
-#        jdbc-url: jdbc:mysql://db-master:3306/test
-#      replica:
-#        replica-List:
-#          -   name: replica1
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://db-slave:3306/test
-#          -   name: replica2
-#              username: root
-#              password: 1234
-#              jdbc-url: jdbc:mysql://db-slave2:3306/test
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url:  jdbc:mysql://master:3000/test
+#    username: root
+#    password: root
+  datasource:
+    hikari:
+      source:
+        username: root
+        password: root
+        jdbc-url: jdbc:mysql://master:3000/sample
+      replica:
+        replica-List:
+          -   name: replica1
+              username: root
+              password: root
+              jdbc-url: jdbc:mysql://slave:3001/sample
 
 
 management:

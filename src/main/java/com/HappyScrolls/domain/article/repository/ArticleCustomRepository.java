@@ -1,6 +1,7 @@
 package com.HappyScrolls.domain.article.repository;
 
 import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.member.entity.Member;
 import com.HappyScrolls.domain.tag.entity.Tag;
 
 import java.time.LocalDate;
@@ -19,4 +20,6 @@ public interface ArticleCustomRepository {
     List<Article> findByTagListPaging(Long lastindex, List<Tag> tags);
 
     List<Article> search(Long lastindex, Integer limit, String param);
+
+    List<Article> usersearch(Member member, Long lastindex, Integer limit);
 }

@@ -49,7 +49,9 @@ public class ArticleService {
     }
 
     public ArticleDTO.DetailResponse articleRetrieve(Long id) {
-        return ArticleDTO.DetailResponse.toResponseDto(articleAdaptor.retrieveArticle(id));
+        Article article = articleAdaptor.retrieveArticle(id);
+        article.increaseViewCount();
+        return ArticleDTO.DetailResponse.toResponseDto(article);
     }
 
     public Long articleEdit(Member member, ArticleDTO.Edit request) {
@@ -136,5 +138,13 @@ public class ArticleService {
         return ArticleDTO.ListResponse.toResponseDtoList(articles);
 
     }
+
+    //로그인 한 유저가 작성한 게시글 페이징 조회
+    public List<ArticleDTO.ListResponse> usersearch(Member member, Long lastindex, Integer limit) {
+        return ArticleDTO.ListResponse.toResponseDtoList(articleAdaptor.usersearch(member,lastindex, limit));
+    }
+
+
+
 
 }

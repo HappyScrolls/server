@@ -15,7 +15,7 @@
 //        this.replicaDataSourceNames = new ReplicaDataSourceNames(names);
 //    }
 //
-//    @Override
+//
 //    protected Object determineCurrentLookupKey() {
 //        final boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
 //        if (isReadOnly) {

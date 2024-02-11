@@ -1,6 +1,7 @@
 package com.HappyScrolls.domain.article.repository;
 
 import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.member.entity.Member;
 import com.HappyScrolls.domain.tag.entity.ArticleTag;
 import com.HappyScrolls.domain.tag.entity.Tag;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -104,6 +105,18 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .innerJoin(article.member, member)
                 .fetchJoin()
                 .where(article.title.contains(param),article.id.gt(lastindex))
+                .limit(limit)
+                .fetch();
+    }
+
+    //로그인 한 유저가 작성한 게시글 페이징 조회
+    @Override
+    public List<Article> usersearch(Member memberA, Long lastindex, Integer limit) {
+        return jpaQueryFactory
+                .selectFrom(article)
+                .innerJoin(article.member, member)
+                .fetchJoin()
+                .where(article.member.eq(memberA),article.id.gt(lastindex))
                 .limit(limit)
                 .fetch();
     }

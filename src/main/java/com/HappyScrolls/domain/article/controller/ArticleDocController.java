@@ -39,8 +39,9 @@ public class ArticleDocController {
     private ArticleService articleService;
 
     @GetMapping("/elk")
-    public List<ArticleDoc> get() {
-        return articleDocRepository.findAllByTitle("제목20");
+    public ResponseEntity<List<ArticleDTO.ListResponse>> get(@RequestParam String parameter) {
+
+        return ResponseEntity.ok(ArticleDTO.ListResponse.toResponseDtoListFromArticleDocs(articleDocRepository.find(parameter)));
     }
 
     @Autowired

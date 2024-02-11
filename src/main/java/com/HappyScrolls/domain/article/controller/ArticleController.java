@@ -105,6 +105,9 @@ public class ArticleController {
         return  ResponseEntity.ok(articleService.userArticleRetrieve(email));
     }
 
+
+
+
     @ApiOperation(value = "게시글 작성")
     @PostMapping("")
     public ResponseEntity<Long> createArticle(@AuthenticationPrincipal Member member, @RequestBody ArticleDTO.Request request) {
@@ -132,4 +135,10 @@ public class ArticleController {
         return ResponseEntity.ok( articleService.search(lastindex,limit,param));
     }
 
-}
+    //로그인 한 유저가 작성한 게시글 페이징 조회
+    @GetMapping("/usersearch")
+    public ResponseEntity<List<ArticleDTO.ListResponse>> usersearch(@AuthenticationPrincipal Member member, @RequestParam Long lastindex, @RequestParam Integer limit){
+        return ResponseEntity.ok(articleService.usersearch(member,lastindex,limit));
+    }
+
+    }
