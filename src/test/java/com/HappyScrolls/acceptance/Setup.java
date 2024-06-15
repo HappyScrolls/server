@@ -1,9 +1,20 @@
 package com.HappyScrolls.acceptance;
 
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.entity.*;
-import com.HappyScrolls.repository.*;
+import com.HappyScrolls.config.security.JwtTokenUtil;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
+import com.HappyScrolls.domain.buy.entity.Buy;
+import com.HappyScrolls.domain.buy.repository.BuyRepository;
+import com.HappyScrolls.domain.cart.entity.Cart;
+import com.HappyScrolls.domain.cart.repository.CartRepository;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
+import com.HappyScrolls.domain.product.entity.Product;
+import com.HappyScrolls.domain.product.repository.ProductRepository;
+import com.HappyScrolls.domain.tag.entity.ArticleTag;
+import com.HappyScrolls.domain.tag.entity.Tag;
+import com.HappyScrolls.domain.tag.repository.ArticleTagRepository;
+import com.HappyScrolls.domain.tag.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,9 +67,9 @@ public class Setup {
 
 
         Article article1 = Article.builder().title("제목1").body("내용1").member(member).viewCount(0).build();
-        Article article2 = Article.builder().title("제목2").body("내용1").member(member2).viewCount(0).build();
-        Article article3= Article.builder().title("제목3").body("내용1").member(member3).viewCount(0).build();
-        Article article4= Article.builder().title("제목4").body("내용1").member(member4).viewCount(0).build();
+        Article article2 = Article.builder().title("제목2").body("내용2").member(member2).viewCount(0).build();
+        Article article3= Article.builder().title("제목3").body("내용3").member(member3).viewCount(0).build();
+        Article article4= Article.builder().title("제목4").body("내용4").member(member4).viewCount(0).build();
 
         articleRepository.save(article1);
         articleRepository.save(article2);

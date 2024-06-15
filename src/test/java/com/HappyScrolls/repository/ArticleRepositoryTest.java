@@ -1,27 +1,25 @@
 package com.HappyScrolls.repository;
 
 import com.HappyScrolls.TestConfig;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Sticker;
-import org.junit.jupiter.api.BeforeEach;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
+import com.HappyScrolls.domain.article.dto.ArticleDTO;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.article.entity.Sticker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @DataJpaTest

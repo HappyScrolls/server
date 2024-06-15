@@ -1,16 +1,20 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.*;
-import com.HappyScrolls.service.*;
+import com.HappyScrolls.config.security.OAuth2AuthenticationSuccessHandler;
+import com.HappyScrolls.config.security.UserOAuth2Service;
+import com.HappyScrolls.domain.article.service.ArticleService;
+import com.HappyScrolls.domain.article.service.ViewCountService;
+import com.HappyScrolls.domain.buy.service.BuyService;
+import com.HappyScrolls.domain.cart.service.CartService;
+import com.HappyScrolls.domain.comment.service.CommentService;
+import com.HappyScrolls.domain.member.service.MemberService;
+import com.HappyScrolls.domain.notification.service.NotificationService;
+import com.HappyScrolls.domain.product.service.ProductService;
+import com.HappyScrolls.domain.tag.service.TagService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.web.servlet.MockMvc;
 

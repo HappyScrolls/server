@@ -1,8 +1,8 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.WebSecurityConfig;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Product;
+import com.HappyScrolls.config.security.WebSecurityConfig;
+import com.HappyScrolls.domain.product.controller.ProductController;
+import com.HappyScrolls.domain.product.dto.ProductDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,7 +45,7 @@ class ProductControllerTest extends ControllerTest{
     @WithMockUser
 
     void retrieveProduct() throws Exception{
-        Product response = Product.builder().id(1l).build();
+        ProductDTO.Response response = new ProductDTO.Response();
 
         when(productService.productRetrieve(1l)).thenReturn(response);
 

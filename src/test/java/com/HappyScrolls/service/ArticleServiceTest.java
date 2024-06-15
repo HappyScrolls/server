@@ -3,14 +3,15 @@ package com.HappyScrolls.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Sticker;
-import com.HappyScrolls.exception.NoAuthorityExceoption;
-import com.HappyScrolls.repository.ArticleRepository;
+
+import com.HappyScrolls.domain.article.adaptor.ArticleAdaptor;
+import com.HappyScrolls.domain.article.service.ArticleService;
+import com.HappyScrolls.domain.member.adaptor.MemberAdaptor;
+import com.HappyScrolls.domain.tag.adaptor.TagAdaptor;
+import com.HappyScrolls.domain.article.dto.ArticleDTO;
+import com.HappyScrolls.domain.tag.dto.TagDTO;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,16 +19,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
@@ -36,229 +34,116 @@ public class ArticleServiceTest {
     private ArticleService articleService;
 
     @Mock
-    private ArticleRepository articleRepository;
+    private ArticleAdaptor articleAdaptor;
 
     @Mock
-    private MemberService memberService;
+    private MemberAdaptor memberAdaptor;
 
     @Mock
-    private TagService tagService;
-
-    private static final Long ARTICLE_ID = 1L;
-    private static final Long USER_ID = 1L;
-
-
-
-
+    private TagAdaptor tagAdaptor;
 
     @Test
-    @DisplayName("게시물 작성 기능이 제대로 동작하는지 확인")
-    void 게시물_작성_성공_테스트() {
+    @DisplayName("게시글 생성 테스트")
+    void 게시글_생성_테스트() {
+        Member member = new Member();
+        ArticleDTO.Request request = new ArticleDTO.Request();
 
+        when(articleAdaptor.articleCreate(any())).thenReturn(1L);
 
-        Member member = Member.builder().id(1l).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        ArticleDTO.Request request = ArticleDTO.Request.builder().title("제목").body("내용").tags(null).build();
-        Article article = request.toEntity();
-        article.setId(1l);
-        article.setMember(member);
+        Long result = articleService.articleCreate(member, request);
 
-        when(articleRepository.save(any())).thenReturn(article);
-
-        Long response =   articleService.articleCreate(member, request);
-
-        verify(articleRepository).save(any());
-        assertThat(response).isEqualTo(article.getId());
-    }
-
-
-    @Test
-    @DisplayName("게시글 단건 조회 기능이 제대로 동작하는지 확인")
-    void 게시글_단건조회_성공_테스트() {
-
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
-
-
-        Article response = articleService.articleRetrieve(1L);
-
-        verify(articleRepository).findById(1L);
-        assertThat(response).isEqualTo(article);
-
-    }
-
-
-    @Test
-    @DisplayName("게시글 단건 조회 기능이 조회를 할 수 없을 때 예외처리를 하는지 확인")
-    void 게시글_단건조회_예외_테스트() {
-        Long testId = 1L;
-        when(articleRepository.findById(any())).thenReturn(Optional.empty());
-
-
-        assertThrows(NoSuchElementException.class, () -> articleService.articleRetrieve(testId));
-
-
-        verify(articleRepository).findById(testId);
-    }
-
-
-    @Test
-    @DisplayName("게시글 수정 기능이  제대로 동작하는지 확인")
-    void 게시글_수정_성공_테스트() {
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
-
-
-        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
-        article.edit(request);
-        when(articleRepository.save(any())).thenReturn(article);
-
-        Long response = articleService.articleEdit(member, request);
-
-
-        verify(articleRepository).findById(1L);
-        verify(articleRepository).save(article);
-        assertThat(response).isEqualTo(article.getId());
-
-    }
-
-
-    @Test
-    @DisplayName("게시글 수정 기능에서 게시글  조회를 할 수 없을 때 예외처리를 하는지 확인")
-    void 게시글_수정기능_조회오류예외_테스트() {
-
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
-        when(articleRepository.findById(any())).thenReturn(Optional.empty());
-
-        assertThrows(NoSuchElementException.class, () -> articleService.articleEdit(member,request));
-
-        verify(articleRepository).findById(request.getId());
-    }
-    @Test
-    @DisplayName("게시글 수정 기능에서 본인 소유의 게시글이 아닐 때 예외처리를 하는지 확인")
-    void 게시글_수정기능_권한제한예외_테스트() {
-
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
-        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1L).title("제목_수정").body("내용_수정").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
-
-
-
-        assertThrows(NoAuthorityExceoption.class, () -> articleService.articleEdit(requestMember,request));
-        verify(articleRepository).findById(request.getId());
-    }
-
-
-    @Test
-    @DisplayName("게시글 삭제 기능이  제대로 동작하는지 확인")
-    void 게시글_삭제_성공_테스트() {
-        Long testId = 1L;
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
-
-        articleService.articleDelete(member, testId);
-
-
-
-        verify(articleRepository).findById(testId);
-        verify(articleRepository).delete(article);
+        assertEquals(1L, result);
     }
 
     @Test
-    @DisplayName("게시글 삭제 기능에서 게시글  조회를 할 수 없을 때 예외처리를 하는지 확인")
-    void 게시글_삭제기능_조회오류예외_테스트() {
-        Long testId = 1L;
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        when(articleRepository.findById(any())).thenReturn(Optional.empty());
+    @DisplayName("게시글 검색 테스트")
+    void 게시글_검색_테스트() {
+        Article article = Article.builder().id(1l).build();
+        when(articleAdaptor.retrieveArticle(any())).thenReturn(article);
 
-        assertThrows(NoSuchElementException.class, () -> articleService.articleDelete(member,testId));
+        ArticleDTO.DetailResponse result = articleService.articleRetrieve(1L);
 
-        verify(articleRepository).findById(testId);
+        assertEquals(result.getId(),article.getId());
     }
 
     @Test
-    @DisplayName("게시글 삭제기능에서 본인 소유의 게시글이 아닐 때 예외처리를 하는지 확인")
-    void 게시글_삭제기능_권한제한예외_테스트() {
-        Long testId = 1L;
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Member requestMember = Member.builder().id(USER_ID).email("abc1234@naver,com").nickname("toy").thumbnail("img").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        when(articleRepository.findById(any())).thenReturn(Optional.of(article));
-        assertThrows(NoAuthorityExceoption.class, () -> articleService.articleDelete(requestMember,testId));
-        verify(articleRepository).findById(testId);
+    @DisplayName("게시글 수정 테스트")
+    void 게시글_수정_테스트() {
+        ArticleDTO.Edit request = ArticleDTO.Edit.builder().id(1l).build();
+
+        when(articleAdaptor.articleEdit(any(), any())).thenReturn(1L);
+
+        Long result = articleService.articleEdit(new Member(), request);
+
+        assertEquals(1L, result);
     }
 
-
     @Test
-    @DisplayName("게시글 유저별  조회 기능이 제대로 동작하는지 확인")
-    void 게시글_유저별조회_성공_테스트() {
-        String testEmail = "chs98412@naver,com";
-        Member member = Member.builder().id(USER_ID).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
-        Article article1 = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        Article article2 = Article.builder().id(2l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
-        List<Article> articles = new ArrayList<>();
-        articles.add(article1);
-        articles.add(article2);
+    @DisplayName("게시글 삭제 테스트")
+    void 게시글_삭제_테스트() {
 
-        when(memberService.memberFind(any())).thenReturn(member);
-        when(articleRepository.findAllByMember(any())).thenReturn(articles);
+        articleService.articleDelete( new Member(), 1L);
 
-
-        List<Article> response = articleService.userArticleRetrieve(testEmail);
-
-        verify(memberService).memberFind(any());
-        verify(articleRepository).findAllByMember(any());
-
+        verify(articleAdaptor).articleDelete(any(), any());
     }
 
+    @Test
+    @DisplayName("사용자 게시글 검색 테스트")
+    void 사용자_게시글_검색_테스트() {
+        Member member = Member.builder().email("test@email.com").build();
+        Article article1= Article.builder().id(1l).title("1").member(member).build();
+        Article article2 = Article.builder().id(2l).title("2").member(member).build();
+        when(memberAdaptor.memberFind(any())).thenReturn(member);
+        when(articleAdaptor.userArticleRetrieve(any())).thenReturn(List.of(article1,article2));
+
+        List<ArticleDTO.ListResponse> result = articleService.userArticleRetrieve("test@email.com");
+
+        assertEquals(result.size(),2);
+        assertEquals(result.get(0).getId(),1l);
+    }
 
     @Test
-    @DisplayName("게시글 페이징 조회 기능이 제대로 동작하는지 확인")
-    void 게시글_페이징조회_성공_테스트() {
-        String testEmail = "chs98412@naver,com";
-        Member member = Member.builder().id(USER_ID).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
-        List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+    @DisplayName("전체 게시글 페이징 검색 테스트")
+    void 전체_게시글_페이징_검색_테스트() {
+        Member member = Member.builder().email("test@email.com").build();
+        Article article1= Article.builder().id(1l).title("1").member(member).build();
+        Article article2 = Article.builder().id(2l).title("2").member(member).build();
+        when(articleAdaptor.retrieveByPaging(any(), any())).thenReturn(List.of(article1,article2));
 
-            articles.add(article);
-        }
+        List<ArticleDTO.ListResponse> result = articleService.retrieveAllPaging(1L, 10);
 
-        when(articleRepository.zeroOffsetPaging(any(),any())).thenReturn(articles.subList(3,6));
+        assertEquals(result.size(),2);
+        assertEquals(result.get(0).getId(),1l);
+    }
 
+    @Test
+    @DisplayName("태그로 게시글 검색 테스트")
+    void 태그로_게시글_검색_테스트() {
+        Member member = Member.builder().email("test@email.com").build();
+        Article article1= Article.builder().id(1l).title("1").member(member).build();
+        Article article2 = Article.builder().id(2l).title("2").member(member).build();
+        when(tagAdaptor.tagsFind(any())).thenReturn(new ArrayList<>());
+        when(articleAdaptor.articleRetrieveByTagList(any(), any())).thenReturn(List.of(article1,article2));
 
-        List<Article> response = articleService.articleRetrievePagingWithZeroOffset(2l,3);
+        TagDTO.ListRequest request = new TagDTO.ListRequest();
+        List<ArticleDTO.ListResponse> result = articleService.articleRetrieveByTagList(request);
 
-        verify(articleRepository).zeroOffsetPaging(2l,3);
-
-        System.out.println(response);
-
-        for (int i=3;i<response.size();i++) {
-            assertThat(response.get(i).getId()).isEqualTo(articles.get(i).getId());
-            assertThat(response.get(i).getTitle()).isEqualTo(articles.get(i).getTitle());
-            assertThat(response.get(i).getBody()).isEqualTo(articles.get(i).getBody());
-
-        }
-
+        assertEquals(result.size(),2);
+        assertEquals(result.get(0).getId(),1l);
+        assertEquals(result.get(1).getId(),2l);
 
     }
 
     @Test
-    @DisplayName("게시글 조회수 증가 기능이 제대로 동작하는지 확인")
-    void 게시글_조회수_증가_성공_테스트() {
-        Member member = Member.builder().id(USER_ID).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Article article = Article.builder().id(1l).member(member).title("제목1").body("내용1").viewCount(0).createDate(LocalDate.now()).sticker(Sticker.NEWHIT).build();
+    @DisplayName("게시글 검색 테스트")
+    void 게시글_검색() {
+        Member member = Member.builder().email("test@email.com").build();
+        Article article= Article.builder().id(1l).title("test").member(member).build();
+        when(articleAdaptor.search(any(), any(), any())).thenReturn(List.of(article));
 
-        when(articleRepository.save(any())).thenReturn(article);
-        articleService.increaseViewCount(article);
+        List<ArticleDTO.ListResponse> result = articleService.search(1L, 10, "test");
 
-        verify(articleRepository).save(article);
-        assertThat(article.getViewCount()).isEqualTo(1);
+        assertEquals(result.size(),1);
+        assertEquals(result.get(0).getTitle(),"test");
     }
-
 }

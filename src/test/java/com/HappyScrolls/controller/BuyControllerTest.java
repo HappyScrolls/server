@@ -1,12 +1,9 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.JwtRequestFilter;
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.dto.BuyDTO;
-import com.HappyScrolls.dto.CartDTO;
-import com.HappyScrolls.entity.Buy;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.config.security.JwtRequestFilter;
+import com.HappyScrolls.config.security.JwtTokenUtil;
+import com.HappyScrolls.domain.buy.dto.BuyDTO;
+import com.HappyScrolls.domain.member.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

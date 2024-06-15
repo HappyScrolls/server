@@ -1,25 +1,21 @@
 package com.HappyScrolls.service;
 
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.CartDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Product;
-import com.HappyScrolls.repository.CartRepository;
+import com.HappyScrolls.domain.cart.adaptor.CartAdaptor;
+import com.HappyScrolls.domain.cart.service.CartService;
+import com.HappyScrolls.domain.product.adaptor.ProductAdaptor;
+import com.HappyScrolls.domain.cart.dto.CartDTO;
+import com.HappyScrolls.domain.cart.entity.Cart;
+import com.HappyScrolls.domain.member.entity.Member;
+import com.HappyScrolls.domain.product.entity.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,89 +29,54 @@ class CartServiceTest {
     private CartService cartService;
 
     @Mock
-    private CartRepository cartRepository;
-
+    private ProductAdaptor productAdaptor;
 
     @Mock
-    private ProductService productService;
+    private CartAdaptor cartAdaptor;
 
     @Test
-    void 장바구니_생성_성공() {
+    @DisplayName("장바구니 생성 테스트")
+    void 장바구니_생성_테스트() {
+        Member member = new Member();
+        Product product = new Product();
+        CartDTO.Request request = CartDTO.Request.builder().productId(1L).build();
 
-        Member member = Member.builder().id(1l).email("chs98412@naver,com").nickname("hyuksoon").thumbnail("img").build();
-        Product product = Product.builder().price(100).price(100).build();
-        CartDTO.Request request = CartDTO.Request.builder().productId(1l).build();
+        when(productAdaptor.productRetrieve(any())).thenReturn(product);
+        when(cartAdaptor.cartCreate(any())).thenReturn(1L);
 
-        Cart cart = Cart.builder().product(product).member(member).build();
+        Long result = cartService.cartCreate(member, request);
 
-        when(cartRepository.save(any())).thenReturn(cart);
-        when(productService.productRetrieve(any())).thenReturn(product);
-
-        Long response =   cartService.cartCreate(member, request);
-
-        verify(cartRepository).save(any());
+        assertEquals(1L, result);
     }
-
     @Test
-    void 사용자_장바구니_조회_성공() {
-
-        String testEmail = "chs98412@naver,com";
-        Member member = Member.builder().id(1l).email(testEmail).nickname("hyuksoon").thumbnail("img").build();
-        Product product1 = Product.builder().price(100).price(100).build();
-        Product product2 = Product.builder().price(100).price(100).build();
-        Cart cart1 = Cart.builder().product(product1).member(member).build();
-        Cart cart2 = Cart.builder().product(product2).member(member).build();
-
+    @DisplayName("사용자 장바구니 조회 테스트")
+    void 사용자_장바구니_조회_테스트() {
+        Member member = new Member();
+        Cart cart = Cart.builder().id(1l).build();
 
         List<Cart> carts = new ArrayList<>();
-        carts.add(cart1);
-        carts.add(cart2);
+        carts.add(cart);
 
-        when(cartRepository.findAllByMember(any())).thenReturn(carts);
+        when(cartAdaptor.userCartRetrieve(any())).thenReturn(carts);
 
-
-        List<Cart> response = cartService.userCartRetrieve(member);
-
-        verify(cartRepository).findAllByMember(member);
+        List<CartDTO.Response> result = cartService.userCartRetrieve(member);
 
 
-            assertThat(response.get(0).getId()).isEqualTo(carts.get(0).getId());
-            assertThat(response.get(0).getProduct()).isEqualTo(carts.get(0).getProduct());
-        assertThat(response.get(0).getMember()).isEqualTo(carts.get(0).getMember());
-
-        assertThat(response.get(1).getId()).isEqualTo(carts.get(1).getId());
-        assertThat(response.get(1).getProduct()).isEqualTo(carts.get(1).getProduct());
-        assertThat(response.get(1).getMember()).isEqualTo(carts.get(1).getMember());
-
-    }
-
-    @Test
-    @DisplayName("장바구니 단건 조회 기능이 제대로 동작하는지 확인")
-    void 장바구니_단건조회_성공_테스트() {
-
-        Member member = Member.builder().id(1l).email("email1").nickname("hyuksoon").thumbnail("img").build();
-        Product product1 = Product.builder().price(100).price(100).build();
-        Cart cart= Cart.builder().id(1l).product(product1).member(member).build();
-
-
-        when(cartRepository.findById(any())).thenReturn(Optional.of(cart));
-
-        Cart response = cartService.cartFind(1L);
-        verify(cartRepository).findById(1L);
-        assertThat(response).isEqualTo(cart);
+        assertEquals(1, result.size());
+        assertEquals(result.get(0).getId(),1l);
     }
 
 
     @Test
-    @DisplayName("상품 단건 조회 기능이 조회를 할 수 없을 때 예외처리를 하는지 확인")
-    void 상품_단건조회_예외_테스트() {
-        Long testId = 1L;
-        when(cartRepository.findById(any())).thenReturn(Optional.empty());
+    @DisplayName("장바구니 찾기 테스트")
+    void 장바구니_찾기_테스트() {
+        Cart cart = Cart.builder().id(1l).build();
 
-        assertThrows(NoSuchElementException.class, () -> cartService.cartFind(testId));
+        when(cartAdaptor.cartFind(any())).thenReturn(cart);
 
+        CartDTO.Response result = cartService.cartFind(1L);
 
-        verify(cartRepository).findById(testId);
+        assertEquals(1L, result.getId());
     }
 
 }

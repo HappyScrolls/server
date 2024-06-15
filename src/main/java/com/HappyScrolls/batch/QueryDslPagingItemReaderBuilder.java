@@ -1,17 +1,12 @@
 package com.HappyScrolls.batch;
 
-import com.HappyScrolls.entity.Article;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.batch.item.database.orm.JpaQueryProvider;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Function;

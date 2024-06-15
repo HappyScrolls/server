@@ -1,13 +1,9 @@
 package com.HappyScrolls.controller;
 
-import com.HappyScrolls.config.JwtRequestFilter;
-import com.HappyScrolls.config.JwtTokenUtil;
-import com.HappyScrolls.dto.ArticleDTO;
-import com.HappyScrolls.dto.CommentDTO;
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Cart;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Member;
+import com.HappyScrolls.config.security.JwtRequestFilter;
+import com.HappyScrolls.config.security.JwtTokenUtil;
+import com.HappyScrolls.domain.article.dto.ArticleDTO;
+import com.HappyScrolls.domain.member.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -20,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,13 +45,13 @@ class ArticleControllerTest extends ControllerTest {
     @Test
     void retrieveAllArticlePagewithZeroOffset() throws Exception{
 
-        List<Article> res = new ArrayList<>();
+        List<ArticleDTO.ListResponse> res = new ArrayList<>();
 
 
-        when(articleService.articleRetrievePagingWithZeroOffset(10l,10)).thenReturn(res);
-        ResultActions resultActions = mockMvc.perform(get("/article/zeropaging?lastindex=10&limit=10")  .header("Authorization","Bearer "+tk));
+        when(articleService.retrieveAllPaging(10l,10)).thenReturn(res);
+        ResultActions resultActions = mockMvc.perform(get("/article/zeropaging?lastid=10&limit=10")  .header("Authorization","Bearer "+tk));
 
-        verify(articleService).articleRetrievePagingWithZeroOffset( 10l,10);
+        verify(articleService).retrieveAllPaging( 10l,10);
 
         resultActions.andExpect(status().isOk())
                 .andDo(print());
@@ -65,7 +60,7 @@ class ArticleControllerTest extends ControllerTest {
     @Test
     void retrieveArticle() throws Exception{
 
-        Article res = new Article();
+        ArticleDTO.DetailResponse res = new ArticleDTO.DetailResponse();
 
 
         when(articleService.articleRetrieve(any())).thenReturn(res);

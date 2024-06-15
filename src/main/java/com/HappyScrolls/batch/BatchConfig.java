@@ -1,12 +1,10 @@
 package com.HappyScrolls.batch;
 
-import com.HappyScrolls.entity.Article;
-import com.HappyScrolls.entity.Comment;
-import com.HappyScrolls.entity.Member;
-import com.HappyScrolls.entity.Sticker;
-import com.HappyScrolls.repository.ArticleRepository;
-import com.HappyScrolls.repository.CommentRepository;
-import com.HappyScrolls.repository.MemberRepository;
+import com.HappyScrolls.domain.article.entity.Article;
+import com.HappyScrolls.domain.article.entity.Sticker;
+import com.HappyScrolls.domain.article.repository.ArticleRepository;
+import com.HappyScrolls.domain.comment.repository.CommentRepository;
+import com.HappyScrolls.domain.member.repository.MemberRepository;
 import com.querydsl.core.types.dsl.NumberPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -22,14 +20,13 @@ import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.repository.CrudRepository;
 
-import static com.HappyScrolls.entity.QArticle.article;
-import static com.HappyScrolls.entity.QComment.comment;
 
 import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import static com.HappyScrolls.domain.article.entity.QArticle.article;
 
 @Configuration
 @RequiredArgsConstructor
@@ -114,45 +111,9 @@ public class BatchConfig {
     @StepScope
     public RepositoryItemWriter<Article> articleWriter(){
         return new RepositoryItemWriterBuilder<Article>()
-                .repository(articleRepository)
+                .repository((CrudRepository<Article, Long>) articleRepository)
                 .build();
     }
 
 
-    @Bean
-    public QueryDslPagingItemReader queryDslreader2() throws NoSuchFieldException, NoSuchMethodException ,IllegalAccessException{
-
-        String identifierName = "id";
-        Comment entity = new Comment();
-        NumberPath<Long> identifier= (NumberPath<Long>)   comment.getClass().getDeclaredField(identifierName).get(comment);
-        Method method = entity.getClass().getMethod("getId");
-        Member member = memberRepository.findById(1l).get();
-        return new QueryDslPagingItemReaderBuilder<Comment>()
-                .name("QueryDslZeroOffsetPagingTest")
-                .entityManagerFactory(emf)
-                .pageSize(10)
-                .identifier(identifier)
-                .method(method)
-                .queryFunction(queryFactory -> queryFactory
-                        .selectFrom(comment)
-                        .where(comment.member.eq(member)))
-                .build();
-    }
-
-    @Bean
-    @StepScope
-    public ItemProcessor<Comment, Comment> CommentProcessor(){
-        return comment -> {
-            comment.setIsParent(true);
-            return comment;
-        };
-    }
-
-    @Bean
-    @StepScope
-    public RepositoryItemWriter<Comment> commentWriter(){
-        return new RepositoryItemWriterBuilder<Comment>()
-                .repository(commentRepository)
-                .build();
-    }
 }
